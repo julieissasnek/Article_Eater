@@ -14,7 +14,7 @@ Design Decisions (approved by David via Cowork):
   - Molecule links: As annotations (lightweight, versionable)
   - Preprocessing: Applied at query time (always fresh)
 
-Annotation Types (5 layers, 23 types):
+Annotation Types (6 layers, 25 types):
   Layer 1 Evidence:    CALIBRATION_NOTE, SENSITIVITY_FLAG, EVIDENCE_OVERRIDE, PROVENANCE_PATCH
   Layer 2 Relational:  CROSS_REFERENCE, MOLECULE_LINK, CLINICAL_CAUTION
   Layer 3 QA/User:     OPEN_QUESTION, SEARCH_PROMPT, USER_FEEDBACK
@@ -22,6 +22,7 @@ Annotation Types (5 layers, 23 types):
   Layer 5 Extended:    SURPRISE_FLAG, DESIGN_IMPLICATION, DISPUTE, ANALOGICAL_BRIDGE,
                        REPLICATION_STATUS, EFFECT_MAGNITUDE, CROSS_DOMAIN,
                        HISTORICAL_CONTEXT, NARRATIVE_HOOK, UNANSWERED_QUESTION
+  Layer 6 Circuits:    CIRCUIT_ASSOCIATION, ARCHETYPE_TAG
 
 Phase α (additive): All types can be stored in SQLite. L2 JSON and L3 data models
 still work as before. Phase β will switch consumers to unified API.
@@ -47,7 +48,7 @@ logger = logging.getLogger(__name__)
 # =============================================================================
 
 class AnnotationType(str, Enum):
-    """23 annotation types across 5 layers."""
+    """25 annotation types across 6 layers."""
     # Layer 1: Evidence
     CALIBRATION_NOTE = "CALIBRATION_NOTE"
     SENSITIVITY_FLAG = "SENSITIVITY_FLAG"
@@ -76,6 +77,9 @@ class AnnotationType(str, Enum):
     HISTORICAL_CONTEXT = "HISTORICAL_CONTEXT"      # A16
     NARRATIVE_HOOK = "NARRATIVE_HOOK"              # A17
     UNANSWERED_QUESTION = "UNANSWERED_QUESTION"    # A18
+    # Layer 6: Functional Circuits (added 2026-03-03)
+    CIRCUIT_ASSOCIATION = "CIRCUIT_ASSOCIATION"        # Links a finding to a functional circuit
+    ARCHETYPE_TAG = "ARCHETYPE_TAG"                  # Tags a finding/template with a T2 archetype
 
 
 class AnnotationLayer(str, Enum):
@@ -84,6 +88,7 @@ class AnnotationLayer(str, Enum):
     QA_USER = "qa_user"
     CVA = "cva"
     EXTENDED = "extended"
+    CIRCUITS = "circuits"
 
 
 TYPE_TO_LAYER = {
@@ -115,6 +120,9 @@ TYPE_TO_LAYER = {
     AnnotationType.HISTORICAL_CONTEXT: AnnotationLayer.EXTENDED,
     AnnotationType.NARRATIVE_HOOK: AnnotationLayer.EXTENDED,
     AnnotationType.UNANSWERED_QUESTION: AnnotationLayer.EXTENDED,
+    # Layer 6: Circuits
+    AnnotationType.CIRCUIT_ASSOCIATION: AnnotationLayer.CIRCUITS,
+    AnnotationType.ARCHETYPE_TAG: AnnotationLayer.CIRCUITS,
 }
 
 

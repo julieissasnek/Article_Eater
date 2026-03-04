@@ -1,6 +1,6 @@
 # TASKS.md
 
-*Last updated: 2026-02-26*
+*Last updated: 2026-03-03*
 
 Active task tracking for Article_Eater_PostQuinean_v1.
 For completed sprints (Feb 2026), see `docs/TASKS_ARCHIVE_2026_Feb.md`.
@@ -16,7 +16,8 @@ For completed sprints (Feb 2026), see `docs/TASKS_ARCHIVE_2026_Feb.md`.
 **Scaffold Status**: ALL 79 scaffold templates now have t1_frameworks assigned (panel-informed). 208/208 pass scaffold validation.
 **T1 Frameworks**: 10 (loaded from `schemas/theory/tier1_frameworks.json`)
 **T1.5 Domain Theories**: 13 (loaded from `schemas/theory/tier1_5_domain_theories.json`). Includes Goldilocks Principle (Berlyne/Kirsh).
-**Enrichment Orchestrator**: 9-step pipeline (credence CI, warrant trace, confounder risk, framework voices, gap analysis, follow-ups, language adaptation, figure suggestions, **interpretation context**). 13 lazy-load services.
+**Enrichment Orchestrator**: 9-step pipeline (credence CI, warrant trace, confounder risk, **framework voices [corpus-grounded]**, gap analysis, follow-ups, language adaptation, figure suggestions, **interpretation context**). 13 lazy-load services.
+**P0 Status**: ALL 5 P0 items resolved (paper traceability, grounding gate, tuple unpacking, answer status, framework voices). See `docs/FRAMEWORK_VOICES_SPRINT_RESULTS_2026-03-03.md`.
 **Coordination System**: `.agent_coord/` (COORDINATION_STATE, MESSAGE_BOARD, CHANGELOG) + `.agents/workflows/` (check-in, check-out)
 **Tier Taxonomy**: Propagation procedure at `docs/TIER_TAXONOMY_PROPAGATION_PROCEDURE.md`. Verified by `tests/test_tier_taxonomy_consistency.py` (13 tests).
 **Ruthless Version**: v4 — `docs/RUTHLESS_SYSTEM_AUDIT_v4_STANDING.md`
@@ -46,6 +47,8 @@ For completed sprints (Feb 2026), see `docs/TASKS_ARCHIVE_2026_Feb.md`.
 | SPRINT-6 | Expert Calibration Prep | AUDITED: 4 schema mismatches fixed (coherence columns, template table, gaps table, quarantine query). scripts/generate_calibration_report.py (~600 lines). | VERIFIED 2026-02-25 |
 | PANEL-CALIBRATION | Panel reviews calibration inputs + approves thresholds | David + domain experts review; finalize alert thresholds, VOI rankings | PENDING (target: Mar 2–3, ~4 hrs) |
 | OVERSEER-PANEL | Panel review of OVERSEER design document | 8 design questions (O-1..O-8) answered. See docs/PANEL_OVERSEER_DESIGN_2026-02-25.md | PANEL COMPLETE; AWAITING DAVID APPROVAL FOR SPRINT EXECUTION |
+| FV-AB | Framework Voices (P0 #5) — Corpus-Grounded Implementation | Sprint FV-A: Rewrote `mv_builder.build_framework_voices()` to scan extractions (4,868 paper-framework links). Sprint FV-B: Created `framework_voice_renderer.py`, updated enrichment orchestrator with 3-tier fallback. 72 tests pass. | **COMPLETE 2026-03-03** |
+| P0-FIXED | P0 #1-4 Fixes (paper traceability, grounding gate, tuple unpacking, answer status) | Implemented in `answer_enrichment_orchestrator.py` and `integrated_query_service.py`. See `docs/P0_FIXES_CW_REVIEW_2026-03-03.md`. | **COMPLETE 2026-03-03** |
 | GOLDILOCKS-PANEL | Full expert panel study on the Goldilocks Principle | Deep panel deliberation on Goldilocks as T1.5 theory: mechanism (PE optimization, metabolic efficiency, reward convergence), cross-modal universality, individual differences, calibration of optima thresholds, relationship to Berlyne. Currently defined as 13th T1.5 theory with 5 constructs, 19 constituent templates. Panel should examine formal reduction, empirical adequacy, boundary conditions, subsumption scope | PENDING PANEL (deferred; not blocking system initialization) |
 
 ### AG Programs Inventory (Tracked 2026-02-25)

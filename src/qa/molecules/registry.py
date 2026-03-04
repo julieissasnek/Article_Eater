@@ -38,6 +38,7 @@ class MoleculeRegistry:
         self.molecules: Dict[str, Molecule] = {}
         self._template_index: Dict[str, List[str]] = {}  # template_id -> [molecule_ids]
         self._framework_index: Dict[str, List[str]] = {}  # framework_id -> [molecule_ids]
+        self._archetype_index: Dict[str, List[str]] = {}  # archetype_name -> [molecule_ids]
         self._load_all()
     
     def _load_all(self):
@@ -57,6 +58,8 @@ class MoleculeRegistry:
                     self._template_index.setdefault(tid, []).append(mol.molecule_id)
                 for fid in mol.framework_ids:
                     self._framework_index.setdefault(fid, []).append(mol.molecule_id)
+                for arch in getattr(mol, 'linked_archetypes', []):
+                    self._archetype_index.setdefault(arch, []).append(mol.molecule_id)
             except Exception as e:
                 print(f"Warning: Failed to load molecule from {path}: {e}")
     
@@ -87,9 +90,34 @@ class MoleculeRegistry:
         return [m for m in self.molecules.values() if m.domain == domain]
     
     def find_by_type(self, molecule_type: str) -> List[Molecule]:
-        """Find all molecules of a given type (THEORY, MECHANISM, PHENOMENON, DESIGN_PATTERN)."""
+        """Find all molecules of a given type (THEORY, MECHANISM, PHENOMENON, DESIGN_PATTERN, FUNCTIONAL_CIRCUIT)."""
         return [m for m in self.molecules.values() if m.molecule_type == molecule_type]
-    
+
+    def find_by_archetype(self, archetype_name: str) -> List[Molecule]:
+        """Find all molecules linked to a given T2 computational archetype.
+
+        E.g., find_by_archetype("CONVERGENT_STATE_MONITORING") returns all
+        functional circuits that instantiate convergent state monitoring
+        (fluency monitor, coherence monitor, threat monitor, etc.).
+
+        SUCCESS CONDITIONS:
+        SC-FBA-1: Returns list (never None)
+        SC-FBA-2: Every returned molecule has archetype_name in its linked_archetypes
+        SC-FBA-3: Returns empty list for unknown archetype names
+        SC-FBA-4: Archetype name matching is case-sensitive (uses T2ArchetypeType enum values)
+        """
+        mol_ids = self._archetype_index.get(archetype_name, [])
+        return [self.molecules[mid] for mid in mol_ids if mid in self.molecules]
+
+    def get_functional_circuits(self) -> List[Molecule]:
+        """Convenience: return all molecules with type FUNCTIONAL_CIRCUIT.
+
+        SUCCESS CONDITIONS:
+        SC-GFC-1: Returns list (never None)
+        SC-GFC-2: Every returned molecule has molecule_type == 'FUNCTIONAL_CIRCUIT'
+        """
+        return self.find_by_type("FUNCTIONAL_CIRCUIT")
+
     def find_competing(self, molecule_id: str) -> List[Molecule]:
         """Find competing theories for a given molecule."""
         mol = self.get(molecule_id)

@@ -1,0 +1,91 @@
+{
+  "molecule_id": "FC_REWARD_PE",
+  "name": "Reward Prediction Error Circuit",
+  "short_description": "Compares expected and actual reward values, discounted by temporal delay, to generate dopaminergic learning signals that update action values.",
+  "components": [
+    {
+      "name": "VALUE_PREDICTOR",
+      "template_ids": [
+        "T_VALUE_PREDICT"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Maintains temporal-difference estimates of reward value for states and actions"
+    },
+    {
+      "name": "REWARD_COMPARATOR",
+      "template_ids": [
+        "T_REWARD_COMPARE"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Computes discrepancy between predicted and received reward"
+    },
+    {
+      "name": "TEMPORAL_DISCOUNTER",
+      "template_ids": [
+        "T_TEMPORAL_DISCOUNT"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Applies temporal discount to expected reward based on delay"
+    },
+    {
+      "name": "LEARNING_RATE_CONTROLLER",
+      "template_ids": [
+        "T_LEARN_RATE"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Modulates learning rate based on reward uncertainty and context"
+    }
+  ],
+  "constituent_templates": [
+    "T_VALUE_PREDICT",
+    "T_REWARD_COMPARE",
+    "T_TEMPORAL_DISCOUNT",
+    "T_LEARN_RATE"
+  ],
+  "interaction_graph": {
+    "T_VALUE_PREDICT": {
+      "T_REWARD_COMPARE": "SYNERGISTIC"
+    },
+    "T_REWARD_COMPARE": {
+      "T_TEMPORAL_DISCOUNT": "SYNERGISTIC"
+    },
+    "T_TEMPORAL_DISCOUNT": {
+      "T_LEARN_RATE": "SYNERGISTIC"
+    }
+  },
+  "framework_ids": [
+    "neuromodulatory-systems"
+  ],
+  "domain": "affect",
+  "molecule_type": "FUNCTIONAL_CIRCUIT",
+  "scope_conditions": [
+    "Reward receipt or omission event",
+    "Functional dopaminergic pathways",
+    "Access to temporal context"
+  ],
+  "overall_maturity": "TENTATIVE",
+  "key_references": [
+    "Schultz, W., Dayan, P., & Montague, P. R. (1997). A neural substrate of prediction and reward. Science, 275(5306), 1593\u20131599.",
+    "Montague, P. R., Dayan, P., & Sejnowski, T. J. (1996). A framework for mesencephalic dopamine systems based on predictive Hebbian learning. The Journal of Neuroscience, 16(5), 1936\u20131947."
+  ],
+  "empirical_support": "PRELIMINARY",
+  "competing_theories": [],
+  "design_implications": [
+    "Immediate, certain rewards are more motivating than delayed rewards; in behavior change contexts, provide early positive feedback and visible progress markers",
+    "Prediction errors (surprises) are more reinforcing than expected outcomes; use variable reinforcement schedules in engagement designs"
+  ],
+  "confidence_intervals": null,
+  "parent_t1_5_theory": null,
+  "linked_archetypes": [
+    "PREDICTIVE_CODING"
+  ],
+  "inputs": [
+    "expected_reward_value",
+    "actual_reward_value",
+    "temporal_discount"
+  ],
+  "outputs": [
+    "reward_prediction_error",
+    "value_update_signal"
+  ]
+}

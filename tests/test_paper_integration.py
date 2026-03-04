@@ -607,7 +607,7 @@ class TestOrchestrator:
         assert len(event.constraints_added) == 1
 
         # Check all 14 cascade steps ran
-        assert len(event.cascade_steps) == 14
+        assert len(event.cascade_steps) == 16
 
         # Critical steps should all be COMPLETED
         critical_steps = [s for s in event.cascade_steps if s.is_critical]

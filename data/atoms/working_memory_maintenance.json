@@ -1,0 +1,20 @@
+{
+  "atom_id": "working_memory_maintenance",
+  "name": "Working Memory Maintenance",
+  "description": "Persistent activity sustaining representations over seconds. Prefrontal cortex neurons show delay-period activity during memory-dependent tasks. Implements short-term storage via recurrent synaptic dynamics and sustained firing.",
+  "maturity": "ESTABLISHED",
+  "neural_substrate": ["prefrontal_cortex", "parietal_cortex"],
+  "computational_signature": "dynamics: dX/dt = -X/tau + input(t), sustains X during delay",
+  "t1_frameworks": ["working-memory", "cognitive-control"],
+  "key_references": [
+    "Goldman-Rakic, P. S. (1995). Cellular basis of working memory. Neuron, 14(3), 477-485.",
+    "Compte, A., Brunel, N., Goldman-Rakic, P. S., & Wang, X. J. (2000). Synaptic mechanisms and network dynamics underlying spatial working memory in a cortical network model. Cerebral Cortex, 10(9), 910-923."
+  ],
+  "empirical_evidence": "PFC and parietal neurons maintain firing during delay period (Goldman-Rakic). Lesions to PFC impair delayed response tasks. Network models with recurrent connectivity can sustain activity. Debate: is maintenance via persistent firing, short-term synaptic plasticity, or attractor dynamics?",
+  "cross_domain_confirmed": false,
+  "parameters": {
+    "duration": "up to several seconds",
+    "capacity": "limited by neural resources (~4 items)",
+    "decay_timescale": "seconds to tens of seconds"
+  }
+}

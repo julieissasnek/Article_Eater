@@ -94,6 +94,45 @@ Task classification hierarchy:
 - REAL_TASK_CONTROLLED (0.8) — actual work/navigation observed
 - NATURAL_BEHAVIOR (1.0) — POE, ESM, longitudinal data
 
+## Master Doc Update Protocol (MANDATORY — Added 2026-03-04)
+
+*Canonical reference: `contracts/MASTER_DOC_UPDATE_PROTOCOL.md`*
+
+Every significant work session MUST produce a Master Doc Brief (MDB) — a standardized context and decision justification document that CW can read and integrate into the master document.
+
+### What Triggers an MDB
+
+- ≥100 lines of new code
+- Any schema change
+- Any new concept, service, or subsystem
+- Any design decision with alternatives
+- Any multi-session work or handoff between systems
+
+### What NOT to MDB
+
+- Small bug fixes (<50 lines)
+- Minor refactors
+- Test-only changes
+- Routine maintenance
+
+### Quick Process
+
+1. **Before work**: Check if your session scope requires an MDB (§2 of protocol)
+2. **During work**: Take notes on decisions and implications
+3. **After work**: Fill out MDB template (§3 of protocol)
+4. **Store**: `docs/master_doc_briefs/MDB_{AGENT}_{DATE}_{TOPIC}.md`
+5. **Commit**: Include MDB in your git commit
+
+### Why This Matters
+
+**The old way**: Agent builds, work is done, but rationale is lost in session logs. When David asks "Why did we choose 0.90 for the AESHI gate?", it takes 3 hours to reconstruct from logs.
+
+**The new way**: Agent documents decision with rationale in real time. CW reads one clear document per session and integrates into master doc. Future readers understand the system's evolution without archaeological investigation.
+
+See `contracts/MASTER_DOC_UPDATE_PROTOCOL.md` for full specification, template, and examples.
+
+---
+
 ## Sprint Structure
 
 | Sprint | Focus | Duration | Depends On |
@@ -269,6 +308,25 @@ When writing any paper, article, or formal document for this project, Claude MUS
 **Equations**: Always explain in plain language first, then present the equation, then walk through each term. Never drop an equation without verbal scaffolding.
 
 **Citations**: Weave into prose naturally (avoid citation clusters). Use "Smith (2020) showed that..." for important findings, "(Smith, 2020)" for supporting evidence. APA 7th edition throughout.
+
+### Master Document Maintenance (MANDATORY — Added 2026-03-04)
+
+**Every time new files are created or meaningful progress is made, Claude MUST document it in the master doc** if the work is theoretically interesting or engineering-interesting. This is non-negotiable.
+
+**What to document**:
+- New architectural patterns or integration points (e.g., QA responses triggering recommendation loop searches)
+- Ontological or epistemic decisions (e.g., reframing circuits as latent variables)
+- New data structures, services, or pipeline stages with non-trivial design rationale
+- Novel testing strategies or validation approaches
+- Any decision where alternatives existed and a choice was made
+
+**What to include**:
+- **Grounds of the decision**: Why this approach, not alternatives. What theoretical or engineering considerations drove the choice. References where relevant.
+- **Specification**: What was built, how it works, what it connects to. Precise enough that a future reader can understand the design without reading the code.
+
+**Where to put it**: In the appropriate Part of `docs/master_doc_parts/`. If no existing Part fits, create a new section within the most relevant Part. Update the word count in the Part header after editing.
+
+**When NOT to document**: Routine bug fixes, minor refactors, test-only changes, task tracking updates, and purely cosmetic changes do not need master doc entries.
 
 ### Evidence Grounding (MANDATORY)
 

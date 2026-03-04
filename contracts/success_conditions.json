@@ -1124,6 +1124,120 @@
           "rationale": "Inconsistencies catch cases where LLM agrees with one field but contradicts another"
         }
       ]
+    },
+    "src/qa/cards/ (End-to-End Integration)": {
+      "description": "Last-mile integration tests verifying data flows across card system component boundaries — not just that individual components work, but that A's output reaches B's input at its ultimate destination",
+      "script_entry_point": "pytest tests/test_card_integration_e2e.py -v",
+      "conditions": [
+        {
+          "id": "SC-E2E-1",
+          "name": "Card persistence roundtrip to real data path",
+          "description": "Card created via create_card() can be saved to data/qa_cache/ and loaded back with identical content",
+          "metric": "card_loaded == card_saved AND file_exists(data_path)",
+          "threshold": "100%",
+          "test_name": "test_SC_E2E_1_card_roundtrip_with_real_path",
+          "rationale": "Cards that serialize but can't be found by the retriever are invisible to QA — the most common last-mile failure"
+        },
+        {
+          "id": "SC-E2E-2",
+          "name": "Schema importable from canonical path",
+          "description": "from src.qa.cards import Card, CardType, CardTier, CARD_TYPE_REGISTRY succeeds and returns expected types",
+          "metric": "all imports succeed AND types are correct",
+          "threshold": "100%",
+          "test_name": "test_SC_E2E_2_card_schema_imports",
+          "rationale": "If the import path is wrong, no downstream consumer can use the schema — total system failure"
+        },
+        {
+          "id": "SC-E2E-3",
+          "name": "CardType enum matches generator expectations",
+          "description": "All 9 CardType enum values are present and their string values match what card_generator.py produces",
+          "metric": "len(CardType) == 9 AND all values are kebab-case",
+          "threshold": "100%",
+          "test_name": "test_SC_E2E_3_cardtype_enum_matches_generator",
+          "rationale": "Type mismatch between schema and generator means cards get created but never found by type-specific queries"
+        },
+        {
+          "id": "SC-E2E-4",
+          "name": "All referenced tabs have definitions",
+          "description": "Every tab name in required_tabs/optional_tabs across all card types has an entry in TAB_DEFINITIONS",
+          "metric": "all_tabs_in_registry ⊆ TAB_DEFINITIONS.keys()",
+          "threshold": "100%",
+          "test_name": "test_SC_E2E_4_all_tabs_defined",
+          "rationale": "Undefined tabs render as empty sections in the UI — silent data loss"
+        },
+        {
+          "id": "SC-E2E-5",
+          "name": "Staleness score computable for real card data",
+          "description": "compute_staleness_score() returns valid (float, Staleness) tuple for ledger with realistic events",
+          "metric": "0.0 <= score <= 1.0 AND status in {FRESH, AGING, STALE}",
+          "threshold": "100%",
+          "test_name": "test_SC_E2E_5_staleness_score_computation",
+          "rationale": "If staleness can't be computed, regeneration is never triggered and cards rot silently"
+        },
+        {
+          "id": "SC-E2E-6",
+          "name": "Missing tabs detected by validator",
+          "description": "Card.validate_tabs() returns non-empty list when required tabs are missing from body",
+          "metric": "len(validate_tabs()) > 0 for cards with missing required tabs",
+          "threshold": "100%",
+          "test_name": "test_SC_E2E_6_validate_tabs_detects_missing",
+          "rationale": "If validation passes on incomplete cards, quality gate is a no-op — the most dangerous last-mile failure"
+        },
+        {
+          "id": "SC-E2E-7",
+          "name": "Card JSON is standard-compliant",
+          "description": "Card.to_json() output can be parsed by json.loads without errors — no non-serializable types",
+          "metric": "json.loads(card.to_json()) succeeds",
+          "threshold": "100%",
+          "test_name": "test_SC_E2E_7_card_json_is_standard_json",
+          "rationale": "Non-serializable types (datetime, frozenset) silently corrupt persistence and API responses"
+        },
+        {
+          "id": "SC-E2E-8",
+          "name": "Meta-review directory populated",
+          "description": "data/materialized_views/meta_reviews/ exists and contains JSON files from the 3,788-review generation",
+          "metric": "dir_exists AND file_count > 0",
+          "threshold": "100%",
+          "test_name": "test_SC_E2E_8_meta_review_directory_exists",
+          "rationale": "Meta-reviews generated but not persisted to the right path are invisible to the QA pipeline"
+        },
+        {
+          "id": "SC-E2E-9",
+          "name": "User-type tab ordering varies",
+          "description": "Different user types (researcher vs designer vs policymaker) get different tab orderings for the same card type",
+          "metric": "len(set(orderings)) >= 2 for any card type with >=3 tabs",
+          "threshold": "100%",
+          "test_name": "test_SC_E2E_9_user_type_tab_ordering_varies",
+          "rationale": "Personalization that produces identical output for all users is a no-op — feature exists but doesn't work"
+        },
+        {
+          "id": "SC-E2E-10",
+          "name": "Badge colors are valid hex for rendering",
+          "description": "Every badge_color in CARD_TYPE_REGISTRY matches #RRGGBB format usable in CSS/HTML",
+          "metric": "re.match(r'^#[0-9A-Fa-f]{6}$', color) for all colors",
+          "threshold": "100%",
+          "test_name": "test_SC_E2E_10_badge_colors_are_valid_hex",
+          "rationale": "Invalid hex colors cause silent rendering failures — badges appear but with wrong/missing color"
+        },
+        {
+          "id": "SC-E2E-11",
+          "name": "Model allocation values match routing options",
+          "description": "Every model_allocation in CARD_TYPE_REGISTRY is one of {opus, sonnet, gemini}",
+          "metric": "all(spec.model_allocation in {'opus', 'sonnet', 'gemini'} for spec in registry)",
+          "threshold": "100%",
+          "test_name": "test_SC_E2E_11_model_allocation_values_valid",
+          "rationale": "Unknown model values cause the generation orchestrator to fail silently or fall through to defaults"
+        },
+        {
+          "id": "SC-E2E-12",
+          "name": "Direction enum matches extraction validator",
+          "description": "Direction enum values {increase, decrease, no_effect, mixed} match extraction_field_validator.py canonical values",
+          "metric": "set(Direction.values()) == extraction_validator.VALID_DIRECTIONS",
+          "threshold": "100%",
+          "test_name": "test_SC_E2E_12_direction_values_match_extraction",
+          "rationale": "THE canonical last-mile test: if extraction produces direction values the card schema rejects, 12,000+ T3 cards lose their direction data"
+        }
+      ]
     }
   },
   "meta": {

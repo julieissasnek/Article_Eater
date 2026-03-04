@@ -292,21 +292,31 @@ class GapPredictor:
         logger.info(f"Searching local corpus for gap {gap.gap_id} with keywords: {keywords}")
 
         # 1. Check extracted findings
+        # NOTE: Corpus uses *.json not *.jsonl (fixed 2026-03-03, P1 #9)
         findings_dir = Path("data/extractions")
         if findings_dir.exists():
-            for jsonl_file in findings_dir.glob("*.jsonl"):
+            # Search .json first (actual corpus format), then .jsonl for compat
+            extraction_files = list(findings_dir.glob("*.json")) or list(findings_dir.glob("*.jsonl"))
+            for ext_file in extraction_files:
                 try:
-                    with open(jsonl_file, 'r') as f:
-                        for line in f:
-                            finding = json.loads(line.strip())
+                    with open(ext_file, 'r') as f:
+                        data = json.load(f)
+                        # Extraction JSONs have a 'findings' array
+                        findings_list = data.get('findings', [])
+                        if not findings_list and isinstance(data, dict):
+                            findings_list = [data]  # Single finding
+                        for finding in findings_list:
                             content = finding.get('finding_text', '') + ' ' + finding.get('content', '')
+                            if not content.strip():
+                                # Try alternate field names
+                                content = finding.get('antecedent', '') + ' ' + finding.get('consequent', '')
                             if self._content_matches_keywords(content, keywords):
                                 result['extracted_findings'].append({
-                                    'source_file': str(jsonl_file.name),
+                                    'source_file': str(ext_file.name),
                                     'finding': finding
                                 })
                 except Exception as e:
-                    logger.warning(f"Error reading {jsonl_file}: {e}")
+                    logger.warning(f"Error reading {ext_file}: {e}")
 
         # 2. Check existing beliefs via keyword matching
         if self.web and self.web.beliefs:
@@ -480,18 +490,25 @@ class GapPredictor:
             result['potential_defeaters'].append(cb)
 
         # 2. Check extracted findings for contradictions
+        # NOTE: Corpus uses *.json not *.jsonl (fixed 2026-03-03, P1 #9)
         findings_dir = Path("data/extractions")
         if findings_dir.exists():
-            for jsonl_file in findings_dir.glob("*.jsonl"):
+            extraction_files = list(findings_dir.glob("*.json")) or list(findings_dir.glob("*.jsonl"))
+            for ext_file in extraction_files:
                 try:
-                    with open(jsonl_file, 'r') as f:
-                        for line in f:
-                            finding = json.loads(line.strip())
+                    with open(ext_file, 'r') as f:
+                        data = json.load(f)
+                        findings_list = data.get('findings', [])
+                        if not findings_list and isinstance(data, dict):
+                            findings_list = [data]
+                        for finding in findings_list:
                             content = finding.get('content', '') + ' ' + finding.get('finding', '')
+                            if not content.strip():
+                                content = finding.get('antecedent', '') + ' ' + finding.get('consequent', '')
                             if self._is_potential_defeater(content, search_concepts):
                                 defeater_info = {
                                     'source': 'extracted_finding',
-                                    'source_file': str(jsonl_file.name),
+                                    'source_file': str(ext_file.name),
                                     'content': content[:300] + '...' if len(content) > 300 else content,
                                     'defeater_type': self._identify_defeater_type(content)
                                 }
@@ -499,7 +516,7 @@ class GapPredictor:
                                 result['defeater_categories'][category].append(defeater_info)
                                 result['potential_defeaters'].append(defeater_info)
                 except Exception as e:
-                    logger.warning(f"Error reading {jsonl_file}: {e}")
+                    logger.warning(f"Error reading {ext_file}: {e}")
 
         # 3. Check unprocessed abstracts
         abstracts_dir = Path("data/abstracts")

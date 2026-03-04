@@ -290,6 +290,21 @@ class LanguageAdaptationService:
 
         Returns:
             Adapted answer dictionary for the user type
+
+        SUCCESS CONDITIONS (SC-LA-ADAPT):
+        - SC-LA-ADAPT-1: Returns dict with 'user_type', 'original_answer', 'structure' keys
+        - SC-LA-ADAPT-2: user_type in output matches input user_type.value
+        - SC-LA-ADAPT-3: 'original_answer' key contains unmodified input answer dict
+        - SC-LA-ADAPT-4: 'structure' key contains result of get_answer_structure(user_type)
+        - SC-LA-ADAPT-5: If 'headline' in input, adapted output includes adapted headline
+        - SC-LA-ADAPT-6: If 'mechanism' in input, adapted output includes adapted mechanism
+        - SC-LA-ADAPT-7: If 'evidence' in input, adapted output includes adapted evidence dict
+        - SC-LA-ADAPT-8: If 'scope' in input, adapted output includes adapted scope
+        - SC-LA-ADAPT-9: If 'caveats' in input, adapted output includes adapted caveats list
+        - SC-LA-ADAPT-10: If 'credence' in input, adapted output includes uncertainty formatting
+        - SC-LA-ADAPT-11: If 'citations' in input, adapted output includes formatted citations list
+        - SC-LA-ADAPT-12: Handles all UserType enum values without exception
+        - SC-LA-ADAPT-13: Returns non-empty dict for non-empty input answer
         """
         profile = self.USER_PROFILES.get(user_type, self.USER_PROFILES[UserType.RESEARCHER])
 
@@ -337,6 +352,23 @@ class LanguageAdaptationService:
 
         Returns:
             Adapted belief for the user type
+
+        SUCCESS CONDITIONS (SC-LA-BELIEF):
+        - SC-LA-BELIEF-1: Returns dict with 'content' and 'user_type' keys
+        - SC-LA-BELIEF-2: user_type in output matches input user_type.value
+        - SC-LA-BELIEF-3: 'content' is vocabulary-translated for the user type
+        - SC-LA-BELIEF-4: If 'credence' in input, adapted output includes uncertainty formatting
+        - SC-LA-BELIEF-5: Architect type includes 'design_parameter' if present in input
+        - SC-LA-BELIEF-6: Architect type includes 'measurement_kpi' if present in input
+        - SC-LA-BELIEF-7: Researcher type includes 'effect_size' if present in input
+        - SC-LA-BELIEF-8: Researcher type includes 'confidence_interval' if present in input
+        - SC-LA-BELIEF-9: Researcher type includes 'methodology_notes' if present in input
+        - SC-LA-BELIEF-10: Student type includes 'key_papers' if present in input
+        - SC-LA-BELIEF-11: Student type includes 'learning_path' if present in input
+        - SC-LA-BELIEF-12: Reviewer type includes 'grade_rating' if present in input
+        - SC-LA-BELIEF-13: Reviewer type includes 'study_metadata' if present in input
+        - SC-LA-BELIEF-14: Quick lookup content is truncated to 100 chars with ellipsis
+        - SC-LA-BELIEF-15: Handles all UserType enum values without exception
         """
         profile = self.USER_PROFILES.get(user_type, self.USER_PROFILES[UserType.RESEARCHER])
 
@@ -407,7 +439,21 @@ class LanguageAdaptationService:
         return self._adapt_uncertainty(credence, ci, user_type)
 
     def _adapt_uncertainty(self, credence: float, ci: Tuple[Optional[float], Optional[float]], user_type: UserType) -> str:
-        """Internal uncertainty adaptation."""
+        """
+        Internal uncertainty adaptation.
+
+        SUCCESS CONDITIONS (SC-LA-UNCERTAINTY):
+        - SC-LA-UNCERTAINTY-1: Returns string
+        - SC-LA-UNCERTAINTY-2: Architect: returns '{label} confidence ({percentage}%)' format
+        - SC-LA-UNCERTAINTY-3: Researcher: returns 'credence {:.2f}, 95% CI [lower, upper]' format when CI provided
+        - SC-LA-UNCERTAINTY-4: Researcher: returns 'credence {:.2f}' when CI not provided
+        - SC-LA-UNCERTAINTY-5: Student: returns '{label} — about N out of 10 studies agree' format
+        - SC-LA-UNCERTAINTY-6: Reviewer: returns '{grade_level} certainty (GRADE)' format
+        - SC-LA-UNCERTAINTY-7: Quick lookup: returns '{label} confidence' format
+        - SC-LA-UNCERTAINTY-8: Default: returns 'Credence: {percentage}%' format
+        - SC-LA-UNCERTAINTY-9: Handles credence values 0.0 to 1.0
+        - SC-LA-UNCERTAINTY-10: Handles CI with None values gracefully
+        """
         if user_type == UserType.ARCHITECT:
             # "moderate-high confidence (72%)"
             confidence_label = self._credence_to_label(credence)
@@ -517,7 +563,17 @@ class LanguageAdaptationService:
     # =========================================================================
 
     def _adapt_headline(self, headline: str, user_type: UserType) -> str:
-        """Adapt the headline for the user type."""
+        """
+        Adapt the headline for the user type.
+
+        SUCCESS CONDITIONS (SC-LA-HEADLINE):
+        - SC-LA-HEADLINE-1: Returns string
+        - SC-LA-HEADLINE-2: Quick lookup: truncates to 80 chars with no ellipsis
+        - SC-LA-HEADLINE-3: Architect: prepends 'Design Finding: ' if not already present
+        - SC-LA-HEADLINE-4: Other types: returns headline unchanged
+        - SC-LA-HEADLINE-5: Handles empty string input
+        - SC-LA-HEADLINE-6: Does not modify input parameter
+        """
         if user_type == UserType.QUICK_LOOKUP:
             # Make it even shorter
             return headline[:80] if len(headline) > 80 else headline
@@ -528,7 +584,18 @@ class LanguageAdaptationService:
         return headline
 
     def _adapt_mechanism(self, mechanism: str, user_type: UserType) -> str:
-        """Adapt mechanism explanation."""
+        """
+        Adapt mechanism explanation.
+
+        SUCCESS CONDITIONS (SC-LA-MECHANISM):
+        - SC-LA-MECHANISM-1: Returns string
+        - SC-LA-MECHANISM-2: Quick lookup: truncates to first sentence only
+        - SC-LA-MECHANISM-3: Architect: returns mechanism unchanged
+        - SC-LA-MECHANISM-4: Researcher: returns mechanism unchanged
+        - SC-LA-MECHANISM-5: Other types: returns mechanism unchanged
+        - SC-LA-MECHANISM-6: Handles empty string input
+        - SC-LA-MECHANISM-7: Adds period if first sentence doesn't end with period
+        """
         if user_type == UserType.QUICK_LOOKUP:
             # One sentence
             sentences = mechanism.split('.')
@@ -542,7 +609,20 @@ class LanguageAdaptationService:
         return mechanism
 
     def _adapt_evidence(self, evidence: Dict[str, Any], user_type: UserType) -> Dict[str, Any]:
-        """Adapt evidence presentation."""
+        """
+        Adapt evidence presentation.
+
+        SUCCESS CONDITIONS (SC-LA-EVIDENCE):
+        - SC-LA-EVIDENCE-1: Returns dict (shallow copy of input)
+        - SC-LA-EVIDENCE-2: Architect: sets include_ebd_level=True, include_effect_size_range=True, include_sample_size=True
+        - SC-LA-EVIDENCE-3: Researcher: sets include_cohens_d=True, include_ci=True, include_i_squared=True, include_publication_bias=True
+        - SC-LA-EVIDENCE-4: Student: sets include_study_count=True, include_quality_assessment=True, include_contested=True
+        - SC-LA-EVIDENCE-5: Reviewer: sets include_grade=True, include_raw_effect_sizes=True, export_format='structured'
+        - SC-LA-EVIDENCE-6: Quick lookup: sets include_study_count=True only
+        - SC-LA-EVIDENCE-7: Preserves all original keys from input dict
+        - SC-LA-EVIDENCE-8: Does not modify input parameter
+        - SC-LA-EVIDENCE-9: Handles empty dict input
+        """
         adapted = evidence.copy()
 
         if user_type == UserType.ARCHITECT:
@@ -577,14 +657,35 @@ class LanguageAdaptationService:
         return adapted
 
     def _adapt_scope(self, scope: str, user_type: UserType) -> str:
-        """Adapt scope statement."""
+        """
+        Adapt scope statement.
+
+        SUCCESS CONDITIONS (SC-LA-SCOPE):
+        - SC-LA-SCOPE-1: Returns string
+        - SC-LA-SCOPE-2: Quick lookup: truncates to first sentence only
+        - SC-LA-SCOPE-3: Other types: returns scope unchanged
+        - SC-LA-SCOPE-4: Adds period if first sentence doesn't end with period
+        - SC-LA-SCOPE-5: Handles empty string input
+        """
         if user_type == UserType.QUICK_LOOKUP:
             # One sentence
             return scope.split('.')[0] + "." if scope else ""
         return scope
 
     def _adapt_caveats(self, caveats: List[str], user_type: UserType) -> List[str]:
-        """Adapt caveats."""
+        """
+        Adapt caveats.
+
+        SUCCESS CONDITIONS (SC-LA-CAVEATS):
+        - SC-LA-CAVEATS-1: Returns list
+        - SC-LA-CAVEATS-2: Quick lookup: returns at most 1 caveat
+        - SC-LA-CAVEATS-3: Architect: filters to caveats containing 'apply', 'work', 'context', or 'population'
+        - SC-LA-CAVEATS-4: Architect: returns at most 3 caveats after filtering
+        - SC-LA-CAVEATS-5: Other types: returns at most 3 caveats
+        - SC-LA-CAVEATS-6: Preserves caveat text without modification
+        - SC-LA-CAVEATS-7: Handles empty list input
+        - SC-LA-CAVEATS-8: Returns empty list if no caveats meet filter criteria
+        """
         if user_type == UserType.QUICK_LOOKUP:
             # One caveat
             return caveats[:1] if caveats else []
@@ -594,14 +695,37 @@ class LanguageAdaptationService:
         return caveats[:3]
 
     def _adapt_citations(self, citations: List[Dict[str, Any]], user_type: UserType) -> List[str]:
-        """Adapt citations for the user type."""
+        """
+        Adapt citations for the user type.
+
+        SUCCESS CONDITIONS (SC-LA-CITATIONS):
+        - SC-LA-CITATIONS-1: Returns list of strings
+        - SC-LA-CITATIONS-2: Preserves number of citations (no filtering)
+        - SC-LA-CITATIONS-3: Each citation is formatted via adapt_citation()
+        - SC-LA-CITATIONS-4: Handles empty list input
+        - SC-LA-CITATIONS-5: Handles citations with missing fields
+        """
         formatted = []
         for paper in citations:
             formatted.append(self.adapt_citation(paper, user_type))
         return formatted
 
     def _translate_vocabulary(self, text: str, user_type: UserType) -> str:
-        """Translate technical vocabulary for the user type."""
+        """
+        Translate technical vocabulary for the user type.
+
+        SUCCESS CONDITIONS (SC-LA-VOCAB):
+        - SC-LA-VOCAB-1: Returns string
+        - SC-LA-VOCAB-2: Architect: translates 'Attention Restoration Theory' to 'the design lets your directed attention system recover'
+        - SC-LA-VOCAB-3: Architect: translates 'predictive error minimization' to 'prediction error processing'
+        - SC-LA-VOCAB-4: Architect: translates 'interoceptive signals' to 'internal body signals'
+        - SC-LA-VOCAB-5: Architect: translates 'parasympathetic activation' to 'relaxation response'
+        - SC-LA-VOCAB-6: Student: translates 'ART' to 'Attention Restoration Theory'
+        - SC-LA-VOCAB-7: Student: translates 'SRT' to 'Stress Recovery Theory'
+        - SC-LA-VOCAB-8: Other types: returns text unchanged
+        - SC-LA-VOCAB-9: Handles text with no translations present
+        - SC-LA-VOCAB-10: Preserves case sensitivity
+        """
         translations = {
             UserType.ARCHITECT: {
                 'Attention Restoration Theory': 'the design lets your directed attention system recover',
@@ -622,7 +746,18 @@ class LanguageAdaptationService:
         return text
 
     def _credence_to_label(self, credence: float) -> str:
-        """Convert credence to verbal label."""
+        """
+        Convert credence to verbal label.
+
+        SUCCESS CONDITIONS (SC-LA-LABEL):
+        - SC-LA-LABEL-1: Returns string label
+        - SC-LA-LABEL-2: >= 0.85 returns 'Very high'
+        - SC-LA-LABEL-3: >= 0.70 returns 'High'
+        - SC-LA-LABEL-4: >= 0.55 returns 'Moderate'
+        - SC-LA-LABEL-5: >= 0.40 returns 'Low'
+        - SC-LA-LABEL-6: < 0.40 returns 'Very low'
+        - SC-LA-LABEL-7: Boundary values (0.85, 0.70, 0.55, 0.40) map to expected labels
+        """
         if credence >= 0.85:
             return "Very high"
         elif credence >= 0.70:
@@ -635,7 +770,17 @@ class LanguageAdaptationService:
             return "Very low"
 
     def _credence_to_grade(self, credence: float) -> str:
-        """Convert credence to GRADE certainty level."""
+        """
+        Convert credence to GRADE certainty level.
+
+        SUCCESS CONDITIONS (SC-LA-GRADE):
+        - SC-LA-GRADE-1: Returns string label
+        - SC-LA-GRADE-2: >= 0.80 returns 'High'
+        - SC-LA-GRADE-3: >= 0.60 returns 'Moderate'
+        - SC-LA-GRADE-4: >= 0.40 returns 'Low'
+        - SC-LA-GRADE-5: < 0.40 returns 'Very low'
+        - SC-LA-GRADE-6: Boundary values (0.80, 0.60, 0.40) map to expected GRADE levels
+        """
         if credence >= 0.80:
             return "High"
         elif credence >= 0.60:
@@ -681,6 +826,28 @@ def adapt_content(content: str, user_type: str, topic: str = "") -> Dict[str, An
     Returns:
         Dict with keys: vocabulary, detail_level, uncertainty_language,
                         answer_structure, completeness_criteria
+
+    NOTE: P1 ISSUE — This function returns a metadata dict describing how content
+    should be adapted, NOT the adapted text itself. The actual content transformation
+    is deferred to the AnswerEnrichmentOrchestrator or other services. This is the
+    current behavior and is documented here for testing purposes. The full text
+    adaptation will be implemented in a separate P1 task.
+
+    SUCCESS CONDITIONS (SC-LA-CONTENT):
+    - SC-LA-CONTENT-1: Returns dict (not string)
+    - SC-LA-CONTENT-2: Dict includes 'vocabulary' key with string value
+    - SC-LA-CONTENT-3: Dict includes 'detail_level' key with 'high' or 'medium' value
+    - SC-LA-CONTENT-4: Dict includes 'uncertainty_language' key with string value
+    - SC-LA-CONTENT-5: Dict includes 'answer_structure' key with list value
+    - SC-LA-CONTENT-6: Dict includes 'completeness_criteria' key with list value
+    - SC-LA-CONTENT-7: Dict includes 'actionability' key with float value (0.0-1.0)
+    - SC-LA-CONTENT-8: Dict includes 'user_type_resolved' key with string value
+    - SC-LA-CONTENT-9: Resolves string user_type to valid UserType enum value
+    - SC-LA-CONTENT-10: Unknown user_type defaults to 'researcher'
+    - SC-LA-CONTENT-11: detail_level is 'high' for researcher and reviewer types
+    - SC-LA-CONTENT-12: detail_level is 'medium' for other types
+    - SC-LA-CONTENT-13: Initializes module singleton on first call
+    - SC-LA-CONTENT-14: Returns consistent profile data for same user_type on repeated calls
     """
     global _service_instance
     if _service_instance is None:

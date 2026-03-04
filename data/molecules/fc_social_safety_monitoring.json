@@ -1,0 +1,91 @@
+{
+  "molecule_id": "FC_SOCIAL_SAFETY_MONITORING",
+  "name": "Social Safety Monitoring Circuit",
+  "short_description": "Reads facial expressions, vocal prosody, and social familiarity cues to assess social threat and regulate approach-withdraw behavior.",
+  "components": [
+    {
+      "name": "FACE_VALENCE_READER",
+      "template_ids": [
+        "T_FACE_VALENCE"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Decodes emotional valence and intent from facial expressions"
+    },
+    {
+      "name": "PROSODY_ANALYZER",
+      "template_ids": [
+        "T_PROSODY"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Extracts emotional tone and intent from vocal characteristics"
+    },
+    {
+      "name": "FAMILIARITY_DETECTOR",
+      "template_ids": [
+        "T_SOCIAL_FAMILIAR"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Assesses degree of social familiarity and trust history"
+    },
+    {
+      "name": "SOCIAL_THREAT_INTEGRATOR",
+      "template_ids": [
+        "T_SOCIAL_THREAT_INTEGRATE"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Integrates facial, vocal, and familiarity signals to assess social threat"
+    }
+  ],
+  "constituent_templates": [
+    "T_FACE_VALENCE",
+    "T_PROSODY",
+    "T_SOCIAL_FAMILIAR",
+    "T_SOCIAL_THREAT_INTEGRATE"
+  ],
+  "interaction_graph": {
+    "T_FACE_VALENCE": {
+      "T_PROSODY": "SYNERGISTIC"
+    },
+    "T_PROSODY": {
+      "T_SOCIAL_FAMILIAR": "SYNERGISTIC"
+    },
+    "T_SOCIAL_FAMILIAR": {
+      "T_SOCIAL_THREAT_INTEGRATE": "SYNERGISTIC"
+    }
+  },
+  "framework_ids": [
+    "interoceptive-constructionist-affect"
+  ],
+  "domain": "social",
+  "molecule_type": "FUNCTIONAL_CIRCUIT",
+  "scope_conditions": [
+    "Visual and auditory access to social agent",
+    "Memory of prior social interactions",
+    "Functional face/prosody processing systems"
+  ],
+  "overall_maturity": "TENTATIVE",
+  "key_references": [
+    "Porges, S. W. (2011). The Polyvagal Theory: Neurophysiological foundations of emotions, attachment, communication, and self-regulation. W.W. Norton.",
+    "Adolphs, R. (2002). Neural systems for recognizing emotion. Current Opinion in Neurobiology, 12(2), 169\u2013177."
+  ],
+  "empirical_support": "PRELIMINARY",
+  "competing_theories": [],
+  "design_implications": [
+    "Social environments should facilitate clear nonverbal communication; ensure adequate lighting and acoustic clarity for facial and vocal cue perception",
+    "Familiar, repeated social contexts reduce threat perception; design spaces for familiarity-building (e.g., recurring gathering places with consistent members)"
+  ],
+  "confidence_intervals": null,
+  "parent_t1_5_theory": null,
+  "linked_archetypes": [
+    "CONVERGENT_STATE_MONITORING"
+  ],
+  "inputs": [
+    "facial_expression_valence",
+    "vocal_prosody",
+    "social_familiarity"
+  ],
+  "outputs": [
+    "social_threat_signal",
+    "approach_withdraw_tendency"
+  ]
+}

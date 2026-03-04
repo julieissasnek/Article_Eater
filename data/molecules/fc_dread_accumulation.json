@@ -1,0 +1,91 @@
+{
+  "molecule_id": "FC_DREAD_ACCUMULATION",
+  "name": "Dread/Anxiety Accumulation Circuit",
+  "short_description": "Accumulates threat evidence while discounting available safety cues, weighted by prior threat beliefs, to generate anxiety levels and avoidance threshold signals.",
+  "components": [
+    {
+      "name": "THREAT_EVIDENCE_ACCUM",
+      "template_ids": [
+        "T_THREAT_ACCUM"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Integrates evidence for threat at rate determined by perceptual salience and prior beliefs"
+    },
+    {
+      "name": "SAFETY_CUE_DISCOUNTER",
+      "template_ids": [
+        "T_SAFETY_DISCOUNT"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Reduces threat accumulation based on detected safety cues and reassurance availability"
+    },
+    {
+      "name": "PRIOR_BELIEF_INTEGRATOR",
+      "template_ids": [
+        "T_PRIOR_BELIEF"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Modulates threat accumulation rate based on learned prior threat expectations"
+    },
+    {
+      "name": "AVOIDANCE_THRESHOLD_MONITOR",
+      "template_ids": [
+        "T_AVOID_THRESHOLD"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Detects when anxiety crosses threshold to trigger avoidance behavior"
+    }
+  ],
+  "constituent_templates": [
+    "T_THREAT_ACCUM",
+    "T_SAFETY_DISCOUNT",
+    "T_PRIOR_BELIEF",
+    "T_AVOID_THRESHOLD"
+  ],
+  "interaction_graph": {
+    "T_THREAT_ACCUM": {
+      "T_SAFETY_DISCOUNT": "SYNERGISTIC"
+    },
+    "T_SAFETY_DISCOUNT": {
+      "T_PRIOR_BELIEF": "SYNERGISTIC"
+    },
+    "T_PRIOR_BELIEF": {
+      "T_AVOID_THRESHOLD": "SYNERGISTIC"
+    }
+  },
+  "framework_ids": [
+    "interoceptive-constructionist-affect"
+  ],
+  "domain": "safety",
+  "molecule_type": "FUNCTIONAL_CIRCUIT",
+  "scope_conditions": [
+    "Potential or perceived threat in environment",
+    "Functional fear/anxiety learning systems",
+    "Access to prior threat history"
+  ],
+  "overall_maturity": "TENTATIVE",
+  "key_references": [
+    "Grupe, D. W., & Nitschke, J. B. (2013). Uncertainty and anticipation in anxiety: An integrated neurobiological and psychological perspective. Nature Reviews Neuroscience, 14(7), 488\u2013501.",
+    "Mobbs, D., Headley, D. B., Ding, Y., & Dayan, P. (2015). Space odyssey: Alexander Borovsky's enduring legacy on the study of anxiety. Trends in Cognitive Sciences, 19(12), 732\u2013745."
+  ],
+  "empirical_support": "PRELIMINARY",
+  "competing_theories": [],
+  "design_implications": [
+    "Anxiety-prone individuals underweight safety cues; design threat-vulnerable spaces with visible, explicit safety information (e.g., emergency exits, personnel, communication devices)",
+    "Repeated safe exposure reduces threat accumulation; create graduated exposure opportunities in potentially threatening environments to build safety confidence"
+  ],
+  "confidence_intervals": null,
+  "parent_t1_5_theory": null,
+  "linked_archetypes": [
+    "ACCUMULATION_TO_BOUND"
+  ],
+  "inputs": [
+    "threat_evidence_rate",
+    "safety_cue_availability",
+    "prior_threat_belief"
+  ],
+  "outputs": [
+    "anxiety_level",
+    "avoidance_threshold_signal"
+  ]
+}

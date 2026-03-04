@@ -1,0 +1,20 @@
+{
+  "atom_id": "reward_prediction",
+  "name": "Reward Prediction",
+  "description": "Dopaminergic coding of reward prediction errors: midbrain dopamine neurons signal the difference between expected and actual reward. Drives learning of stimulus-reward and action-reward associations. Extends beyond reward to uncertainty and salience.",
+  "maturity": "ESTABLISHED",
+  "neural_substrate": ["VTA", "SNc", "dorsal_striatum"],
+  "computational_signature": "DA_firing = reward_received - reward_expected",
+  "t1_frameworks": ["reinforcement-learning", "motivation"],
+  "key_references": [
+    "Schultz, W., Dayan, P., & Montague, P. R. (1997). A neural substrate of prediction and reward. Science, 275(5306), 1593-1599.",
+    "Watkins, C. J. (1989). Learning with Delayed Rewards. PhD Dissertation, Cambridge University."
+  ],
+  "empirical_evidence": "Well-characterized in primate electrophysiology (Schultz). Single-unit recordings show phasic dopamine bursts to unexpected rewards and reward omissions. Learning rate correlates with dopamine signaling. Striatal dopamine receptors critical for reinforcement learning. Debate: does DA signal scalar reward or vector value?",
+  "cross_domain_confirmed": false,
+  "parameters": {
+    "dopamine_latency": "100-200 ms from reward",
+    "temporal_discounting": "incorporated into value estimates",
+    "learning_rate": "scales with DA signal magnitude"
+  }
+}

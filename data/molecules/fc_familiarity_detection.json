@@ -1,0 +1,91 @@
+{
+  "molecule_id": "FC_FAMILIARITY_DETECTION",
+  "name": "Familiarity Detection Circuit",
+  "short_description": "Accumulates evidence from perceptual fluency, schema matching strength, and exposure count to generate familiarity signals and recognition threshold transitions.",
+  "components": [
+    {
+      "name": "EVIDENCE_ACCUMULATOR",
+      "template_ids": [
+        "T_EVIDENCE_ACCUM"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Integrates multiple sources of fluency and schema consistency evidence toward familiarity threshold"
+    },
+    {
+      "name": "EXPOSURE_TRACKER",
+      "template_ids": [
+        "T_EXPOSURE_TRACK"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Monitors cumulative exposure count and decay over time"
+    },
+    {
+      "name": "THRESHOLD_MONITOR",
+      "template_ids": [
+        "T_THRESHOLD_MON"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Detects when accumulated evidence reaches recognition threshold"
+    },
+    {
+      "name": "FAMILIARITY_SIGNAL_GEN",
+      "template_ids": [
+        "T_FAMILIARITY_GEN"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Generates graded familiarity signal based on evidence level"
+    }
+  ],
+  "constituent_templates": [
+    "T_EVIDENCE_ACCUM",
+    "T_EXPOSURE_TRACK",
+    "T_THRESHOLD_MON",
+    "T_FAMILIARITY_GEN"
+  ],
+  "interaction_graph": {
+    "T_EVIDENCE_ACCUM": {
+      "T_EXPOSURE_TRACK": "SYNERGISTIC"
+    },
+    "T_EXPOSURE_TRACK": {
+      "T_THRESHOLD_MON": "SYNERGISTIC"
+    },
+    "T_THRESHOLD_MON": {
+      "T_FAMILIARITY_GEN": "SYNERGISTIC"
+    }
+  },
+  "framework_ids": [
+    "predictive-processing"
+  ],
+  "domain": "perception",
+  "molecule_type": "FUNCTIONAL_CIRCUIT",
+  "scope_conditions": [
+    "Repeated or prolonged sensory exposure",
+    "Functional memory encoding systems",
+    "Access to prior exposure history"
+  ],
+  "overall_maturity": "TENTATIVE",
+  "key_references": [
+    "Jacoby, L. L., & Dallas, M. (1981). On the relationship between autobiographical memory and perceptual learning. Journal of Experimental Psychology: General, 110(3), 306\u2013340.",
+    "Whittlesea, B. W. (1993). Illusions of familiarity. Journal of Experimental Psychology: Learning, Memory, and Cognition, 19(6), 1235\u20131253."
+  ],
+  "empirical_support": "PRELIMINARY",
+  "competing_theories": [],
+  "design_implications": [
+    "Repeated environmental exposure increases familiarity and comfort; design spaces for habitual use with consistent landmarks and spatial organization to facilitate fluency",
+    "Wayfinding systems benefit from gradual familiarization; provide redundant cues early in visitor journeys and reduce signage once spatial schemas are established"
+  ],
+  "confidence_intervals": null,
+  "parent_t1_5_theory": null,
+  "linked_archetypes": [
+    "ACCUMULATION_TO_BOUND"
+  ],
+  "inputs": [
+    "perceptual_fluency",
+    "schema_match_strength",
+    "exposure_count"
+  ],
+  "outputs": [
+    "familiarity_signal",
+    "recognition_threshold_reached"
+  ]
+}

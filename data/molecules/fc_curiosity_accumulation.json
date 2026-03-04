@@ -1,0 +1,91 @@
+{
+  "molecule_id": "FC_CURIOSITY_ACCUMULATION",
+  "name": "Interest/Curiosity Accumulation Circuit",
+  "short_description": "Accumulates information gap evidence and novelty signals, weighted by perceived competence to resolve gaps, generating curiosity levels and exploration thresholds.",
+  "components": [
+    {
+      "name": "INFO_GAP_DETECTOR",
+      "template_ids": [
+        "T_INFO_GAP"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Detects discrepancies between current knowledge and environmental information"
+    },
+    {
+      "name": "NOVELTY_ACCUMULATOR",
+      "template_ids": [
+        "T_NOVELTY_ACCUM"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Accumulates novelty signal over time and stimulus exposure"
+    },
+    {
+      "name": "COMPETENCE_ESTIMATOR",
+      "template_ids": [
+        "T_COMPETENCE_EST"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Assesses ability to understand or explore information gap (threshold effect)"
+    },
+    {
+      "name": "EXPLORE_THRESHOLD_GEN",
+      "template_ids": [
+        "T_EXPLORE_THRESHOLD"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Generates curiosity signal and detects exploration threshold crossing"
+    }
+  ],
+  "constituent_templates": [
+    "T_INFO_GAP",
+    "T_NOVELTY_ACCUM",
+    "T_COMPETENCE_EST",
+    "T_EXPLORE_THRESHOLD"
+  ],
+  "interaction_graph": {
+    "T_INFO_GAP": {
+      "T_NOVELTY_ACCUM": "SYNERGISTIC"
+    },
+    "T_NOVELTY_ACCUM": {
+      "T_COMPETENCE_EST": "SYNERGISTIC"
+    },
+    "T_COMPETENCE_EST": {
+      "T_EXPLORE_THRESHOLD": "SYNERGISTIC"
+    }
+  },
+  "framework_ids": [
+    "predictive-processing"
+  ],
+  "domain": "cognition",
+  "molecule_type": "FUNCTIONAL_CIRCUIT",
+  "scope_conditions": [
+    "Presence of information gaps in environment",
+    "Functional learning systems",
+    "Self-efficacy assessment mechanisms"
+  ],
+  "overall_maturity": "TENTATIVE",
+  "key_references": [
+    "Loewenstein, G. (1994). The psychology of curiosity: A review and reinterpretation. Psychological Bulletin, 116(1), 75\u201398.",
+    "Kidd, C., & Hayden, B. Y. (2015). The psychology and neuroscience of curiosity. Neuron, 88(3), 449\u2013460."
+  ],
+  "empirical_support": "PRELIMINARY",
+  "competing_theories": [],
+  "design_implications": [
+    "Moderate information gaps optimize curiosity; design educational environments with partial cues, progressive reveals, and scaffolded complexity to maintain interest",
+    "Self-efficacy modulates exploration; ensure environments provide evidence of competence, attainable challenges, and clear pathways for knowledge acquisition"
+  ],
+  "confidence_intervals": null,
+  "parent_t1_5_theory": null,
+  "linked_archetypes": [
+    "ACCUMULATION_TO_BOUND"
+  ],
+  "inputs": [
+    "information_gap_size",
+    "novelty_signal",
+    "competence_estimate"
+  ],
+  "outputs": [
+    "curiosity_level",
+    "exploration_threshold_signal"
+  ]
+}

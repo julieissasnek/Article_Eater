@@ -48,6 +48,7 @@ from __future__ import annotations
 import argparse
 import json
 import logging
+import os
 import subprocess
 import sys
 import time
@@ -128,6 +129,71 @@ class NightlyPipeline:
             "returncode": result.returncode,
             "stdout": result.stdout[-500:] if result.stdout else "",
             "stderr": result.stderr[-500:] if result.stderr else "",
+        }
+
+    # =========================================================================
+    # STAGE 0.5: DATABASE HEALTH CHECK (MT-18)
+    # =========================================================================
+
+    def stage_db_health(self) -> Dict[str, Any]:
+        """
+        Run database health checks before any data operations.
+
+        Calls scripts/check_db_health.py with --json output and logs results
+        to overseer_health_metrics. This catches DB path confusion, missing
+        tables, shadowing DBs, and other infrastructure issues early.
+
+        SUCCESS CONDITIONS (from check_db_health.py):
+        SC-DB-1: db_locator returns existing file
+        SC-DB-2: beliefs table exists in canonical DB
+        SC-DB-3: beliefs table has >0 rows
+        SC-DB-4: Required columns exist in beliefs table
+        SC-DB-5: No shadowing DBs (root ae.db vs data/)
+        SC-DB-6: Overseer uses same DB as db_locator
+        SC-DB-7: template_ids coverage >= threshold
+        SC-DB-8: Migration 023 applied to overseer.db
+        SC-DB-9: Foreign key integrity (beliefs.web_id)
+        SC-DB-10: Theory orphan rate below threshold
+
+        Non-critical: warnings don't block pipeline, but failures are logged.
+        """
+        script = PROJECT_ROOT / "scripts" / "check_db_health.py"
+        if not script.exists():
+            return {"skipped": True, "reason": "check_db_health.py not found"}
+
+        result = subprocess.run(
+            [sys.executable, str(script), "--json"],
+            capture_output=True, text=True, cwd=str(PROJECT_ROOT),
+            timeout=60,
+        )
+
+        # Parse JSON output
+        health_report = {}
+        if result.returncode == 0 and result.stdout:
+            try:
+                health_report = json.loads(result.stdout)
+            except json.JSONDecodeError:
+                health_report = {"parse_error": True, "raw": result.stdout[:500]}
+
+        # Log summary for pipeline report
+        if health_report and not health_report.get("parse_error"):
+            passed = health_report.get("passed", 0)
+            failed = health_report.get("failed", 0)
+            warnings = health_report.get("warnings", 0)
+            logger.info(f"DB Health: {passed} passed, {failed} failed, {warnings} warnings")
+            if failed > 0:
+                # Log which checks failed
+                for check in health_report.get("results", []):
+                    if not check.get("passed") and check.get("severity") == "ERROR":
+                        logger.warning(f"  FAILED: {check.get('sc_id')} - {check.get('message')}")
+
+        return {
+            "returncode": result.returncode,
+            "overall_healthy": health_report.get("overall_healthy", False),
+            "passed": health_report.get("passed", 0),
+            "failed": health_report.get("failed", 0),
+            "warnings": health_report.get("warnings", 0),
+            "details": health_report.get("results", []),
         }
 
     # =========================================================================
@@ -415,6 +481,119 @@ class NightlyPipeline:
         }
 
     # =========================================================================
+    # STAGE 6.5: MATERIALIZED VIEW REBUILD (P1 fix: was never wired in)
+    # =========================================================================
+
+    def stage_mv_rebuild(self) -> Dict[str, Any]:
+        """
+        Incrementally rebuild STALE materialized views.
+
+        The IncrementalUpdater marks views STALE when new extractions arrive.
+        This stage calls MaterializedViewBuilder.build_all(incremental=True)
+        to rebuild only what changed. Safe (no LLM calls), fast (~30s).
+
+        SUCCESS CONDITIONS:
+        SC-MV-1: All STALE views get rebuilt to FRESH
+        SC-MV-2: Incremental=True skips already-FRESH views
+        SC-MV-3: Build manifest written to data/materialized_views/_build_manifest.json
+        SC-MV-4: On failure, pipeline continues (non-critical)
+        """
+        try:
+            from src.qa.mv_builder import MaterializedViewBuilder
+            from src.qa.incremental_updater import IncrementalUpdater
+
+            builder = MaterializedViewBuilder(
+                extractions_dir=str(DATA_DIR / "extractions"),
+                output_dir=str(DATA_DIR / "materialized_views"),
+            )
+
+            # Check pending updates from IncrementalUpdater
+            updater = IncrementalUpdater(
+                extractions_dir=str(DATA_DIR / "extractions"),
+                mv_dir=str(DATA_DIR / "materialized_views"),
+            )
+            pending = updater.get_pending_updates()
+
+            # Build all (incremental = only rebuild STALE)
+            start = time.time()
+            stats = builder.build_all(incremental=True)
+            elapsed = time.time() - start
+
+            # Clear pending updates after successful rebuild
+            n_rebuilt = sum(
+                1 for v in stats.values()
+                if isinstance(v, dict) and v.get("status") == "BUILT"
+            )
+            if n_rebuilt > 0:
+                updater.clear_pending()
+
+            logger.info(
+                f"MV rebuild: {n_rebuilt} views rebuilt, "
+                f"{len(stats) - n_rebuilt} skipped (FRESH), "
+                f"{elapsed:.1f}s total"
+            )
+
+            return {
+                "views_rebuilt": n_rebuilt,
+                "views_skipped": len(stats) - n_rebuilt,
+                "pending_clusters_before": len(pending),
+                "pending_cleared": n_rebuilt > 0,
+                "elapsed_s": round(elapsed, 1),
+                "details": stats,
+            }
+        except ImportError as e:
+            logger.warning(f"MV builder not available: {e}")
+            return {"skipped": True, "reason": f"import error: {e}"}
+        except Exception as e:
+            logger.warning(f"MV rebuild failed (non-critical): {e}")
+            return {"error": str(e)}
+
+    # =========================================================================
+    # STAGE 6.6: MOLECULE QA PRECOMPUTE (P1 fix: was never wired in)
+    # =========================================================================
+
+    def stage_precompute(self) -> Dict[str, Any]:
+        """
+        Precompute L1/L2/L3 progressive disclosure summaries for molecules.
+
+        Uses MolecularQAPrecomputer to check which molecule caches are STALE
+        and regenerate summaries via LLM. Requires GEMINI_API_KEY.
+
+        Non-critical: failures here don't block the rest.
+        Skips gracefully if API key is not set.
+        """
+        api_key = os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY")
+        if not api_key:
+            logger.info("Precompute skipped: no GEMINI_API_KEY set")
+            return {"skipped": True, "reason": "no API key"}
+
+        try:
+            from src.qa.precompute_pipeline import MolecularQAPrecomputer
+
+            precomputer = MolecularQAPrecomputer(
+                molecule_dir=str(DATA_DIR / "molecules"),
+                cache_dir=str(DATA_DIR / "qa_cache"),
+            )
+
+            start = time.time()
+            precomputer.compute_all(force_recompute=False)
+            elapsed = time.time() - start
+
+            return {
+                "molecules_loaded": len(precomputer.molecules),
+                "elapsed_s": round(elapsed, 1),
+            }
+        except ImportError as e:
+            logger.warning(f"Precompute pipeline not available: {e}")
+            return {"skipped": True, "reason": f"import error: {e}"}
+        except ValueError as e:
+            # API key validation error
+            return {"skipped": True, "reason": str(e)}
+        except Exception as e:
+            logger.warning(f"Precompute failed (non-critical): {e}")
+            return {"error": str(e)}
+
+    # =========================================================================
     # STAGE 7: HEALTH CHECK GAUNTLET
     # =========================================================================
 
@@ -442,6 +621,30 @@ class NightlyPipeline:
                 results[name] = {
                     "returncode": result.returncode,
                     "stdout": result.stdout[-500:] if result.stdout else "",
+                }
+            except subprocess.TimeoutExpired:
+                results[name] = {"error": "timeout"}
+
+        # Pytest health suites — reachability + functional integration
+        test_suites = [
+            ("reachability_audit", "tests/test_reachability_audit.py"),
+            ("functional_integration", "tests/test_functional_integration.py"),
+        ]
+        for name, test_path in test_suites:
+            test_file = PROJECT_ROOT / test_path
+            if not test_file.exists():
+                results[name] = {"skipped": True}
+                continue
+            try:
+                result = subprocess.run(
+                    [sys.executable, "-m", "pytest", str(test_file),
+                     "--tb=line", "-q"],
+                    capture_output=True, text=True, cwd=str(PROJECT_ROOT),
+                    timeout=120,
+                )
+                results[name] = {
+                    "returncode": result.returncode,
+                    "summary": result.stdout.strip().split("\n")[-1] if result.stdout else "",
                 }
             except subprocess.TimeoutExpired:
                 results[name] = {"error": "timeout"}
@@ -936,6 +1139,7 @@ class NightlyPipeline:
 
         all_stages = [
             ("backup", self.stage_backup),
+            ("db_health", self.stage_db_health),  # MT-18: DB health check before data ops
             ("discovery", self.stage_discovery),
             ("triage", self.stage_triage),
             ("extraction", self.stage_extraction),
@@ -943,6 +1147,8 @@ class NightlyPipeline:
             ("auto_approve", self.stage_auto_approve),
             ("integrate", self.stage_integrate),
             ("web_health", self.stage_web_health),
+            ("mv_rebuild", self.stage_mv_rebuild),         # P1 fix: was disconnected
+            ("precompute", self.stage_precompute),           # P1 fix: was disconnected
             ("health_check", self.stage_health_check),
             ("warrant_monitoring", self._stage_warrant_monitoring),
             ("overseer_coverage", self.stage_overseer_coverage),

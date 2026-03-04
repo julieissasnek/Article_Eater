@@ -1,0 +1,91 @@
+{
+  "molecule_id": "FC_COGNITIVE_LOAD_REG",
+  "name": "Cognitive Load Regulation Circuit",
+  "short_description": "Monitors working memory load against task demands and environmental distraction to regulate attention allocation and prevent cognitive overload.",
+  "components": [
+    {
+      "name": "WM_LOAD_MONITOR",
+      "template_ids": [
+        "T_WM_LOAD"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Tracks active working memory load and capacity utilization"
+    },
+    {
+      "name": "DEMAND_ESTIMATOR",
+      "template_ids": [
+        "T_DEMAND_EST"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Estimates cognitive demands of current task"
+    },
+    {
+      "name": "DISTRACTION_DETECTOR",
+      "template_ids": [
+        "T_DISTRACTION_DETECT"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Quantifies environmental and internal sources of attention capture"
+    },
+    {
+      "name": "ALLOCATION_CONTROLLER",
+      "template_ids": [
+        "T_ALLOC_CONTROL"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Adjusts attention allocation and task-switching to match WM capacity"
+    }
+  ],
+  "constituent_templates": [
+    "T_WM_LOAD",
+    "T_DEMAND_EST",
+    "T_DISTRACTION_DETECT",
+    "T_ALLOC_CONTROL"
+  ],
+  "interaction_graph": {
+    "T_WM_LOAD": {
+      "T_DEMAND_EST": "SYNERGISTIC"
+    },
+    "T_DEMAND_EST": {
+      "T_DISTRACTION_DETECT": "SYNERGISTIC"
+    },
+    "T_DISTRACTION_DETECT": {
+      "T_ALLOC_CONTROL": "SYNERGISTIC"
+    }
+  },
+  "framework_ids": [
+    "predictive-processing"
+  ],
+  "domain": "cognition",
+  "molecule_type": "FUNCTIONAL_CIRCUIT",
+  "scope_conditions": [
+    "Active cognitive task engagement",
+    "Access to task demands information",
+    "Functional attentional control systems"
+  ],
+  "overall_maturity": "TENTATIVE",
+  "key_references": [
+    "Sweller, J. (1988). Cognitive load during problem solving: Effects on learning. Cognitive Science, 12(2), 257\u2013285.",
+    "Lavie, N. (2005). Distracted and confused?: Selective attention under load. Trends in Cognitive Sciences, 9(2), 75\u201382."
+  ],
+  "empirical_support": "PRELIMINARY",
+  "competing_theories": [],
+  "design_implications": [
+    "Reduce extraneous cognitive load in high-demand tasks; minimize visual clutter, simplify navigation, and eliminate unnecessary information from task environments",
+    "Design for variable load: provide information chunking and progressive disclosure for complex tasks; allow breaks and context-switching points to restore WM capacity"
+  ],
+  "confidence_intervals": null,
+  "parent_t1_5_theory": "COGNITIVE_LOAD_ARCHITECTURE",
+  "linked_archetypes": [
+    "HOMEOSTATIC_REGULATION"
+  ],
+  "inputs": [
+    "working_memory_load",
+    "task_demands",
+    "environmental_distraction"
+  ],
+  "outputs": [
+    "load_discrepancy",
+    "attention_allocation_signal"
+  ]
+}

@@ -193,6 +193,7 @@ class MaterializedViewBuilder:
                 compute_omega_rep,
                 compute_omega_meta,
                 DesignType,
+                PublicationType,
             )
         except ImportError:
             logger.warning("warrant_strength not available, using defaults")
@@ -214,17 +215,28 @@ class MaterializedViewBuilder:
                 study_design = data.get("study_design", "observational")
 
                 # Map study design to DesignType enum
+                # P1 fix: DesignType.RCT doesn't exist — it's STANDARD_RCT
                 design_map = {
-                    "experiment": DesignType.RCT,
-                    "rct": DesignType.RCT,
+                    "experiment": DesignType.STANDARD_RCT,
+                    "experimental": DesignType.STANDARD_RCT,
+                    "rct": DesignType.STANDARD_RCT,
+                    "randomized_controlled_trial": DesignType.STANDARD_RCT,
                     "survey": DesignType.OBSERVATIONAL,
                     "observational": DesignType.OBSERVATIONAL,
+                    "cross_sectional": DesignType.OBSERVATIONAL,
+                    "correlational": DesignType.OBSERVATIONAL,
+                    "longitudinal": DesignType.OBSERVATIONAL,
                     "field_study": DesignType.QUASI_EXPERIMENTAL,
                     "quasi_experimental": DesignType.QUASI_EXPERIMENTAL,
+                    "within_subjects": DesignType.WITHIN_SUBJECTS,
+                    "repeated_measures": DesignType.WITHIN_SUBJECTS,
                     "case_study": DesignType.CASE_STUDY,
                     "meta_analysis": DesignType.META_ANALYSIS,
+                    "systematic_review": DesignType.SYSTEMATIC_REVIEW,
+                    "review": DesignType.SYSTEMATIC_REVIEW,
                 }
-                design_enum = design_map.get(study_design, DesignType.OBSERVATIONAL)
+                normalized_design = str(study_design).lower().strip().replace("-", "_").replace(" ", "_")
+                design_enum = design_map.get(normalized_design, DesignType.OBSERVATIONAL)
 
                 file_scores = []
                 for finding in findings:
@@ -235,24 +247,27 @@ class MaterializedViewBuilder:
                         except (ValueError, TypeError):
                             sample_size = 50
 
+                    # P1 fix: blinding param is `blinded: bool`, not `blinding: str`
+                    # P1 fix: self_report param is `self_report_only: bool`
                     omega_sev = compute_omega_sev(
                         design_type=design_enum,
                         sample_size=sample_size,
                         pre_registered=False,
-                        blinding="none",
-                        self_report=finding.get("measure_type") == "self_report",
+                        blinded=False,
+                        self_report_only=finding.get("measure_type") == "self_report",
                     )
                     omega_conf = compute_omega_conf(
                         n_uncontrolled_confounds=2,
-                        has_randomization=design_enum == DesignType.RCT,
+                        has_randomization=design_enum in (DesignType.STANDARD_RCT, DesignType.LARGE_RCT),
                         has_active_control=False,
                     )
                     omega_rep = compute_omega_rep(
                         n_independent_replications=0,
                         n_conceptual_replications=0,
                     )
+                    # P1 fix: publication_type expects PublicationType enum, not string
                     omega_meta = compute_omega_meta(
-                        publication_type="peer_reviewed",
+                        publication_type=PublicationType.PEER_REVIEWED,
                         is_pre_registered=False,
                     )
 
@@ -405,29 +420,156 @@ class MaterializedViewBuilder:
 
     def build_framework_voices(self) -> Dict[str, Any]:
         """
-        Pre-compute framework voice perspectives per theory link.
+        Pre-compute framework voice data from the actual extraction corpus.
 
-        Uses the same FRAMEWORK_VOICES data that IntegratedQueryService uses,
-        but pre-renders it for each theory so query-time is a simple lookup.
+        For each T1 framework, scans all extraction JSONs and groups findings
+        by matching theory_links and theory_commitments against the framework's
+        canonical aliases (from tier1_frameworks.json).
+
+        Output per framework:
+            - n_papers: int
+            - n_findings: int
+            - top_findings: List[Dict] (up to 5, sorted by effect size)
+            - mechanism_chains: List[str] (unique mechanisms found)
+            - study_designs: Dict[str, int] (design type counts)
+            - scope_conditions: List[str] (unique scope conditions)
+            - source: "corpus_grounded"
         """
-        try:
-            from src.services.integrated_query_service import FRAMEWORK_VOICES
-        except ImportError:
-            logger.warning("FRAMEWORK_VOICES not available")
-            return {"error": "FRAMEWORK_VOICES not importable"}
+        # Load canonical T1 frameworks with alias lists
+        t1_path = Path("schemas/theory/tier1_frameworks.json")
+        if not t1_path.exists():
+            # Try relative to project root
+            t1_path = Path(__file__).parent.parent.parent / "schemas" / "theory" / "tier1_frameworks.json"
 
-        # FRAMEWORK_VOICES is a dict of {framework_name: {perspective, ...}}
+        frameworks = {}
+        if t1_path.exists():
+            try:
+                with open(t1_path) as f:
+                    t1_data = json.load(f)
+                for fw_key, fw_data in t1_data.get("frameworks", {}).items():
+                    abbr = fw_data.get("abbreviation", fw_key.upper())
+                    aliases = set(a.upper() for a in fw_data.get("aliases", []))
+                    aliases.add(abbr.upper())
+                    aliases.add(fw_data.get("name", "").upper())
+                    frameworks[abbr] = {
+                        "name": fw_data.get("name", fw_key),
+                        "abbreviation": abbr,
+                        "aliases": aliases,
+                        "core_mechanism": fw_data.get("core_mechanism", ""),
+                        "key_principle": fw_data.get("key_principle", ""),
+                        "papers": set(),
+                        "findings": [],
+                        "mechanism_chains": set(),
+                        "study_designs": {},
+                        "scope_conditions": set(),
+                    }
+            except Exception as e:
+                logger.warning(f"Failed to load tier1_frameworks.json: {e}")
+
+        if not frameworks:
+            logger.warning("No T1 frameworks loaded — returning empty voices")
+            return {"error": "tier1_frameworks.json not loadable", "source": "none"}
+
+        # Scan all extraction files
+        for json_file in self._extractions_dir.glob("*.json"):
+            try:
+                with open(json_file) as f:
+                    data = json.load(f)
+
+                # Article-level theory commitments
+                article_commitments = set()
+                for tc in data.get("theory_commitments", []):
+                    if isinstance(tc, str):
+                        article_commitments.add(tc.upper())
+                    elif isinstance(tc, dict):
+                        article_commitments.add(tc.get("theory", "").upper())
+
+                study_design = data.get("study_design", data.get("article_type", "unknown"))
+                title = data.get("title", json_file.stem)[:150]
+
+                findings = data.get("findings", [])
+                for finding in findings:
+                    # Collect theory links from this finding
+                    finding_theories = set()
+                    for tl in finding.get("theory_links", []):
+                        if isinstance(tl, str):
+                            finding_theories.add(tl.upper())
+                        elif isinstance(tl, dict):
+                            finding_theories.add(tl.get("theory", "").upper())
+
+                    # Combine with article-level commitments
+                    all_theories = finding_theories | article_commitments
+
+                    # Match against each framework's aliases
+                    for abbr, fw in frameworks.items():
+                        if all_theories & fw["aliases"]:
+                            fw["papers"].add(json_file.name)
+
+                            # Build finding entry
+                            effect_size = finding.get("effect_size")
+                            if isinstance(effect_size, str):
+                                try:
+                                    effect_size = float(effect_size.replace("d=", "").replace("r=", "").strip())
+                                except (ValueError, AttributeError):
+                                    effect_size = None
+
+                            fw["findings"].append({
+                                "antecedent": finding.get("antecedent", "")[:100],
+                                "consequent": finding.get("consequent", "")[:100],
+                                "direction": finding.get("direction", ""),
+                                "effect_size": effect_size,
+                                "p_value": finding.get("p_value"),
+                                "sample_size": finding.get("sample_size") or data.get("n_participants"),
+                                "source_file": json_file.name,
+                                "title": title,
+                            })
+
+                            # Mechanism chains
+                            for mc in finding.get("mechanism_chain", []):
+                                if isinstance(mc, str) and mc.strip():
+                                    fw["mechanism_chains"].add(mc.strip()[:120])
+
+                            # Scope conditions
+                            for sc in finding.get("scope_conditions", []):
+                                if isinstance(sc, str) and sc.strip():
+                                    fw["scope_conditions"].add(sc.strip()[:120])
+
+                            # Study design counts
+                            design_key = str(study_design).lower().replace(" ", "_")
+                            fw["study_designs"][design_key] = fw["study_designs"].get(design_key, 0) + 1
+
+            except Exception as e:
+                logger.debug(f"Skipping {json_file.name}: {e}")
+
+        # Build output: sort findings by effect size, truncate
         voices = {}
-        for framework_name, details in FRAMEWORK_VOICES.items():
-            voices[framework_name] = {
-                "framework": framework_name,
-                "perspective": details.get("perspective", ""),
-                "key_figures": details.get("key_figures", []),
-                "core_claim": details.get("core_claim", ""),
-                "typical_questions": details.get("typical_questions", []),
-                "complications": details.get("complications", []),
+        for abbr, fw in frameworks.items():
+            sorted_findings = sorted(
+                fw["findings"],
+                key=lambda f: abs(f["effect_size"]) if f["effect_size"] is not None else 0,
+                reverse=True,
+            )
+
+            voices[abbr] = {
+                "framework": abbr,
+                "name": fw["name"],
+                "core_mechanism": fw["core_mechanism"],
+                "key_principle": fw["key_principle"],
+                "n_papers": len(fw["papers"]),
+                "n_findings": len(fw["findings"]),
+                "top_findings": sorted_findings[:5],
+                "mechanism_chains": sorted(fw["mechanism_chains"])[:10],
+                "study_designs": fw["study_designs"],
+                "scope_conditions": sorted(fw["scope_conditions"])[:10],
+                "source": "corpus_grounded",
             }
 
+        total_papers = sum(v["n_papers"] for v in voices.values())
+        total_findings = sum(v["n_findings"] for v in voices.values())
+        logger.info(
+            f"Built corpus-grounded framework voices: {len(voices)} frameworks, "
+            f"{total_papers} paper-framework links, {total_findings} finding-framework links"
+        )
         return voices
 
     # ------------------------------------------------------------------

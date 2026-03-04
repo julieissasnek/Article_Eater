@@ -92,13 +92,38 @@ class MoleculeAwareRouter:
 
     def _classify_question(self, question: str) -> ClassifiedQuestion:
         """
-        Simple keyword-based classifier for MVP. 
-        In production, this would use an LLM or regex (like qa_handlers.py)
-        to map natural language to exact Node IDs.
+        Keyword-based classifier with T2 archetype and functional circuit awareness.
+        
+        Routes:
+        - Molecule name/ID match → "molecule"
+        - T2 archetype name match → "archetype" (new)
+        - Functional circuit / mechanism type query → "molecule_type" (new)
+        - Component name match → "component"
+        - Fallback → "design_synthesis"
         """
         lower_q = question.lower()
-        
-        # Check for explicit molecule mentions
+
+        # T2 archetype keywords (e.g. "what uses predictive coding?")
+        _archetype_aliases = {
+            "predictive_coding": ["predictive coding", "prediction error", "bayesian brain", "free energy"],
+            "homeostatic_regulation": ["homeostatic", "homeostasis", "set point", "regulatory"],
+            "accumulation_to_bound": ["accumulation to bound", "drift diffusion", "evidence accumulation", "threshold"],
+            "competitive_selection": ["competitive selection", "winner take all", "lateral inhibition", "competition"],
+            "gated_propagation": ["gated propagation", "gating", "thalamic gate", "gain control"],
+            "convergent_state_monitoring": ["convergent state", "state monitoring", "fluency monitor", "coherence monitor"],
+        }
+        for archetype_key, aliases in _archetype_aliases.items():
+            for alias in aliases:
+                if alias in lower_q:
+                    return ClassifiedQuestion(
+                        question, "archetype",
+                        target_id=archetype_key.upper(),
+                        requested_depth=3,
+                    )
+
+        # --- Priority 2: Explicit molecule name matches (specific > generic) ---
+        # Must come BEFORE type keywords, because "Attention Restoration Theory"
+        # contains "theor" which would incorrectly match the THEORY type listing.
         for mol_id, mol in self.molecule_registry.items():
             if mol.name.lower() in lower_q or mol_id.lower() in lower_q:
                 
@@ -110,6 +135,24 @@ class MoleculeAwareRouter:
                 # Default to whole molecule
                 depth = 3 if "how" in lower_q or "mechanism" in lower_q else 2
                 return ClassifiedQuestion(question, "molecule", mol_id, requested_depth=depth)
+
+        # --- Priority 3: Molecule type listing (generic) ---
+        # Only fires if no specific molecule name matched first.
+        _type_keywords = {
+            "FUNCTIONAL_CIRCUIT": ["functional circuit", "functional circuits"],
+            "MECHANISM": ["mechanism", "mechanisms"],
+            "THEORY": ["theor"],
+            "PHENOMENON": ["phenomen"],
+            "DESIGN_PATTERN": ["design pattern"],
+        }
+        for mol_type, keywords in _type_keywords.items():
+            for kw in keywords:
+                if kw in lower_q and any(w in lower_q for w in ["what", "list", "show", "which", "all"]):
+                    return ClassifiedQuestion(
+                        question, "molecule_type",
+                        target_id=mol_type,
+                        requested_depth=2,
+                    )
                 
         # Fallback to Design Synthesis
         return ClassifiedQuestion(question, "design_synthesis")
@@ -127,9 +170,72 @@ class MoleculeAwareRouter:
         depth = requested_depth or classified.requested_depth
         
         response = None
-        
+
+        # 0a. Archetype Query (list molecules using a specific T2 archetype)
+        if classified.target_type == "archetype" and classified.target_id:
+            archetype_name = classified.target_id
+            matching = [
+                mol for mol in self.molecule_registry.values()
+                if archetype_name in mol.linked_archetypes
+            ]
+
+            # Load precomputed archetype card if available (MT-18 / archetype card routing)
+            archetype_card = None
+            card_path = self.cache_dir / f"ARCHETYPE_{archetype_name}_QA.json"
+            if card_path.exists():
+                try:
+                    archetype_card = json.loads(card_path.read_text(encoding="utf-8"))
+                except Exception:
+                    pass  # Graceful degradation if card parse fails
+
+            response = {
+                "topic": f"T2 Archetype: {archetype_name}",
+                "query_type": "archetype_lookup",
+                "archetype": archetype_name,
+                "archetype_card": archetype_card,  # Include full card if available
+                "n_molecules": len(matching),
+                "molecules": [
+                    {
+                        "molecule_id": m.molecule_id,
+                        "name": m.name,
+                        "molecule_type": m.molecule_type,
+                        "short_description": m.short_description,
+                        "domain": m.domain,
+                        "empirical_support": m.empirical_support,
+                    }
+                    for m in matching
+                ],
+                "status": "OK" if matching else "NO_MATCHES",
+            }
+
+        # 0b. Molecule Type Query (list all molecules of a type)
+        if response is None and classified.target_type == "molecule_type" and classified.target_id:
+            mol_type = classified.target_id
+            matching = [
+                mol for mol in self.molecule_registry.values()
+                if mol.molecule_type == mol_type
+            ]
+            response = {
+                "topic": f"Molecule Type: {mol_type}",
+                "query_type": "type_listing",
+                "molecule_type": mol_type,
+                "n_molecules": len(matching),
+                "molecules": [
+                    {
+                        "molecule_id": m.molecule_id,
+                        "name": m.name,
+                        "short_description": m.short_description,
+                        "linked_archetypes": m.linked_archetypes,
+                        "domain": m.domain,
+                        "empirical_support": m.empirical_support,
+                    }
+                    for m in matching
+                ],
+                "status": "OK" if matching else "NO_MATCHES",
+            }
+
         # 1. Molecule Lookup (Fast Path - Precomputed)
-        if classified.target_type == "molecule" and classified.target_id:
+        if response is None and classified.target_type == "molecule" and classified.target_id:
             mol_id = classified.target_id
             cache_file = self.cache_dir / f"{mol_id}_QA.json"
             if cache_file.exists():

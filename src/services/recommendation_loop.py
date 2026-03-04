@@ -93,9 +93,17 @@ class RecommendationLoopService:
         }
         logger.info(f"Harvested {len(qa_suggestions)} QA follow-up suggestions")
 
+        # Step 2b: Harvest circuit QA search targets
+        logger.info("\n[Step 2b] Harvesting circuit QA search targets...")
+        circuit_suggestions = self._harvest_circuit_qa_targets()
+        report["steps"]["harvest_circuit_qa"] = {
+            "count": len(circuit_suggestions),
+        }
+        logger.info(f"Harvested {len(circuit_suggestions)} circuit QA search targets")
+
         # Step 3: Score and prioritize
         logger.info("\n[Step 3] Scoring and prioritizing suggestions...")
-        all_suggestions = gaps + qa_suggestions
+        all_suggestions = gaps + qa_suggestions + circuit_suggestions
         prioritized = self._score_and_prioritize(all_suggestions)
         report["steps"]["prioritize"] = {
             "total_suggestions": len(prioritized),
@@ -284,6 +292,51 @@ class RecommendationLoopService:
         except Exception as e:
             logger.error(f"Error harvesting QA backlog: {e}")
 
+        return suggestions
+
+    def _harvest_circuit_qa_targets(self) -> list[dict]:
+        """
+        Harvest search targets queued by circuit QA responses.
+
+        Circuit answers for HYPOTHETICAL or under-evidenced circuits emit
+        search targets (article queries) that should feed the recommendation
+        loop. These are inserted into the suggestions table by the QA handler
+        with source='circuit_qa'. This method picks up any that haven't
+        been dispatched yet.
+
+        Returns:
+            List of suggestion dicts from circuit QA
+        """
+        suggestions = []
+        try:
+            with sqlite3.connect(str(self.web_db_path)) as conn:
+                cursor = conn.cursor()
+                cursor.execute("""
+                    SELECT id, description, suggested_search, priority_score
+                    FROM interpretation_space_suggestions
+                    WHERE source = 'circuit_qa'
+                    AND status IN ('proposed', 'identified')
+                    ORDER BY priority_score DESC
+                    LIMIT 30
+                """)
+                rows = cursor.fetchall()
+                for row_id, desc, search, score in rows:
+                    suggestions.append({
+                        "source": "circuit_qa",
+                        "status": "identified",
+                        "description": desc,
+                        "suggested_search": search,
+                        "priority_score": score or 0.65,
+                        "voi_bucket": "medium" if (score or 0.65) < 0.7 else "high",
+                        "suggestion_id": row_id,
+                    })
+                logger.info(
+                    f"Found {len(suggestions)} pending circuit QA search targets"
+                )
+        except sqlite3.OperationalError as e:
+            logger.warning(f"Circuit QA target query failed: {e}")
+        except Exception as e:
+            logger.error(f"Error harvesting circuit QA targets: {e}")
         return suggestions
 
     def _score_and_prioritize(self, suggestions: list[dict]) -> list[dict]:

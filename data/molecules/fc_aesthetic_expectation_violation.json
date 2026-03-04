@@ -1,0 +1,92 @@
+{
+  "molecule_id": "FC_AESTHETIC_VIOLATION",
+  "name": "Aesthetic Expectation Violation Circuit",
+  "short_description": "Detects violations of aesthetic schemas based on expertise level, generating surprise and interest signals that modulate aesthetic engagement.",
+  "components": [
+    {
+      "name": "AESTHETIC_SCHEMA",
+      "template_ids": [
+        "T_AESTHETIC_SCHEMA"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Maintains learned aesthetic prototypes and stylistic expectations based on expertise"
+    },
+    {
+      "name": "VIOLATION_DETECTOR",
+      "template_ids": [
+        "T_VIOLATION_DETECT"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Detects deviation of actual stimulus from aesthetic prototype"
+    },
+    {
+      "name": "EXPERTISE_MODULATOR",
+      "template_ids": [
+        "T_EXPERTISE_MOD"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Adjusts violation detection threshold based on observer expertise"
+    },
+    {
+      "name": "INTEREST_GENERATOR",
+      "template_ids": [
+        "T_INTEREST_GEN"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Translates aesthetic violation into interest and arousal signal"
+    }
+  ],
+  "constituent_templates": [
+    "T_AESTHETIC_SCHEMA",
+    "T_VIOLATION_DETECT",
+    "T_EXPERTISE_MOD",
+    "T_INTEREST_GEN"
+  ],
+  "interaction_graph": {
+    "T_AESTHETIC_SCHEMA": {
+      "T_VIOLATION_DETECT": "SYNERGISTIC"
+    },
+    "T_VIOLATION_DETECT": {
+      "T_EXPERTISE_MOD": "SYNERGISTIC"
+    },
+    "T_EXPERTISE_MOD": {
+      "T_INTEREST_GEN": "SYNERGISTIC"
+    }
+  },
+  "framework_ids": [
+    "predictive-processing",
+    "IE-DPT"
+  ],
+  "domain": "aesthetics",
+  "molecule_type": "FUNCTIONAL_CIRCUIT",
+  "scope_conditions": [
+    "Visual access to aesthetic stimulus",
+    "Functional aesthetic processing systems",
+    "Learning history in relevant domain"
+  ],
+  "overall_maturity": "TENTATIVE",
+  "key_references": [
+    "Van de Cruys, S., & Wagemans, J. (2011). Putting reward in art: A tentative prediction error account of visual art. i-Perception, 2(9), 1035\u20131062.",
+    "Berlyne, D. E. (1971). Aesthetics and Psychobiology. Appleton-Century-Crofts."
+  ],
+  "empirical_support": "PRELIMINARY",
+  "competing_theories": [],
+  "design_implications": [
+    "Moderate aesthetic violations that match expertise level optimize interest; novices benefit from clear stylistic coherence, while experts seek novel combinations",
+    "Art and design installations should scaffold aesthetic expectations before introducing violations; contextualize novel elements to engage rather than alienate"
+  ],
+  "confidence_intervals": null,
+  "parent_t1_5_theory": null,
+  "linked_archetypes": [
+    "PREDICTIVE_CODING"
+  ],
+  "inputs": [
+    "aesthetic_expectation",
+    "actual_aesthetic_input",
+    "expertise_level"
+  ],
+  "outputs": [
+    "aesthetic_surprise_signal",
+    "interest_arousal"
+  ]
+}

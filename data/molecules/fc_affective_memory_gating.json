@@ -1,0 +1,91 @@
+{
+  "molecule_id": "FC_AFFECTIVE_MEMORY_GATING",
+  "name": "Affective Gating of Memory Circuit",
+  "short_description": "Uses emotional intensity and novelty signals to gate memory consolidation, enhancing storage for emotionally salient or surprising events (flashbulb memory).",
+  "components": [
+    {
+      "name": "EMOTION_GATE",
+      "template_ids": [
+        "T_EMOTION_GATE"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Opens memory consolidation gate based on emotional intensity of event"
+    },
+    {
+      "name": "ENCODING_STATE_MONITOR",
+      "template_ids": [
+        "T_ENCODE_MON"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Assesses readiness and capacity of memory encoding systems"
+    },
+    {
+      "name": "NOVELTY_AMPLIFIER",
+      "template_ids": [
+        "T_NOVELTY_AMP"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Amplifies consolidation signal for novel or surprising events"
+    },
+    {
+      "name": "CONSOLIDATION_CONTROLLER",
+      "template_ids": [
+        "T_CONSOLID_CTRL"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Integrates emotion, novelty, and encoding signals to control consolidation strength and flashbulb memory formation"
+    }
+  ],
+  "constituent_templates": [
+    "T_EMOTION_GATE",
+    "T_ENCODE_MON",
+    "T_NOVELTY_AMP",
+    "T_CONSOLID_CTRL"
+  ],
+  "interaction_graph": {
+    "T_EMOTION_GATE": {
+      "T_ENCODE_MON": "SYNERGISTIC"
+    },
+    "T_ENCODE_MON": {
+      "T_NOVELTY_AMP": "SYNERGISTIC"
+    },
+    "T_NOVELTY_AMP": {
+      "T_CONSOLID_CTRL": "SYNERGISTIC"
+    }
+  },
+  "framework_ids": [
+    "neuromodulatory-systems"
+  ],
+  "domain": "affect",
+  "molecule_type": "FUNCTIONAL_CIRCUIT",
+  "scope_conditions": [
+    "Memory encoding in progress",
+    "Emotional response to event",
+    "Functional amygdala-mediated consolidation systems"
+  ],
+  "overall_maturity": "TENTATIVE",
+  "key_references": [
+    "McGaugh, J. L. (2004). The amygdala modulates the consolidation of memories of emotionally arousing experiences. Annual Review of Neuroscience, 27, 1\u201328.",
+    "LaBar, K. S., & Cabeza, R. (2006). Cognitive neuroscience of emotional memory. Nature Reviews Neuroscience, 7(1), 54\u201364."
+  ],
+  "empirical_support": "PRELIMINARY",
+  "competing_theories": [],
+  "design_implications": [
+    "Emotionally salient experiences are better remembered; use emotional resonance and novelty in museum, educational, or wayfinding designs where memorability is valued",
+    "Traumatic or intensely negative emotions can create vivid but distorted flashbulb memories; design threat-reducing contexts in high-stress environments (medical, security) to prevent false or intrusive memories"
+  ],
+  "confidence_intervals": null,
+  "parent_t1_5_theory": null,
+  "linked_archetypes": [
+    "GATED_PROPAGATION"
+  ],
+  "inputs": [
+    "emotional_intensity",
+    "memory_encoding_state",
+    "novelty_signal"
+  ],
+  "outputs": [
+    "memory_consolidation_strength",
+    "flashbulb_trigger"
+  ]
+}

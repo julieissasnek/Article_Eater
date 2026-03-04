@@ -133,15 +133,14 @@ class MolecularQAPrecomputer:
                     
                 result = json.loads(raw_text)
                 
-                # Construct Cache Entry
-                from datetime import datetime
+                from datetime import datetime, timezone
                 entry = CacheEntry(
                     molecule_id=molecule.molecule_id,
                     l1_summary=result.get("l1_summary", ""),
                     l2_summary=result.get("l2_summary", ""),
                     l3_summary=result.get("l3_summary", ""),
                     dependent_templates=molecule.constituent_templates,
-                    last_computed=datetime.now(datetime.UTC).isoformat(),
+                    last_computed=datetime.now(timezone.utc).isoformat(),
                     kb_hash_at_computation=self.cache_mgr._compute_dependency_hash(molecule.constituent_templates),
                     status="FRESH"
                 )

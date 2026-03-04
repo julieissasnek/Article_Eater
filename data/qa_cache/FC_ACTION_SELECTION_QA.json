@@ -1,0 +1,15 @@
+{
+  "molecule_id": "FC_ACTION_SELECTION",
+  "l1_summary": "The Action Selection Circuit is a theoretical mechanism responsible for choosing one action from several competing options. Its main effect is to enable efficient and timely behavioral decisions.",
+  "l2_summary": "The Action Selection Circuit is a proposed system that resolves competition between potential actions, leading to a single behavioral output. It integrates learned action values, time-dependent urgency signals, and conflict detection to make a decision. This circuit aims to explain how organisms select appropriate behaviors under varying pressures, though its empirical support is currently preliminary.",
+  "l3_summary": "The Action Selection Circuit orchestrates the complex process of choosing a single behavior from a repertoire of possibilities. At its core, the **VALUE_COMPARATOR** continuously evaluates and contrasts the learned values associated with all available action options. This component assesses the potential rewards or costs of each action, generating a relative preference signal for each, which serves as the initial basis for selection.\n\nSimultaneously, the **URGENCY_RAMP** generates a time-dependent signal that progressively increases as the decision window narrows or environmental pressure mounts. This urgency signal acts as a global accelerator, pushing the system towards a quicker resolution. Its influence ensures that decisions are not indefinitely delayed, particularly in situations requiring timely responses.\n\nAs the system processes these signals, the **CONFLICT_DETECTOR** monitors the output of the VALUE_COMPARATOR. It identifies situations where multiple action options possess very similar or equally high values, indicating a state of high decision conflict. This detection is crucial because high conflict can lead to indecision or delayed responses, and its signal informs subsequent processing.\n\nFinally, the **SELECTION_FINALIZER** integrates the information from all preceding components. It takes the comparative values from the VALUE_COMPARATOR, the accelerating pressure from the URGENCY_RAMP, and any conflict signals from the CONFLICT_DETECTOR. Based on this integrated input, the SELECTION_FINALIZER makes the definitive choice of which action to execute, while also modulating the response time. For instance, high urgency or low conflict might lead to a faster selection, whereas high conflict might necessitate a brief delay or a stronger urgency signal to break the tie, ultimately ensuring a coherent behavioral output.",
+  "dependent_templates": [
+    "T_VALUE_COMPARE",
+    "T_URGENCY_RAMP",
+    "T_CONFLICT_MON",
+    "T_SELECT_FINAL"
+  ],
+  "last_computed": "2026-03-04T14:37:02.234163+00:00",
+  "kb_hash_at_computation": "e7947d45b259a328c4b40bcd77b62a38",
+  "status": "FRESH"
+}

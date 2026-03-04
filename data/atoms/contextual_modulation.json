@@ -1,0 +1,20 @@
+{
+  "atom_id": "contextual_modulation",
+  "name": "Contextual Modulation",
+  "description": "Surround effects on neural responses: activity in the receptive field surround modulates central responses. Implements contrastive coding and figure-ground separation. Related to divisive normalization but distinct in spatial structure.",
+  "maturity": "ESTABLISHED",
+  "neural_substrate": ["V1", "V2", "MT", "sensory_cortex"],
+  "computational_signature": "response = f(center) / (1 + surround_activity)",
+  "t1_frameworks": ["sensory-coding", "visual-perception"],
+  "key_references": [
+    "Schwartz, O., Sejnowski, T. J., & Dayan, P. (2007). Perceptual learning: gain up and down. Current Opinion in Neurobiology, 17(4), 457-462.",
+    "Levick, W. R., Oyster, C. K., & Davis, D. L. (1965). Evidence that the lateral geniculate nucleus of the cat does not enforce the lincoln transmission of retinal signals. Brain Research, 1(2), 226-243."
+  ],
+  "empirical_evidence": "Documented extensively in V1, V2, and MT. Surround suppression predicts illusory motion and tilt illusions. Beyond V1, properties become task-dependent and learned. Computational models using normalization explain many properties. Mechanism unclear: could be lateral inhibition, feedback, or normalization.",
+  "cross_domain_confirmed": false,
+  "parameters": {
+    "surround_size": "1-3x center receptive field",
+    "suppression_strength": "20-50% depending on contrast",
+    "surround_selectivity": "varies across areas"
+  }
+}

@@ -1,0 +1,91 @@
+{
+  "molecule_id": "FC_THERMOREG_AFFECT",
+  "name": "Thermoregulatory-Style Affect Regulation Circuit",
+  "short_description": "Integrates affective state, affective setpoint, and environmental valence using thermoregulatory-style homeostatic regulation to select appropriate affect regulation strategies.",
+  "components": [
+    {
+      "name": "AFFECT_SENSOR",
+      "template_ids": [
+        "T_AFFECT_SENSE"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Monitors current affective state across valence and arousal dimensions"
+    },
+    {
+      "name": "AFFECT_SETPOINT_COMPARATOR",
+      "template_ids": [
+        "T_AFFECT_SETPOINT"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Compares current affect to desired/comfortable affective state"
+    },
+    {
+      "name": "ENVIRONMENTAL_VALENCE_ASSESSOR",
+      "template_ids": [
+        "T_ENV_VALENCE"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Evaluates affective tone and availability of emotion regulation resources in environment"
+    },
+    {
+      "name": "REGULATION_SELECTOR",
+      "template_ids": [
+        "T_REG_SELECT"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Selects affect regulation strategy based on discrepancy and environmental affective resources"
+    }
+  ],
+  "constituent_templates": [
+    "T_AFFECT_SENSE",
+    "T_AFFECT_SETPOINT",
+    "T_ENV_VALENCE",
+    "T_REG_SELECT"
+  ],
+  "interaction_graph": {
+    "T_AFFECT_SENSE": {
+      "T_AFFECT_SETPOINT": "SYNERGISTIC"
+    },
+    "T_AFFECT_SETPOINT": {
+      "T_ENV_VALENCE": "SYNERGISTIC"
+    },
+    "T_ENV_VALENCE": {
+      "T_REG_SELECT": "SYNERGISTIC"
+    }
+  },
+  "framework_ids": [
+    "interoceptive-constructionist-affect"
+  ],
+  "domain": "affect",
+  "molecule_type": "FUNCTIONAL_CIRCUIT",
+  "scope_conditions": [
+    "Access to affective state signals",
+    "Functional emotion regulation pathways",
+    "Environmental affective cues available"
+  ],
+  "overall_maturity": "TENTATIVE",
+  "key_references": [
+    "IJzerman, H., Coan, J. A., Wagemans, F. M., Missler, M. A., Beall, A. T., Ferro, K., ... & Vingerhoets, A. J. (2015). Social thermoregulation in the brain: Evidence from functional neuroimaging and behavioral studies. Social Cognitive and Affective Neuroscience, 10(8), 1110\u20131117.",
+    "Inagaki, T. K., & Eisenberger, N. I. (2013). Shared neural mechanisms underlying social warmth and physical warmth. Psychological Science, 24(11), 2272\u20132280."
+  ],
+  "empirical_support": "PRELIMINARY",
+  "competing_theories": [],
+  "design_implications": [
+    "Social and physical warmth are affectively intertwined; design spaces that combine thermal comfort with social connection (e.g., gathering spaces with warm lighting and seating arrangements)",
+    "Environmental emotional tone (friendly, tense, calm) influences regulation; curate affective context through color, sound, and social cues to support desired affective states"
+  ],
+  "confidence_intervals": null,
+  "parent_t1_5_theory": null,
+  "linked_archetypes": [
+    "HOMEOSTATIC_REGULATION"
+  ],
+  "inputs": [
+    "affective_state",
+    "affective_setpoint",
+    "environmental_valence"
+  ],
+  "outputs": [
+    "affective_discrepancy",
+    "regulation_strategy_signal"
+  ]
+}

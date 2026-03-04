@@ -38,6 +38,9 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 from datetime import datetime, timezone
 
+# Initialize logger immediately (before any other imports that might use it)
+logger = logging.getLogger(__name__)
+
 from src.services.theory_guide_service import TheoryGuideService
 from src.services.interpretation_space_suggestions import InterpretationSpaceSuggestionsManager
 
@@ -69,7 +72,37 @@ except Exception as e:
     _prose_reviewer = None
     _HAS_PROSE_REVIEWER = False
 
-logger = logging.getLogger(__name__)
+# Functional circuit QA service (graceful degradation if unavailable)
+try:
+    from src.services.circuit_qa_service import CircuitQAService
+    _circuit_qa_service = CircuitQAService()
+    _HAS_CIRCUIT_QA = _circuit_qa_service.circuit_count > 0
+    if _HAS_CIRCUIT_QA:
+        logger.info(f"Circuit QA service loaded: {_circuit_qa_service.circuit_count} circuits")
+except ImportError as e:
+    logger.warning(f"Circuit QA service not available: {e}")
+    _circuit_qa_service = None
+    _HAS_CIRCUIT_QA = False
+except Exception as e:
+    logger.warning(f"Failed to initialize circuit QA service: {e}")
+    _circuit_qa_service = None
+    _HAS_CIRCUIT_QA = False
+
+# Precomputed answer card retriever (graceful degradation if unavailable)
+try:
+    from src.qa.card_retriever import CardRetriever
+    _card_retriever = CardRetriever()
+    _HAS_CARD_RETRIEVER = _card_retriever.is_available
+    if _HAS_CARD_RETRIEVER:
+        logger.info(f"Card retriever loaded: {_card_retriever.n_clusters} clusters")
+except ImportError as e:
+    logger.warning(f"Card retriever not available: {e}")
+    _card_retriever = None
+    _HAS_CARD_RETRIEVER = False
+except Exception as e:
+    logger.warning(f"Failed to initialize card retriever: {e}")
+    _card_retriever = None
+    _HAS_CARD_RETRIEVER = False
 
 PROJECT_ROOT = Path(__file__).parent.parent.parent
 
@@ -126,9 +159,29 @@ class QuestionType:
     META_SYSTEM = "meta_system"               # "how does this system work?"
     
     ARBITRARY = "arbitrary"                    # Anything else → AI route
+    FUNCTIONAL_CIRCUIT = "functional_circuit"  # "tell me about sensory prediction error circuit"
+    ARCHETYPE_GUIDE = "archetype_guide"        # "what uses predictive coding?"
 
 
 QUESTION_PATTERNS = [
+    # Functional circuit queries (high priority — before catalog)
+    (QuestionType.FUNCTIONAL_CIRCUIT, re.compile(
+        r'(?:tell\s+me\s+about|explain|what\s+is|how\s+does?|describe)\s+(?:the\s+)?'
+        r'(?:sensory\s+prediction|reward\s+prediction|social\s+prediction|arousal\s+regulation|'
+        r'attentional\s+selection|familiarity\s+detection|cognitive\s+load|threat\s+monitoring|'
+        r'coherence\s+monitoring|action\s+selection|dread\s+accumulation|context.gated|'
+        r'affective\s+memory|thermoregulatory|vitality\s+monitoring|aesthetic\s+expectation|'
+        r'curiosity\s+accumulation|interpretive\s+selection|expertise.gated|social\s+safety)'
+        r'\s*(?:circuit|motif|pattern)?', re.I)),
+    (QuestionType.FUNCTIONAL_CIRCUIT, re.compile(
+        r'(?:functional\s+circuit|FC_)\w*', re.I)),
+    (QuestionType.ARCHETYPE_GUIDE, re.compile(
+        r'(?:what\s+(?:circuits?\s+)?use[sd]?|tell\s+me\s+about\s+(?:the\s+)?|explain\s+(?:the\s+)?)'
+        r'(?:predictive\s+coding|homeostatic\s+regulation|accumulation\s+to\s+bound|'
+        r'competitive\s+selection|gated\s+propagation|convergent\s+state\s+monitoring)'
+        r'\s*(?:archetype|pattern)?', re.I)),
+    (QuestionType.ARCHETYPE_GUIDE, re.compile(
+        r'(?:list|show|what\s+are)\s+(?:all\s+)?(?:the\s+)?(?:circuits?|archetypes?)', re.I)),
     # Catalog queries
     (QuestionType.CATALOG_THEORIES, re.compile(
         r'(?:show(?:\s+me)?|list|what\s+are|tell\s+me|give\s+me)\s+(?:all\s+)?(?:the\s+)?'
@@ -216,14 +269,24 @@ QUESTION_PATTERNS = [
 
 def classify_question(text: str) -> Tuple[str, float]:
     """Classify question type using pattern matching.
-    
+
     Returns: (question_type, confidence)
+
+    SUCCESS CONDITIONS:
+    - SC-CQ-1: Returns a 2-tuple (question_type: str, confidence: float)
+    - SC-CQ-2: question_type is a valid QuestionType constant
+    - SC-CQ-3: confidence is in [0.0, 1.0]
+    - SC-CQ-4: Never raises exception (returns fallback on error)
     """
-    for qtype, pattern in QUESTION_PATTERNS:
-        if pattern.search(text):
-            return (qtype, 0.85)
-    
-    return (QuestionType.ARBITRARY, 0.3)
+    try:
+        for qtype, pattern in QUESTION_PATTERNS:
+            if pattern.search(text):
+                return (qtype, 0.85)
+
+        return (QuestionType.ARBITRARY, 0.3)
+    except Exception as e:
+        logger.warning(f"classify_question failed on text '{text[:50]}...': {e}")
+        return (QuestionType.ARBITRARY, 0.0)
 
 
 # =============================================================================
@@ -231,122 +294,142 @@ def classify_question(text: str) -> Tuple[str, float]:
 # =============================================================================
 
 def format_theory_catalog(catalog) -> Dict[str, Any]:
-    """Format comprehensive theory catalog answer per TIER_ARCHITECTURE_SPEC_2026-03-01."""
-    theories = catalog.get_theories()   # These are actually T1.5 domain theories
-    frameworks = catalog.get_frameworks()  # Bridging frameworks
-    molecules = catalog.get_molecules()    # 18 molecules (latent variables)
-    
-    sections = []
-    
-    # T1 Frameworks — loaded from canonical schemas/theory/tier1_frameworks.json
-    t1_items = []
-    t1_json_path = Path(__file__).resolve().parent.parent.parent / "schemas" / "theory" / "tier1_frameworks.json"
-    if t1_json_path.exists():
-        try:
-            t1_data = json.load(open(t1_json_path))
-            for fid, info in t1_data.get("frameworks", {}).items():
-                name = info.get("name", fid)
-                mechanism = info.get("core_mechanism", "")
-                # Truncate mechanism to first sentence for readability
-                first_sentence = mechanism.split(";")[0].split(".")[0] + "." if mechanism else ""
-                t1_items.append(f"**{name}**: {first_sentence}")
-        except Exception as e:
-            logger.debug(f"Non-critical T1 load: {e}")
-    # Fallback if JSON not found
-    if not t1_items:
-        t1_items = [
-            "**Predictive Processing**: The brain continuously generates predictions about sensory input; mismatches drive learning and attention.",
-            "**Spatial Navigation / Cognitive Mapping**: Hippocampal place cells and grid cells encode spatial experience.",
-            "**Dual-Process Evaluation**: System 1 (fast, automatic) vs System 2 (slow, deliberate) compete for behavioral control.",
-            "**DMN/TPN Dynamics**: Default Mode Network and Task-Positive Network reciprocally inhibit.",
-            "**Neuromodulatory Systems**: Dopamine, serotonin, norepinephrine, and cortisol modulate arousal, reward, and stress.",
-            "**Interoceptive / Constructionist Affect**: The brain constructs emotions from interoceptive signals + environmental context.",
-            "**Memory Systems**: Episodic, semantic, and procedural memory systems encode environmental experiences.",
-            "**Embodied Cognition**: Cognition is grounded in sensorimotor experience.",
-            "**Chronobiological Regulation**: Circadian rhythms entrained by light affect melatonin, cortisol, alertness, and sleep.",
-            "**Multisensory Integration**: The brain combines information across sensory modalities.",
-        ]
-    sections.append({
-        "heading": "T1 — Framework Theories (10)",
-        "description": "Neurally grounded, cross-domain frameworks. The fundamental explanatory level.",
-        "items": t1_items,
-    })
-    
-    # T1.5 Domain Theories — loaded from canonical schemas/theory/tier1_5_domain_theories.json
-    t1_5_items = []
-    t15_json_path = Path(__file__).resolve().parent.parent.parent / "schemas" / "theory" / "tier1_5_domain_theories.json"
-    if t15_json_path.exists():
-        try:
-            t15_data = json.load(open(t15_json_path))
-            for tid, info in t15_data.get("domain_theories", {}).items():
-                name = info.get("name", tid)
-                originator = info.get("originator", "")
-                phenomena = info.get("phenomena_organized", "")
-                coverage = info.get("coverage", 0)
-                maturity = info.get("maturity", "")
-                # Truncate phenomena to first sentence
-                short_desc = phenomena.split(".")[0] + "." if phenomena else ""
-                t1_5_items.append(
-                    f"**{name}** ({originator})\n"
-                    f"  {short_desc} Coverage: {coverage:.0%}, maturity: {maturity}."
-                )
-        except Exception as e:
-            logger.debug(f"Non-critical T1.5 load: {e}")
-    # Fallback if JSON not found or empty
-    if not t1_5_items:
-        for t in theories:
-            name = t['name']
-            evidence_note = f" ({t['evidence_count']} linked beliefs)" if t.get('evidence_count') else ""
-            t1_5_items.append(
-                f"**{t['name']}** ({t['authors']}, {t['year']}){evidence_note}\n"
-                f"  {t['summary']}"
-            )
-    n_t15 = len(t1_5_items)
-    sections.append({
-        "heading": f"T1.5 — Domain Theories ({n_t15})",
-        "description": "Author-attributed phenomenological theories. Explained BY T1 frameworks, each with formal reduction mappings.",
-        "items": t1_5_items,
-    })
-    
-    # Molecules — 18 latent variables (includes T1.5 as subset)
-    mol_lines = [f"**{m['name']}** (`{m['id']}`): {m['summary']}" for m in molecules]
-    sections.append({
-        "heading": f"Molecules — Latent Variables ({len(molecules)})",
-        "description": "Compositional effect bundles. T1.5 are a subset. Discoverable via factor analysis of T2 template co-activation.",
-        "items": mol_lines,
-    })
-    
-    # T2 Templates and T3 Beliefs (counts only — too many to list)
-    sections.append({
-        "heading": "T2 — CMR Templates (~166) & T3 — Empirical Beliefs",
-        "description": "T2: Specific mechanism chains (Arch Feature → Neural Process → Psych Outcome). T3: Ground-level evidence in Web of Belief.",
-        "items": [
-            "**T2 Templates**: ~166 defined mechanism chains, each declaring which T1 frameworks it invokes",
-            "**T3 Beliefs**: Specific environment→outcome claims supported by multiple articles in the extraction corpus",
-        ],
-    })
-    
-    # Bridging frameworks from catalog
-    if frameworks:
-        fw_lines = [f"**{fw['name']}**: {fw['summary']}" for fw in frameworks]
+    """Format comprehensive theory catalog answer per TIER_ARCHITECTURE_SPEC_2026-03-01.
+
+    SUCCESS CONDITIONS:
+    - SC-FTC-1: Returns a dict
+    - SC-FTC-2: Dict has 'answer' key with string value OR 'sections' key with list of dicts
+    - SC-FTC-3: Dict has 'sources' key with list value OR sources computed from catalog
+    - SC-FTC-4: Dict has 'question_type' key matching QuestionType.CATALOG_THEORIES
+    - SC-FTC-5: Dict has 'headline' key with non-empty string
+    """
+    try:
+        theories = catalog.get_theories()   # These are actually T1.5 domain theories
+        frameworks = catalog.get_frameworks()  # Bridging frameworks
+        molecules = catalog.get_molecules()    # 18 molecules (latent variables)
+
+        sections = []
+
+        # T1 Frameworks — loaded from canonical schemas/theory/tier1_frameworks.json
+        t1_items = []
+        t1_json_path = Path(__file__).resolve().parent.parent.parent / "schemas" / "theory" / "tier1_frameworks.json"
+        if t1_json_path.exists():
+            try:
+                t1_data = json.load(open(t1_json_path))
+                for fid, info in t1_data.get("frameworks", {}).items():
+                    name = info.get("name", fid)
+                    mechanism = info.get("core_mechanism", "")
+                    # Truncate mechanism to first sentence for readability
+                    first_sentence = mechanism.split(";")[0].split(".")[0] + "." if mechanism else ""
+                    t1_items.append(f"**{name}**: {first_sentence}")
+            except Exception as e:
+                logger.debug(f"Non-critical T1 load: {e}")
+        # Fallback if JSON not found
+        if not t1_items:
+            t1_items = [
+                "**Predictive Processing**: The brain continuously generates predictions about sensory input; mismatches drive learning and attention.",
+                "**Spatial Navigation / Cognitive Mapping**: Hippocampal place cells and grid cells encode spatial experience.",
+                "**Dual-Process Evaluation**: System 1 (fast, automatic) vs System 2 (slow, deliberate) compete for behavioral control.",
+                "**DMN/TPN Dynamics**: Default Mode Network and Task-Positive Network reciprocally inhibit.",
+                "**Neuromodulatory Systems**: Dopamine, serotonin, norepinephrine, and cortisol modulate arousal, reward, and stress.",
+                "**Interoceptive / Constructionist Affect**: The brain constructs emotions from interoceptive signals + environmental context.",
+                "**Memory Systems**: Episodic, semantic, and procedural memory systems encode environmental experiences.",
+                "**Embodied Cognition**: Cognition is grounded in sensorimotor experience.",
+                "**Chronobiological Regulation**: Circadian rhythms entrained by light affect melatonin, cortisol, alertness, and sleep.",
+                "**Multisensory Integration**: The brain combines information across sensory modalities.",
+            ]
         sections.append({
-            "heading": f"Bridging Frameworks ({len(frameworks)})",
-            "description": "Additional domain-specific frameworks connecting T1 theories to design applications",
-            "items": fw_lines,
+            "heading": "T1 — Framework Theories (10)",
+            "description": "Neurally grounded, cross-domain frameworks. The fundamental explanatory level.",
+            "items": t1_items,
         })
+
+        # T1.5 Domain Theories — loaded from canonical schemas/theory/tier1_5_domain_theories.json
+        t1_5_items = []
+        t15_json_path = Path(__file__).resolve().parent.parent.parent / "schemas" / "theory" / "tier1_5_domain_theories.json"
+        if t15_json_path.exists():
+            try:
+                t15_data = json.load(open(t15_json_path))
+                for tid, info in t15_data.get("domain_theories", {}).items():
+                    name = info.get("name", tid)
+                    originator = info.get("originator", "")
+                    phenomena = info.get("phenomena_organized", "")
+                    coverage = info.get("coverage", 0)
+                    maturity = info.get("maturity", "")
+                    # Truncate phenomena to first sentence
+                    short_desc = phenomena.split(".")[0] + "." if phenomena else ""
+                    t1_5_items.append(
+                        f"**{name}** ({originator})\n"
+                        f"  {short_desc} Coverage: {coverage:.0%}, maturity: {maturity}."
+                    )
+            except Exception as e:
+                logger.debug(f"Non-critical T1.5 load: {e}")
+        # Fallback if JSON not found or empty
+        if not t1_5_items:
+            for t in theories:
+                name = t['name']
+                evidence_note = f" ({t['evidence_count']} linked beliefs)" if t.get('evidence_count') else ""
+                t1_5_items.append(
+                    f"**{t['name']}** ({t['authors']}, {t['year']}){evidence_note}\n"
+                    f"  {t['summary']}"
+                )
+        n_t15 = len(t1_5_items)
+        sections.append({
+            "heading": f"T1.5 — Domain Theories ({n_t15})",
+            "description": "Author-attributed phenomenological theories. Explained BY T1 frameworks, each with formal reduction mappings.",
+            "items": t1_5_items,
+        })
+
+        # Molecules — 18 latent variables (includes T1.5 as subset)
+        mol_lines = [f"**{m['name']}** (`{m['id']}`): {m['summary']}" for m in molecules]
+        sections.append({
+            "heading": f"Molecules — Latent Variables ({len(molecules)})",
+            "description": "Compositional effect bundles. T1.5 are a subset. Discoverable via factor analysis of T2 template co-activation.",
+            "items": mol_lines,
+        })
+
+        # T2 Templates and T3 Beliefs (counts only — too many to list)
+        sections.append({
+            "heading": "T2 — CMR Templates (~166) & T3 — Empirical Beliefs",
+            "description": "T2: Specific mechanism chains (Arch Feature → Neural Process → Psych Outcome). T3: Ground-level evidence in Web of Belief.",
+            "items": [
+                "**T2 Templates**: ~166 defined mechanism chains, each declaring which T1 frameworks it invokes",
+                "**T3 Beliefs**: Specific environment→outcome claims supported by multiple articles in the extraction corpus",
+            ],
+        })
+
+        # Bridging frameworks from catalog
+        if frameworks:
+            fw_lines = [f"**{fw['name']}**: {fw['summary']}" for fw in frameworks]
+            sections.append({
+                "heading": f"Bridging Frameworks ({len(frameworks)})",
+                "description": "Additional domain-specific frameworks connecting T1 theories to design applications",
+                "items": fw_lines,
+            })
     
-    return {
-        "question_type": QuestionType.CATALOG_THEORIES,
-        "headline": f"ATLAS theory architecture: 10 T1 framework theories, {n_t15} T1.5 domain theories, "
-                    f"~166 T2 CMR templates, {len(molecules)} molecules, T3 empirical beliefs.",
-        "sections": sections,
-        "total_items": 10 + n_t15 + len(molecules),
-        "follow_ups": [
-            "How does Attention Restoration Theory reduce to T1 frameworks?",
-            "What evidence supports the Biophilia Hypothesis?",
-            "Show me all cultural differences this system recognizes.",
-        ],
-    }
+        return {
+            "question_type": QuestionType.CATALOG_THEORIES,
+            "headline": f"ATLAS theory architecture: 10 T1 framework theories, {n_t15} T1.5 domain theories, "
+                        f"~166 T2 CMR templates, {len(molecules)} molecules, T3 empirical beliefs.",
+            "sections": sections,
+            "total_items": 10 + n_t15 + len(molecules),
+            "follow_ups": [
+                "How does Attention Restoration Theory reduce to T1 frameworks?",
+                "What evidence supports the Biophilia Hypothesis?",
+                "Show me all cultural differences this system recognizes.",
+            ],
+            "sources": [],
+        }
+    except Exception as e:
+        logger.warning(f"format_theory_catalog failed: {e}")
+        return {
+            "question_type": QuestionType.CATALOG_THEORIES,
+            "headline": "ATLAS theory architecture unavailable",
+            "sections": [{"heading": "Error", "items": ["Failed to generate theory catalog. Please try again."]}],
+            "total_items": 0,
+            "follow_ups": [],
+            "sources": [],
+        }
 
 
 def format_cultural_catalog(catalog) -> Dict[str, Any]:
@@ -1527,61 +1610,79 @@ def format_definition_answer(question: str) -> Dict[str, Any]:
 
 def build_ai_context(question: str, catalog, max_tokens: int = 2000) -> str:
     """Build a focused context package for AI answering.
-    
+
     Searches catalog + annotations to find relevant knowledge,
     then formats as a compact context prompt.
+
+    SUCCESS CONDITIONS:
+    - SC-BAC-1: Returns a string (never None)
+    - SC-BAC-2: Result length roughly bounded by max_tokens * 4 chars (±10%)
+    - SC-BAC-3: Contains relevant information from catalog (theories, frameworks, molecules)
+    - SC-BAC-4: Never raises exception (returns fallback on error)
     """
-    # Search catalog for relevant items
-    results = catalog.search(question.lower())
-    
-    context_parts = []
-    
-    # Add matching theories
-    if results.get("theories"):
-        context_parts.append("RELEVANT THEORIES:")
-        for t in results["theories"][:3]:
-            context_parts.append(f"- {t['name']} ({t['authors']}): {t['summary']}")
-    
-    # Add matching frameworks
-    if results.get("frameworks"):
-        context_parts.append("\nRELEVANT FRAMEWORKS:")
-        for fw in results["frameworks"][:3]:
-            context_parts.append(f"- {fw['name']}: {fw['summary']}")
-    
-    # Add matching molecules
-    if results.get("molecules"):
-        context_parts.append("\nRELEVANT MOLECULES:")
-        for m in results["molecules"][:3]:
-            context_parts.append(f"- {m['name']} ({m['id']})")
-    
-    # Add matching cultural info
-    if results.get("cultural"):
-        context_parts.append("\nCULTURAL CONTEXT:")
-        for cd in results["cultural"][:2]:
-            context_parts.append(f"- {cd['dimension']}:")
-            for v in cd["variants"][:3]:
-                context_parts.append(f"  - {v['culture']}: {v['pattern']}")
-    
-    # If nothing matched, provide system overview
-    if not any(results.values()):
-        context_parts.append("SYSTEM OVERVIEW:")
-        context_parts.append(f"- 10 T1 framework theories, 13 T1.5 domain theories, ~166 T2 templates, 18 molecules")
-        context_parts.append(f"- 103 outcome terms across 8 domains")
-        context_parts.append(f"- 8 CVA constraint dimensions, 8 valuation axes")
-        context_parts.append(f"- 6 cultural difference dimensions")
-        context_parts.append(f"- 717 extracted images, 17,330+ annotated findings")
-    
-    # Truncate to max tokens (rough estimate: 4 chars per token)
-    context = "\n".join(context_parts)
-    if len(context) > max_tokens * 4:
-        context = context[:max_tokens * 4]
-    
-    return context
+    try:
+        # Search catalog for relevant items
+        results = catalog.search(question.lower())
+
+        context_parts = []
+
+        # Add matching theories
+        if results.get("theories"):
+            context_parts.append("RELEVANT THEORIES:")
+            for t in results["theories"][:3]:
+                context_parts.append(f"- {t['name']} ({t['authors']}): {t['summary']}")
+
+        # Add matching frameworks
+        if results.get("frameworks"):
+            context_parts.append("\nRELEVANT FRAMEWORKS:")
+            for fw in results["frameworks"][:3]:
+                context_parts.append(f"- {fw['name']}: {fw['summary']}")
+
+        # Add matching molecules
+        if results.get("molecules"):
+            context_parts.append("\nRELEVANT MOLECULES:")
+            for m in results["molecules"][:3]:
+                context_parts.append(f"- {m['name']} ({m['id']})")
+
+        # Add matching cultural info
+        if results.get("cultural"):
+            context_parts.append("\nCULTURAL CONTEXT:")
+            for cd in results["cultural"][:2]:
+                context_parts.append(f"- {cd['dimension']}:")
+                for v in cd["variants"][:3]:
+                    context_parts.append(f"  - {v['culture']}: {v['pattern']}")
+
+        # If nothing matched, provide system overview
+        if not any(results.values()):
+            context_parts.append("SYSTEM OVERVIEW:")
+            context_parts.append(f"- 10 T1 framework theories, 13 T1.5 domain theories, ~166 T2 templates, 18 molecules")
+            context_parts.append(f"- 103 outcome terms across 8 domains")
+            context_parts.append(f"- 8 CVA constraint dimensions, 8 valuation axes")
+            context_parts.append(f"- 6 cultural difference dimensions")
+            context_parts.append(f"- 717 extracted images, 17,330+ annotated findings")
+
+        # Truncate to max tokens (rough estimate: 4 chars per token)
+        context = "\n".join(context_parts)
+        if len(context) > max_tokens * 4:
+            context = context[:max_tokens * 4]
+
+        return context
+    except Exception as e:
+        logger.warning(f"build_ai_context failed: {e}")
+        return f"SYSTEM OVERVIEW: 10 T1 framework theories, 13 T1.5 domain theories, ~166 T2 templates, 18 molecules."
 
 
 def build_ai_prompt(question: str, context: str) -> str:
-    """Build the prompt for AI answering."""
-    return f"""You are a knowledge assistant for an architectural cognition research system.
+    """Build the prompt for AI answering.
+
+    SUCCESS CONDITIONS:
+    - SC-BAP-1: Returns a string (never None)
+    - SC-BAP-2: Result contains the question text verbatim
+    - SC-BAP-3: Result contains the context text
+    - SC-BAP-4: Never raises exception
+    """
+    try:
+        return f"""You are a knowledge assistant for an architectural cognition research system.
 Answer the user's question using ONLY the context provided below. Be specific and cite theories/frameworks/molecules by name.
 
 If the question asks for lists, provide well-structured lists distinguishing:
@@ -1599,6 +1700,9 @@ CONTEXT:
 USER QUESTION: {question}
 
 ANSWER:"""
+    except Exception as e:
+        logger.warning(f"build_ai_prompt failed: {e}")
+        return f"USER QUESTION: {question}\n\nANSWER:"
 
 
 # =============================================================================
@@ -1630,14 +1734,35 @@ class ArbitraryQAHandler:
         self._user_type = user_type
         self._enable_enrichment = enable_enrichment
         self._enable_prose_review = enable_prose_review
-        self._stats = {"classified": 0, "ai_routed": 0, "catalog_served": 0}
+        self._stats = {"classified": 0, "ai_routed": 0, "catalog_served": 0, "card_served": 0}
         self.suggestions_mgr: Optional[InterpretationSpaceSuggestionsManager] = None
         if db_path:
             try:
                 self.suggestions_mgr = InterpretationSpaceSuggestionsManager(db_path)
             except Exception as e:
                 logger.warning(f"Failed to initialize suggestions manager: {e}")
-    
+
+    def _wrap_response(self, response: Dict[str, Any], question: str, qtype: str) -> Dict[str, Any]:
+        """Wrap a response dict to ensure all required fields are present.
+
+        Ensures SC-ANS-2 through SC-ANS-8 success conditions.
+        """
+        # Ensure required fields
+        if "question" not in response:
+            response["question"] = question
+        if "answer" not in response:
+            response["answer"] = response.get("headline", "")
+        if "question_type" not in response:
+            response["question_type"] = qtype
+        if "confidence" not in response:
+            response["confidence"] = 0.5
+        if "sources" not in response:
+            response["sources"] = []
+        if "timestamp" not in response:
+            response["timestamp"] = datetime.now(timezone.utc).isoformat()
+
+        return response
+
     def _apply_enrichment(self, base_answer: Dict[str, Any], question: str) -> Dict[str, Any]:
         """Apply enrichment orchestrator to a base answer if enabled.
 
@@ -1647,6 +1772,12 @@ class ArbitraryQAHandler:
 
         Returns:
             Same base_answer with enrichment applied, or unchanged if enrichment fails
+
+        SUCCESS CONDITIONS:
+        - SC-AE-1: Returns a dict (always, even on failure)
+        - SC-AE-2: Original answer preserved even when enrichment fails
+        - SC-AE-3: On success, result has 'enrichment_metadata' key or 'enrichment' key
+        - SC-AE-4: On failure, result has 'enriched' key set to False
         """
         if not _HAS_ORCHESTRATOR or not self._enable_enrichment:
             base_answer["enriched"] = False
@@ -1678,6 +1809,12 @@ class ArbitraryQAHandler:
 
         Returns:
             Same base_answer with prose_review field added
+
+        SUCCESS CONDITIONS:
+        - SC-APR-1: Returns a dict (always, even on failure)
+        - SC-APR-2: Original answer preserved even when review fails
+        - SC-APR-3: On success, result has 'prose_review' key with score, verdict, suggestions
+        - SC-APR-4: On failure, result has 'prose_reviewed' key set to False
         """
         if not _HAS_PROSE_REVIEWER or not self._enable_prose_review:
             base_answer["prose_reviewed"] = False
@@ -1733,69 +1870,272 @@ class ArbitraryQAHandler:
         """Answer any question about the system's knowledge.
 
         Returns structured response dict with:
+        - question: the input question text
+        - answer: the main answer text (for simple cases)
         - question_type: classified type
+        - confidence: confidence in classification
         - headline: one-line answer
         - sections: detailed structured content
         - follow_ups: suggested follow-up questions
         - ai_generated: True if AI was used
         - enriched: True if enrichment was applied
+        - timestamp: ISO 8601 timestamp of response
+
+        SUCCESS CONDITIONS:
+        - SC-ANS-1: Returns a dict (never None)
+        - SC-ANS-2: Dict always has keys: question, answer, question_type, confidence, sources
+        - SC-ANS-3: question field matches input question
+        - SC-ANS-4: answer is a non-empty string (or headline if answer not present)
+        - SC-ANS-5: sources is a list
+        - SC-ANS-6: Never raises exception on any question string (catches internally)
+        - SC-ANS-7: enrichment_metadata present when enrichment enabled
+        - SC-ANS-8: timestamp is present
         """
-        # Classify
-        qtype, confidence = classify_question(question)
-        self._stats["classified"] += 1
+        try:
+            # Classify
+            qtype, confidence = classify_question(question)
+            self._stats["classified"] += 1
 
-        # Route to handler
-        handler_map = {
-            QuestionType.CATALOG_THEORIES: lambda: format_theory_catalog(self.catalog),
-            QuestionType.CATALOG_CULTURAL: lambda: format_cultural_catalog(self.catalog),
-            QuestionType.CATALOG_MOLECULES: lambda: format_molecule_catalog(self.catalog),
-            QuestionType.CATALOG_OUTCOMES: lambda: format_outcome_catalog(self.catalog),
-            QuestionType.CATALOG_METHODS: lambda: format_methods_catalog(self.catalog),
-            QuestionType.CATALOG_CVA: lambda: format_cva_catalog(self.catalog),
-            # Theory guide handler
-            QuestionType.THEORY_GUIDE: lambda: format_theory_guide_answer(question),
-            # A9-A18 handlers
-            QuestionType.SURPRISE: lambda: format_surprise_answer(question),
-            QuestionType.DISPUTE: lambda: format_dispute_answer(question),
-            QuestionType.DESIGN_PARAMS: lambda: format_design_params_answer(question),
-            QuestionType.FRONTIER_GAPS: lambda: format_frontier_answer(question),
-            QuestionType.HOOKS: lambda: format_hooks_answer(question),
-            QuestionType.EFFECT_SIZE: lambda: format_effect_size_answer(question),
-            QuestionType.CROSS_DOMAIN: lambda: format_cross_domain_answer(question),
-            QuestionType.HISTORY: lambda: format_history_answer(question),
-            # Extraction-backed handlers
-            QuestionType.EVIDENCE_FOR: lambda: format_evidence_answer(question, "supports"),
-            QuestionType.EVIDENCE_AGAINST: lambda: format_evidence_answer(question, "against"),
-            QuestionType.MECHANISM: lambda: format_mechanism_answer(question),
-            QuestionType.COMPARISON: lambda: format_comparison_answer(question),
-            QuestionType.DEFINITION: lambda: format_definition_answer(question),
-            # Meta handlers
-            QuestionType.META_SYSTEM: lambda: format_meta_system_answer(question),
-            QuestionType.META_COVERAGE: lambda: format_meta_coverage_answer(question),
-            QuestionType.META_GAPS: lambda: format_meta_gaps_answer(question),
-            # Design guidance
-            QuestionType.DESIGN_GUIDANCE: lambda: format_design_guidance_answer(question),
-        }
+            # V13 Audit Fix: Check precomputed answer cards FIRST.
+            # If a cluster matches the query, return the precomputed card
+            # immediately — no live enrichment needed.
+            if _HAS_CARD_RETRIEVER:
+                card_response = _card_retriever.try_match(
+                    question, user_type=self._user_type
+                )
+                if card_response is not None:
+                    self._stats["card_served"] += 1
+                    card_response["question_type_classified"] = qtype
+                    card_response = self._apply_prose_review(card_response)
+                    self._track_followups(card_response.get("follow_ups", []))
+                    return self._wrap_response(card_response, question, qtype)
 
-        handler = handler_map.get(qtype)
-        if handler:
-            self._stats["catalog_served"] += 1
-            response = handler()
-            response["confidence"] = confidence
-            response["ai_generated"] = False
+            # Route to handler
+            handler_map = {
+                QuestionType.CATALOG_THEORIES: lambda: format_theory_catalog(self.catalog),
+                QuestionType.CATALOG_CULTURAL: lambda: format_cultural_catalog(self.catalog),
+                QuestionType.CATALOG_MOLECULES: lambda: format_molecule_catalog(self.catalog),
+                QuestionType.CATALOG_OUTCOMES: lambda: format_outcome_catalog(self.catalog),
+                QuestionType.CATALOG_METHODS: lambda: format_methods_catalog(self.catalog),
+                QuestionType.CATALOG_CVA: lambda: format_cva_catalog(self.catalog),
+                # Theory guide handler
+                QuestionType.THEORY_GUIDE: lambda: format_theory_guide_answer(question),
+                # A9-A18 handlers
+                QuestionType.SURPRISE: lambda: format_surprise_answer(question),
+                QuestionType.DISPUTE: lambda: format_dispute_answer(question),
+                QuestionType.DESIGN_PARAMS: lambda: format_design_params_answer(question),
+                QuestionType.FRONTIER_GAPS: lambda: format_frontier_answer(question),
+                QuestionType.HOOKS: lambda: format_hooks_answer(question),
+                QuestionType.EFFECT_SIZE: lambda: format_effect_size_answer(question),
+                QuestionType.CROSS_DOMAIN: lambda: format_cross_domain_answer(question),
+                QuestionType.HISTORY: lambda: format_history_answer(question),
+                # Extraction-backed handlers
+                QuestionType.EVIDENCE_FOR: lambda: format_evidence_answer(question, "supports"),
+                QuestionType.EVIDENCE_AGAINST: lambda: format_evidence_answer(question, "against"),
+                QuestionType.MECHANISM: lambda: format_mechanism_answer(question),
+                QuestionType.COMPARISON: lambda: format_comparison_answer(question),
+                QuestionType.DEFINITION: lambda: format_definition_answer(question),
+                # Meta handlers
+                QuestionType.META_SYSTEM: lambda: format_meta_system_answer(question),
+                QuestionType.META_COVERAGE: lambda: format_meta_coverage_answer(question),
+                QuestionType.META_GAPS: lambda: format_meta_gaps_answer(question),
+                # Design guidance
+                QuestionType.DESIGN_GUIDANCE: lambda: format_design_guidance_answer(question),
+                # Functional circuit handlers
+                QuestionType.FUNCTIONAL_CIRCUIT: lambda: self._handle_circuit_query(question),
+                QuestionType.ARCHETYPE_GUIDE: lambda: self._handle_archetype_query(question),
+            }
+
+            handler = handler_map.get(qtype)
+            if handler:
+                self._stats["catalog_served"] += 1
+                response = handler()
+                response["confidence"] = confidence
+                response["ai_generated"] = False
+                response = self._apply_enrichment(response, question)
+                response = self._apply_prose_review(response)
+                self._track_followups(response.get("follow_ups", []))
+                return self._wrap_response(response, question, qtype)
+
+            # AI-routed for everything else
+            response = self._ai_answer(question, qtype, confidence)
             response = self._apply_enrichment(response, question)
             response = self._apply_prose_review(response)
             self._track_followups(response.get("follow_ups", []))
-            return response
+            return self._wrap_response(response, question, qtype)
 
-        # AI-routed for everything else
-        response = self._ai_answer(question, qtype, confidence)
-        response = self._apply_enrichment(response, question)
-        response = self._apply_prose_review(response)
-        self._track_followups(response.get("follow_ups", []))
-        return response
-    
-    def _ai_answer(self, question: str, qtype: str, 
+        except Exception as e:
+            logger.exception(f"answer() failed for question: {question[:100]}")
+            return {
+                "question": question,
+                "answer": f"Error: {str(e)[:100]}",
+                "question_type": QuestionType.ARBITRARY,
+                "confidence": 0.0,
+                "sources": [],
+                "sections": [{"heading": "Error", "items": ["Unable to answer this question at this time."]}],
+                "timestamp": datetime.now(timezone.utc).isoformat(),
+            }
+
+    def _handle_circuit_query(self, question: str) -> Dict[str, Any]:
+        """Handle functional circuit queries using CircuitQAService."""
+        if _HAS_CIRCUIT_QA and _circuit_qa_service:
+            result = _circuit_qa_service.format_circuit_answer(question)
+            if result:
+                # Queue search targets for the recommendation loop
+                search_targets = result.get("search_targets", [])
+                if search_targets:
+                    self._queue_circuit_search_targets(search_targets, question)
+                return result
+        # Fallback: try catalog-based answer
+        return {
+            "question_type": QuestionType.FUNCTIONAL_CIRCUIT,
+            "headline": "Functional circuit not found in the current registry.",
+            "sections": [{
+                "heading": "Circuit Query",
+                "items": [
+                    "This question appears to be about a functional circuit, but "
+                    "no matching circuit was found. Try asking about a specific circuit "
+                    "by name (e.g., 'Sensory Prediction Error Circuit') or ask "
+                    "'list all circuits' to see what's available."
+                ],
+            }],
+            "follow_ups": [
+                "List all functional circuits",
+                "What are the T2 archetypes?",
+                "How do circuits relate to molecules?",
+            ],
+        }
+
+    def _handle_archetype_query(self, question: str) -> Dict[str, Any]:
+        """Handle archetype guide queries using CircuitQAService."""
+        if _HAS_CIRCUIT_QA and _circuit_qa_service:
+            # Identify which archetype
+            q_lower = question.lower()
+            archetype_map = {
+                "predictive coding": "PREDICTIVE_CODING",
+                "homeostatic regulation": "HOMEOSTATIC_REGULATION",
+                "homeostatic": "HOMEOSTATIC_REGULATION",
+                "accumulation to bound": "ACCUMULATION_TO_BOUND",
+                "competitive selection": "COMPETITIVE_SELECTION",
+                "gated propagation": "GATED_PROPAGATION",
+                "convergent state": "CONVERGENT_STATE_MONITORING",
+                "convergent state monitoring": "CONVERGENT_STATE_MONITORING",
+            }
+            for keyword, archetype_id in archetype_map.items():
+                if keyword in q_lower:
+                    result = _circuit_qa_service.format_archetype_answer(archetype_id)
+                    if result:
+                        return result
+
+            # If "list all circuits/archetypes" query
+            if any(w in q_lower for w in ["list", "show", "all"]):
+                summary = _circuit_qa_service.get_all_circuits_summary()
+                sections = []
+                for arch, circuits in summary.get("by_archetype", {}).items():
+                    arch_info = _circuit_qa_service.__class__.__dict__.get("ARCHETYPE_DESCRIPTIONS", {})
+                    # Use the module-level constant
+                    from src.services.circuit_qa_service import ARCHETYPE_DESCRIPTIONS
+                    arch_name = ARCHETYPE_DESCRIPTIONS.get(arch, {}).get("name", arch)
+                    items = [
+                        f"**{c['name']}** [{c['evidence']}]: {c.get('domain', '')}"
+                        for c in circuits
+                    ]
+                    sections.append({
+                        "heading": f"{arch_name} ({len(circuits)} circuits)",
+                        "items": items,
+                    })
+                dist = summary.get("evidence_distribution", {})
+                return {
+                    "question_type": QuestionType.ARCHETYPE_GUIDE,
+                    "headline": (
+                        f"ATLAS contains {summary['total_circuits']} functional circuits across "
+                        f"6 T2 archetypes: {dist.get('STRONG', 0)} strong, "
+                        f"{dist.get('MODERATE', 0)} moderate, {dist.get('HYPOTHETICAL', 0)} hypothetical."
+                    ),
+                    "sections": sections,
+                    "follow_ups": [
+                        "Tell me about the Sensory Prediction Error Circuit",
+                        "What uses competitive selection?",
+                        "How do circuits relate to T1.5 theories?",
+                    ],
+                }
+
+        # Fallback
+        return {
+            "question_type": QuestionType.ARCHETYPE_GUIDE,
+            "headline": "Circuit QA service not available",
+            "sections": [{"heading": "Unavailable", "items": ["Circuit data not loaded."]}],
+            "follow_ups": ["Show me all theories", "What molecules exist?"],
+        }
+
+    def _queue_circuit_search_targets(
+        self, search_targets: list, source_question: str
+    ) -> int:
+        """
+        Insert circuit QA search targets into the suggestion pipeline.
+
+        When a circuit answer includes suggested article searches (especially
+        for HYPOTHETICAL circuits), those queries feed directly into the
+        recommendation loop so the system actively seeks missing evidence.
+
+        Args:
+            search_targets: List of search query strings from circuit QA
+            source_question: The user question that triggered the circuit answer
+
+        Returns:
+            Number of suggestions inserted
+        """
+        count = 0
+        try:
+            from src.services.interpretation_space_suggestions import (
+                InterpretationSpaceSuggestionsManager,
+                SuggestionRecord,
+            )
+            # Use the web_db_path from config if available, else default
+            db_path = getattr(self, "_db_path", None)
+            if db_path is None:
+                # Try common locations
+                from pathlib import Path
+                candidates = [
+                    Path("data/article_eater.db"),
+                    Path("article_eater.db"),
+                ]
+                for p in candidates:
+                    if p.exists():
+                        db_path = str(p)
+                        break
+            if db_path is None:
+                logger.debug("No DB path for circuit search target queueing")
+                return 0
+
+            mgr = InterpretationSpaceSuggestionsManager(db_path)
+            for query in search_targets:
+                record = SuggestionRecord(
+                    source="circuit_qa",
+                    status="identified",
+                    description=(
+                        f"Circuit testability search: {query[:120]} "
+                        f"(triggered by: {source_question[:60]})"
+                    ),
+                    suggested_search=query,
+                    priority_score=0.65,  # Moderate-high: evidence gaps matter
+                )
+                try:
+                    mgr.insert_suggestion(record)
+                    count += 1
+                except Exception as e:
+                    logger.debug(f"Failed to queue circuit search target: {e}")
+        except ImportError:
+            logger.debug("Suggestion manager not available for circuit search targets")
+        except Exception as e:
+            logger.debug(f"Circuit search target queueing failed: {e}")
+        if count > 0:
+            logger.info(
+                f"Queued {count} circuit search targets for recommendation loop"
+            )
+        return count
+
+    def _ai_answer(self, question: str, qtype: str,
                    confidence: float) -> Dict[str, Any]:
         """Route question to AI with assembled context."""
         self._stats["ai_routed"] += 1

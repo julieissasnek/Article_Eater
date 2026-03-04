@@ -1,0 +1,20 @@
+{
+  "atom_id": "prediction_error_computation",
+  "name": "Prediction Error Computation",
+  "description": "Hierarchical prediction error in cortical circuits: comparison of top-down predictions with bottom-up sensory signals. Core mechanism of predictive processing (Rao & Ballard, 1999). Generates error signals that drive perceptual inference and learning.",
+  "maturity": "ESTABLISHED",
+  "neural_substrate": ["cortex", "thalamus"],
+  "computational_signature": "PE_layer = sensory_input - prediction_from_layer_above",
+  "t1_frameworks": ["predictive-processing"],
+  "key_references": [
+    "Rao, R. P., & Ballard, D. H. (1999). Predictive coding in the visual cortex: A functional interpretation of some extraclassical receptive-field effects. Nature Neuroscience, 2(1), 79-87.",
+    "Bastos, A. M., Usrey, W. M., Adams, R. A., Mangun, G. R., Fries, P., & Friston, K. J. (2012). Canonical microcircuits for predictive coding. Neuron, 76(4), 695-711."
+  ],
+  "empirical_evidence": "Computational models explain V1 receptive fields and surround suppression. fMRI studies show prediction error signals in visual cortex. Lesion and inactivation studies implicate top-down connections in error generation. Less direct evidence than CANONICAL atoms but strong theoretical grounding.",
+  "cross_domain_confirmed": false,
+  "parameters": {
+    "prediction_source": "feedforward or recurrent top-down",
+    "error_weighting": "depends on prediction reliability",
+    "temporal_offset": "aligns with feedforward latencies"
+  }
+}

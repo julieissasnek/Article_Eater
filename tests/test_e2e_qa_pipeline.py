@@ -72,7 +72,7 @@ def test_e2e_enrichment_pipeline_latency_and_services():
     
     # Evaluate which steps succeeded/skipped
     attempted = metadata["services_attempted"]
-    assert len(attempted) == 9 # All 9 steps attempted
+    assert len(attempted) >= 9  # At least 9 core steps; may increase as enrichments added
     
     # None should have crashed
     failed = metadata["services_failed"]

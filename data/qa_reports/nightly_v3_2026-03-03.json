@@ -1,6 +1,6 @@
 {
   "version": "3.0",
-  "timestamp": "2026-03-03T08:31:56.404144+00:00",
+  "timestamp": "2026-03-04T07:42:16.759858+00:00",
   "dry_run": true,
   "sections": {
     "health": {
@@ -26,8 +26,15 @@
       "aeshi_score": 50
     },
     "core_invariants": {
-      "violations_count": 4,
+      "violations_count": 5,
       "violations": [
+        {
+          "code": "INV-0",
+          "severity": "CRITICAL",
+          "description": "System not in OPERATIONAL state",
+          "affected_beliefs": [],
+          "trigger_paper_id": null
+        },
         {
           "code": "INV-6",
           "severity": "WARNING",
@@ -126,7 +133,7 @@
           "accumulate_more_health_data"
         ],
         "prediction_basis": "insufficient_data",
-        "timestamp": "2026-03-03T08:31:57.444586+00:00"
+        "timestamp": "2026-03-04T07:42:17.996915+00:00"
       },
       "patterns": []
     },
@@ -146,10 +153,10 @@
     "statistics": {
       "templates": 166,
       "extractions": 1069,
-      "molecules": 18,
+      "molecules": 38,
       "cva_service_files": 9,
       "cva_model_files": 3,
-      "test_files": 270,
+      "test_files": 289,
       "unresolved_outcomes": 4080,
       "data_quality": {
         "total_findings": 33116,
@@ -181,7 +188,7 @@
     },
     "recommendation_loop": {
       "status": "operational",
-      "cycle_duration_seconds": 3.49386,
+      "cycle_duration_seconds": 0.036146,
       "interpretation_space_gaps": 188,
       "qa_suggestions": 0,
       "total_suggestions": 188,
@@ -190,26 +197,26 @@
       "low_voi_suggestions": 152,
       "inserted_into_queue": 0,
       "searches_dispatched": 0,
-      "total_targets_in_queue": 69,
-      "high_priority_targets": 12,
+      "total_targets_in_queue": 19,
+      "high_priority_targets": 19,
       "queue_health": {
         "status": "database_unavailable",
-        "duration_seconds": 3.5,
-        "timestamp": "2026-03-03T08:32:01.484141+00:00"
+        "duration_seconds": 0.0,
+        "timestamp": "2026-03-04T07:42:18.640610+00:00"
       }
     },
     "qa_assessment": {
       "status": "success",
-      "timestamp": "2026-03-03T08:32:01.484627+00:00",
-      "duration_ms": 8
+      "timestamp": "2026-03-04T07:42:18.640803+00:00",
+      "duration_ms": 0
     }
   },
   "summary": {
     "aeshi": 50,
-    "violations": 4,
+    "violations": 5,
     "cva_checks_passed": 4,
     "playbooks_executed": 0,
-    "duration_ms": 5089.4
+    "duration_ms": 1881.9
   },
-  "duration_ms": 5089.4
+  "duration_ms": 1881.9
 }

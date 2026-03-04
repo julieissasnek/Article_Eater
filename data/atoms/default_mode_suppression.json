@@ -1,0 +1,20 @@
+{
+  "atom_id": "default_mode_suppression",
+  "name": "Default Mode Suppression",
+  "description": "Task-positive suppression of default mode network (DMN) activity during externally-focused tasks. Brain deactivates self-referential processing (medial prefrontal, posterior cingulate, angular gyrus) when engaged in goal-directed behavior.",
+  "maturity": "HYPOTHETICAL",
+  "neural_substrate": ["medial_prefrontal_cortex", "posterior_cingulate", "angular_gyrus"],
+  "computational_signature": "DMN_activity(task) = baseline * (1 - task_engagement_level)",
+  "t1_frameworks": ["attention", "task-control"],
+  "key_references": [
+    "Raichle, M. E., MacLeod, A. M., Snyder, A. Z., et al. (2001). A default mode of brain function. Proceedings of the National Academy of Sciences, 98(2), 676-682.",
+    "Raichle, M. E. (2015). The brain's default mode network. Annual Review of Neuroscience, 38, 433-447."
+  ],
+  "empirical_evidence": "Robust fMRI finding: DMN activity anticorrelated with task-positive regions during externally-focused tasks. DMN engagement during mind-wandering and rest. Lesion studies weak. Causal mechanism unclear: task engagement suppresses DMN, or DMN suppression enables task focus? Functional role debated (self-referential processing vs. others).",
+  "cross_domain_confirmed": false,
+  "parameters": {
+    "suppression_timescale": "seconds to minutes",
+    "task_specificity": "stronger for certain task types (external vs. internal focus)",
+    "behavioral_correlate": "mind-wandering during low DMN suppression"
+  }
+}

@@ -127,7 +127,7 @@ class TestIntegrationCascade:
             PaperIntegrationOrchestrator,
             STEPS,
         )
-        assert len(STEPS) == 14
+        assert len(STEPS) == 16
 
     def test_cascade_all_steps_implemented(self):
         """IC-SC1: Every STEPS entry has a corresponding _step_ method."""
@@ -283,7 +283,7 @@ class TestIntegrationCascade:
 
             # Event should have cascade_steps
             assert event.cascade_steps is not None
-            assert len(event.cascade_steps) == 14, f"Expected 14 steps, got {len(event.cascade_steps)}"
+            assert len(event.cascade_steps) == 16, f"Expected 16 steps, got {len(event.cascade_steps)}"
 
             # Check that each step has a status
             for step in event.cascade_steps:

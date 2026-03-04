@@ -1,0 +1,91 @@
+{
+  "molecule_id": "FC_INTERPRETIVE_SELECTION",
+  "name": "Interpretive Selection (Bistability) Circuit",
+  "short_description": "Competes between two interpretive frameworks by accumulating evidence for each, weighted by prior biases, to achieve perceptual bistability and interpretation switching.",
+  "components": [
+    {
+      "name": "EVIDENCE_EVALUATOR_A",
+      "template_ids": [
+        "T_EVIDENCE_A"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Accumulates evidence supporting interpretation A from sensory signals"
+    },
+    {
+      "name": "EVIDENCE_EVALUATOR_B",
+      "template_ids": [
+        "T_EVIDENCE_B"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Accumulates evidence supporting interpretation B from sensory signals"
+    },
+    {
+      "name": "PRIOR_BIAS_INTEGRATOR",
+      "template_ids": [
+        "T_PRIOR_BIAS_INT"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Adjusts evidence thresholds based on learned prior biases and expectancies"
+    },
+    {
+      "name": "MUTUAL_INHIBITION_SELECT",
+      "template_ids": [
+        "T_MUTUAL_INHIBIT"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Implements mutual inhibition dynamics allowing bistable switching between interpretations"
+    }
+  ],
+  "constituent_templates": [
+    "T_EVIDENCE_A",
+    "T_EVIDENCE_B",
+    "T_PRIOR_BIAS_INT",
+    "T_MUTUAL_INHIBIT"
+  ],
+  "interaction_graph": {
+    "T_EVIDENCE_A": {
+      "T_EVIDENCE_B": "SYNERGISTIC"
+    },
+    "T_EVIDENCE_B": {
+      "T_PRIOR_BIAS_INT": "SYNERGISTIC"
+    },
+    "T_PRIOR_BIAS_INT": {
+      "T_MUTUAL_INHIBIT": "SYNERGISTIC"
+    }
+  },
+  "framework_ids": [
+    "predictive-processing"
+  ],
+  "domain": "perception",
+  "molecule_type": "FUNCTIONAL_CIRCUIT",
+  "scope_conditions": [
+    "Ambiguous sensory input",
+    "Multiple plausible interpretations",
+    "Functional bistable perceptual systems"
+  ],
+  "overall_maturity": "TENTATIVE",
+  "key_references": [
+    "Leopold, D. A., & Logothetis, N. K. (1999). Multistable phenomena: Changing views in perception. Trends in Cognitive Sciences, 3(7), 254\u2013264.",
+    "Hohwy, J., Roepstorff, A., & Friston, K. (2008). Predictive coding explains binocular rivalry: An active inference account. Neuron, 72(1), 142\u2013154."
+  ],
+  "empirical_support": "PRELIMINARY",
+  "competing_theories": [],
+  "design_implications": [
+    "Ambiguous visual designs can create dynamic perceptual experiences; use bistable patterns strategically in art, signage, or wayfinding to engage interpretive processing",
+    "Prior beliefs bias perception; culturally grounded design symbols may be ambiguous across groups; validate interpretive clarity with diverse audiences"
+  ],
+  "confidence_intervals": null,
+  "parent_t1_5_theory": null,
+  "linked_archetypes": [
+    "COMPETITIVE_SELECTION"
+  ],
+  "inputs": [
+    "interpretation_a_evidence",
+    "interpretation_b_evidence",
+    "prior_bias"
+  ],
+  "outputs": [
+    "dominant_interpretation",
+    "bistability_index"
+  ]
+}

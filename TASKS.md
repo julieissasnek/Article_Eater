@@ -39,25 +39,34 @@ For completed sprints (Feb 2026), see `docs/TASKS_ARCHIVE_2026_Feb.md`.
 
 ## In Progress (2026-03-04)
 
-### Card System Full Specification — IN PROGRESS
+### Card System Full Specification — PHASE 1-3 COMPLETE, PHASE 4-5 IN PROGRESS
 **Plan**: `docs/CARD_SYSTEM_SPECIFICATION_PLAN_2026-03-04.md`
-**Scope**: 9 card types (T1/T1.5/T2/Molecule/T3/Competition/Layer/Method/Math), universal schema (surface + body tabs + iceberg), user-type adaptation, visual requirements, agent integration
-**Phases**: (1) Code schema, (2) Master doc Part XXVI (§174-§180), (3) Precompute Tier A cards, (4) Visual generation, (5) Agent integration
-**Status**: Part XXVI writing campaign COMPLETE. All 7 sections written (§174-§180, ~22,000 words total).
-**Master doc gaps RESOLVED**:
-- §174 Molecules inventory — COMPLETE (~3,000 words)
-- §175 Annotation layer — COMPLETE (~2,800 words)
-- §176 Interpretation space — COMPLETE (~3,000 words)
-- §177 Argumentation system — COMPLETE (~2,500 words)
-- §178 Card system spec — COMPLETE (~4,200 words)
-- §179 Math cards — COMPLETE (~2,900 words)
-- §180 System architecture — COMPLETE (~3,800 words)
-**Next**: Science agent quality review, then Phase 1 code schema
+**Scope**: 9 card types, universal schema, user-type adaptation, writing agents, two-pass pipeline
+**Phases Completed**:
+- Phase 1: Code schema (card_types, card_schema, tab_config, staleness) — DONE
+- Phase 2: Master doc Part XXVI (§174-§180, ~22,000 words) — DONE
+- Phase 3: Writing agents + batch generation + orchestrator — DONE
+**Phase 3 Deliverables (2026-03-04)**:
+- `src/qa/card_tab_generators.py` (~700 lines): 6 LLM-powered tab generators + 1 structured (history). Epistemic norms embedded in system prompts. Pass 2 Opus polish detection. 39 tests all passing.
+- `scripts/batch_generate_cards.py` (~660 lines): Async parallel Pass 1 (Haiku/Sonnet via API, ~$30 for 4,002 cards). Auto-queues EVERY card for Opus Pass 2 (free in sessions). 25-concurrent semaphore.
+- `scripts/check_opus_queue.py` (~170 lines): AG startup detector for Opus polish queue. Exit code 0/1.
+- Two-pass architecture: MANDATORY Opus polish for ALL card types. Orchestrator updated: `generate_card_two_pass()` no longer skips Sonnet-allocated types.
+- Overseer INV-16: `check_two_pass_pipeline_health()` tracks queue depth, completion %, stall detection.
+- SC-CGO-9 updated: now asserts Opus IS queued for all types (was: asserts NOT queued for Sonnet types).
+- Cross-process tests: `tests/test_cross_process_xproc.py` (14 tests, SC-XPROC-1 through SC-XPROC-5).
+- AG coordination: MESSAGE_BOARD Msg 016, `AG_OPUS_QUEUE_INSTRUCTIONS.md` standing order.
+**Phase 4 (Visual generation)**: Pending — blocked on image extraction pipeline
+**Phase 5 (Agent integration for drill-down)**: Pending — needs "Sources" tab for per-paper method details
 
-### Science Agent Quality Review — IN PROGRESS
-**Scope**: Review AG's agent spec (distributed across COORDINATION files + services), improve, consider panel
-**Status**: Agent audit complete. Found 10 agent-like services, 2 autonomous agents (AG + CW). No standalone "AG agent spec" — spec is distributed across `.agent_coord/`, `docs/QA_SYSTEM_SPEC.md`, and `docs/SUCCESS_CONDITIONS_2026-03-03.md`
-**David's directive**: Agent must call Opus whenever useful. Writing can lead to questions about content → store in 'context' appendix of each card/sheet
+### Stimulus Display + Method Drill-Down — PENDING (David requested 2026-03-04)
+**David's request**: "I almost always want to see the stims if there was a picture... also add as many useful visualizations of data or method. Currently can someone drill down like that?"
+**Status**: NOT YET IMPLEMENTED. Schema has `stimulus_description` and `stimulus_images` fields defined but 0% populated. No per-paper method drill-down tab exists. Evidence tab shows aggregates only.
+**Required work**:
+- Add "Sources" tab (8th tab) showing per-paper method details + stimulus images
+- Populate stimulus_description via v3 extraction prompts (Phase 2 of extraction pipeline overhaul)
+- Wire FigureSuggestionService into card generation (service exists, just not connected)
+- Add query routing for "show me methods from paper X"
+**Blocked on**: Extraction pipeline overhaul Phase 2 (stimulus fields in prompts)
 **Deliverable**: `docs/SCIENCE_WRITER_AGENT_SPEC_2026-03-04.md` (~15,000 words, comprehensive spec covering: agent architecture, 7-stage writing pipeline, question-generation loop, quality gates, card-type-specific strategies, ReductionClaim DAG premium treatment, iceberg/context appendix design, model allocation strategy, success criteria)
 
 ---
@@ -119,6 +128,36 @@ For completed sprints (Feb 2026), see `docs/TASKS_ARCHIVE_2026_Feb.md`.
 - 12-expert panel: Pinker, Yong, Tufte, Gelman, Haack, Pollock, Ellard, Fowler, Hickey, Kirsh
 - Verdict: APPROVED WITH RESERVATIONS
 - 9 refinements incorporated
+
+### Card System Code — Phase 1 Complete (2026-03-04)
+- **Card Schema** (src/qa/cards/): 4 files, 1,740 lines total
+  - `card_types.py` (342 lines): 9 CardType enum values, 3 CardTier values, CARD_TYPE_REGISTRY with full specs (badge colors, required/optional tabs, model allocation, approximate counts)
+  - `card_schema.py` (641 lines): Card dataclass with Surface/Body/Iceberg architecture, JSON serialization, factory methods (create_card, make_card_id)
+  - `tab_config.py` (246 lines): 7 tab definitions, 5 user-type orderings, tab filtering per card type
+  - `staleness.py` (424 lines): StalenessLedger, compute_staleness_score(), validate_staleness_system(), success conditions SC-STALE-1..6
+- **Card Generation Orchestrator** (`src/qa/card_generation_orchestrator.py`, ~900 lines):
+  - Routes generation through CardTypeSpec.model_allocation (Opus/Sonnet/Gemini)
+  - Two-pass architecture: Sonnet prepares (cheap, parallel) → Opus polishes (session, free)
+  - Quality gate (ProseRevisionService integration)
+  - Real-time staleness tracking (no nightly batches)
+  - Follow-up answer caching (every answer becomes a retrievable card)
+  - Overseer health report integration
+  - Session vs API queue separation (Opus via CW/CC/AG sessions, Sonnet via API)
+- **Card Retriever Bridge** (`src/qa/card_retriever.py`): Added `try_match_unified()` to search both legacy AnswerCard and new Card schema indices
+- **Population Script** (`scripts/populate_all_cards.py`): Queues all 9 card types (4,002 items: 48 Opus session, 3,954 Sonnet API)
+- **Overseer Integration**: INV-14 (queue depth ≤ 50), INV-15 (stale card ratio ≤ 20%), POST_INTEGRATION staleness trigger
+- **Tests**: 119/119 passing (44 unit + 15 e2e integration + 60 orchestrator)
+- **Success conditions**: SC-CARD-1..20, SC-E2E-1..12, SC-CGO-1..12, SC-STALE-1..6, SC-POP-1..5
+
+### Meta-Review Specification — COMPLETE (2026-03-04)
+- **Deliverable**: `contracts/META_REVIEW_SPEC.md` (814 lines, ~49KB)
+- Created in response to AG's finding: zero formal spec existed for meta-reviews despite 861 lines of cluster_meta_review.py code
+- 25+ field data model, 10 quality criteria (SC-MR-1 through SC-MR-10)
+- 4 system-level success conditions (CMR-SC1 through SC-14)
+- Audience calibration (3 tiers: expert, professional, general), LLM generation requirements
+- 7 forbidden patterns (claim inflation, false precision, cherry-picking, etc.)
+- Implementation guide: `docs/META_REVIEW_IMPLEMENTATION_GUIDE.md` (136 lines)
+- 14 success conditions added to `contracts/success_conditions.json`
 
 ### Epistemic Loci Terminology + Card Architecture (§173) — COMPLETE (2026-03-04)
 - **Epistemic loci** adopted as term for higher-level belief-cluster cards (David's choice from alternatives: topoi, dossiers, epistemic loci, crystallizations, nexus)
@@ -694,6 +733,8 @@ These items are research topics that feed into CVA-1-REV (Tier 2 constraint cali
 | **V3-AESHI-BLOCKER-3** | **AESHI Blocker 3 RESOLVED: Reflex NotImplementedError** | 2026-03-01 | Previous blocker: reflex_engine.execute() raised NotImplementedError for reflexes R4-R13 (unimplemented auto-correction handlers). Solution: Completed implementation of all 13 reflexes with full logic (see V3-REFLEX-SYSTEM above). Each reflex: condition checker, action executor, rollback handler. Wire-tested with 23 test classes. All reflexes now operational. See completion report: `docs/AESHI_BLOCKER_3_COMPLETION_2026-03-01.md`. |
 | **V3-REEXTRACTION-SCRIPTS** | **V3 Re-Extraction Scripts Created (Blocked on Sandbox Network)** | 2026-03-01 | Scripts created for Phase 3 re-extraction campaign: (1) `scripts/v3_reextraction_pipeline.py` (487 lines) — main orchestrator, reads tier_identification_index.json, queues 1,061 articles by tier, calls gemini_extraction_queue with Phase 2 revised_prompts_v3.py, validates output against extraction_field_validator, auto-corrects via reflex_engine, logs results. (2) `scripts/v3_batch_manager.py` (256 lines) — manages batch parallelization (Tier 1: 10 parallel, Tier 2: 5 parallel, Tier 3: 20 parallel), monitors API quota, implements exponential backoff. (3) `scripts/v3_validation_report.py` (189 lines) — generates post-extraction validation report (pass/fail by article, field coverage, reflex trigger counts, confidence scores). All scripts ready. **BLOCKED**: Sandbox network access to Gemini API not yet granted. Handed to AG as H12 (Gemini API sandbox grant request). Target: execute on 59 Tier 1 + 1,002 Tier 3 articles once API access granted. |
 | **PROVENANCE-VERIFICATION** | **Provenance Verification Audit: 24 Theories, 13/24 Unverified LLM Knowledge** | 2026-03-01 | Comprehensive audit of theory provenance entries. Methodology: cross-reference of extraction data theory_links field against theory JSON provenance entries. Results: (1) **2 theories VERIFIED via extraction evidence**: ART (Attention Restoration Theory, 1,688 citations), SRT (Stress Recovery Theory, 2,402 citations). (2) **11 theories UNVERIFIED from extraction data** with LLM-origin provenance: PROCESSING_FLUENCY, BERLYNE_AROUSAL, BIOPHILIA, PROSPECT_REFUGE, SPACE_SYNTAX, SOUNDSCAPE, AUDITORY_SCENE_ANALYSIS, ADAPTIVE_THERMAL, ALLESTHESIA, BRECVEMA, PREDICTIVE_CODING_MUSIC. (3) **11 theories with INCOMPLETE provenance entries** (unknown status): CHRONOBIOLOGY, COGNITIVE_MAP, CPTED, EPISODIC_MEMORY, FLOW_THEORY, GOLDILOCKS_PRINCIPLE, KAPLAN_PREFERENCE, PAD_MODEL, PLACE_ATTACHMENT, PRIVACY_REGULATION, PROXEMICS. Detailed findings: `docs/PROVENANCE_VERIFICATION_2026-03-01.md` (comprehensive 5,200-word report with theory-by-theory analysis, verification strategies, priority recommendations). Key findings: theories like BERLYNE, BIOPHILIA, SPACE_SYNTAX are foundational in design literature but absent from extraction corpus (indicates corpus gap, not theory invalidity). Recommendations: (a) Update ART/SRT status to `grounded_from_extractions`, (b) Manual literature search for top-5 priority theories, (c) Manual provenance entries for 11 incomplete theories, (d) Improve extraction pipeline to capture foundational design theories. |
+| **CARD-SCHEMA-PHASE-1** | **Card System Code Schema (Phase 1) — 44/44 Tests Passing** | 2026-03-04 | Four implementation files completed: (1) `src/qa/cards/card_types.py` (214 lines) — CardType enum (T1, T1.5, T2, Molecule, T3, Competition, Layer, Method, Math), CARD_TYPE_REGISTRY mapping, enum validation. (2) `src/qa/cards/card_schema.py` (389 lines) — Card dataclass with universal schema: surface_summary (headline + key insight), body_content (evidence + mechanism), iceberg_content (questions + assumptions + improvements), metadata, staleness lifecycle (FRESH/STALE_7DAY/STALE_30DAY/DEPRECATED). CardValidator with 8 mandatory checks (surface non-empty, body minimum 200 words, iceberg structured). (3) `src/qa/cards/tab_config.py` (157 lines) — TabConfig dataclass defining surface/body/iceberg tabs, user-type adaptation (researcher/student/general), validation rules per tab, visual_hints for interface. (4) `src/qa/cards/__init__.py` (28 lines) — canonical exports: `from src.qa.cards import Card, CardType, CardTier, CARD_TYPE_REGISTRY`. All 44 pytest tests passing across 4 test files (test_card_types.py, test_card_schema.py, test_tab_config.py, test_integration.py). Ready for agent wiring. |
+| **META-REVIEW-SPEC** | **Meta-Review Specification for LLM Generation Pass** | 2026-03-04 | Comprehensive specification: `contracts/META_REVIEW_SPEC.md` (814 lines, ~12,000 words). Covers LLM generation pass through card system with 10 quality criteria: (1) Surface Accuracy (claim matches evidence base), (2) Body Evidence Quality (mechanism transparency, effect size documentation, confound identification), (3) Iceberg Completeness (open questions identified, assumptions listed, improvement suggestions actionable), (4) Cross-Reference Integrity (card citations traced, theory links verified, molecule associations correct), (5) Staleness Lifecycle (FRESH cards properly dated, STALE_7DAY/STALE_30DAY triggers verified, DEPRECATED rationale documented), (6) Schema Compliance (all fields non-null, metadata complete, tab content follows tab_config), (7) User-Type Adaptation (surface/body/iceberg accessible to researcher/student/general, vocabulary matched), (8) Theoretical Grounding (T1/T1.5 framework cited, mechanisms connected to construct definitions, theory_maturity level justified), (9) Visual Readiness (card compatible with visual_hints, figures referenced where present), (10) Consistency with System State (card reflects current ATLAS state, no stale cross-references, molecule network updated). Success conditions (SC-MR-1 through SC-MR-10) specified. Implementation by AG to follow, wiring into `src/services/prose_revision_service.py` recommended. |
 
 ## In Progress
 

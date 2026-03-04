@@ -399,6 +399,21 @@ BEFORE RETURNING YOUR JSON, verify EVERY item below. If any check fails, revise:
     - GOOD: "Abstract reports N=240 between-subjects design", "PRISMA diagram on p.3"
     - Check: Every signal must be traceable to paper content
 
+11. **Stimulus Description Coverage** (NEW): For EVERY empirical finding:
+    - stimulus_description MUST be populated (NEVER null for empirical claims)
+    - primary_type must be one of: visual_scene, soundscape, thermal, olfactory, spatial, lighting, material, mixed
+    - components array MUST have at least 1 entry describing the stimulus
+    - delivery_method must be specified: in_situ, VR, photo, video, audio, or imagined
+    - If paper lacks details, document this in components with {"name": "Details not provided", "essential": false}
+    - Target: 100% of empirical findings (v2 had 0% populated)
+    - Check: Search findings for stimulus_description: null → 0 occurrences for empirical papers
+
+12. **Stimulus Images Coverage**: For findings describing visual manipulations (lighting, spatial, visual_form):
+    - stimulus_images should be populated if figures are available
+    - Each image: {description: string, figure_ref: string (e.g., "Figure 2A"), image_type: photo|rendering|diagram|floor_plan|graph}
+    - Target: 70%+ of visually-described stimuli have at least 1 image reference
+    - Check: Count findings with visual primary_type that reference figures
+
 ---
 
 If you find issues during validation:
@@ -599,9 +614,28 @@ Return this JSON structure:
    - Moderation (interaction): extract as separate finding with claim_type: "moderated"
    - Mediation: extract (a) X→Y direct, (b) X→M, (c) M→Y, (d) indirect effect as 4 findings
 
-6. **STIMULUS DESCRIPTION**: For every empirical finding, describe the experimental stimulus
-   in detail sufficient to replicate. If multiple stimuli used, pick the ONE directly tested
-   in THIS finding and describe it.
+6. **STIMULUS DESCRIPTION**: For EVERY empirical finding, ALWAYS populate stimulus_description
+   with these fields (DO NOT leave as null):
+
+   - primary_type: One of {visual_scene, soundscape, thermal, olfactory, spatial, lighting, material, mixed}
+     Pick the dominant sensory modality of the experimental manipulation
+
+   - components: Array describing each key component of the stimulus. For architectural:
+     Include room dimensions, ceiling height, window area, material finishes, lighting (CCT, lux).
+     For lighting: include CCT (e.g., 2700K, 4000K, 6500K), illuminance (lux), CRI if available.
+     For acoustic: include dB levels, frequency content, source type (mechanical, natural, speech).
+     For materials: include material types, textures, colors, finish (matte/glossy).
+     Each component object: {"name": string, "category": string, "essential": true/false}
+
+   - delivery_method: How stimulus was presented: in_situ (real environment), VR, photo, video,
+     audio, or imagined (mental imagery)
+
+   - duration_seconds: How long exposure lasted (null if not applicable or not stated)
+
+   MANDATE: DO NOT use null for stimulus_description in empirical findings. If the paper does not
+   report stimulus details, write "Details not provided in paper" in the first component's name field,
+   set essential: false, and note what you inferred. Example: {"name": "room_type: inferred_office",
+   "category": "spatial", "essential": false}
 
 7. **SAMPLE SIZE MANDATORY**: For every empirical finding:
    - If N is stated in paper: sample_size: N, sample_size_source: "reported"

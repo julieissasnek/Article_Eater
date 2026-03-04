@@ -1,0 +1,79 @@
+{
+  "molecule_id": "FC_COHERENCE_MONITORING",
+  "name": "Coherence Monitoring Circuit",
+  "short_description": "Integrates cross-modal prediction errors, temporal consistency signals, and spatial coherence indices to detect conflicts and generate behavioral adjustment signals.",
+  "components": [
+    {
+      "name": "XMOD_PE_INTEGRATOR",
+      "template_ids": [
+        "T_PE_INTEGRATION"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Aggregates cross-modal prediction errors from visual, auditory, and proprioceptive channels"
+    },
+    {
+      "name": "TEMPORAL_CONSISTENCY_CHK",
+      "template_ids": [
+        "T_TEMPORAL_BINDING"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Monitors temporal alignment and consistency of events across modalities"
+    },
+    {
+      "name": "CONFLICT_SIGNAL_GEN",
+      "template_ids": [
+        "T_CONFLICT_DETECT"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Generates conflict signal when integrated PE and temporal measures diverge from spatial coherence"
+    }
+  ],
+  "constituent_templates": [
+    "T_PE_INTEGRATION",
+    "T_TEMPORAL_BINDING",
+    "T_CONFLICT_DETECT"
+  ],
+  "interaction_graph": {
+    "T_PE_INTEGRATION": {
+      "T_TEMPORAL_BINDING": "SYNERGISTIC"
+    },
+    "T_TEMPORAL_BINDING": {
+      "T_CONFLICT_DETECT": "SYNERGISTIC"
+    }
+  },
+  "framework_ids": [
+    "predictive-processing"
+  ],
+  "domain": "perception",
+  "molecule_type": "FUNCTIONAL_CIRCUIT",
+  "scope_conditions": [
+    "Active multisensory input",
+    "Sufficient neural resources for cross-modal binding",
+    "Intact temporal processing mechanisms"
+  ],
+  "overall_maturity": "TENTATIVE",
+  "key_references": [
+    "Friston, K. (2010). The free-energy principle: A unified brain theory? Nature Reviews Neuroscience, 11(2), 127\u2013138.",
+    "Talsma, D., Senkowski, D., Soto-Faraco, S., & Woldorff, M. G. (2010). The multisensory brain: Cross-modal integration of competing signals. Trends in Cognitive Sciences, 14(4), 145\u2013159."
+  ],
+  "empirical_support": "PRELIMINARY",
+  "competing_theories": [],
+  "design_implications": [
+    "Environmental designs should ensure temporal and spatial alignment of multisensory cues (e.g., synchronized audio-visual feedback in interactive installations)",
+    "Coherence conflicts may increase cognitive load; minimize conflicting cross-modal information in wayfinding systems"
+  ],
+  "confidence_intervals": null,
+  "parent_t1_5_theory": null,
+  "linked_archetypes": [
+    "CONVERGENT_STATE_MONITORING"
+  ],
+  "inputs": [
+    "cross_modal_prediction_errors",
+    "temporal_consistency_signal",
+    "spatial_coherence_index"
+  ],
+  "outputs": [
+    "conflict_signal",
+    "behavioral_adjustment_magnitude"
+  ]
+}

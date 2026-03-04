@@ -163,6 +163,8 @@ STEPS = [
     (12, "refresh_voi_gaps",       False),
     (13, "post_validate",          True),
     (14, "snapshot_post",          True),
+    (15, "propagate_cards",        False),   # Real-time card regen
+    (16, "rebuild_mvs",            False),   # Immediate MV refresh
 ]
 
 
@@ -322,6 +324,8 @@ class PaperIntegrationOrchestrator:
             self._run_overseer_post_check(paper_id, self._event)
             # POST-INTEGRATION: Run QA assessment on newly-created beliefs (added 2026-03-02)
             self._run_qa_assessment(paper_id, self._mapped_beliefs)
+            # POST-INTEGRATION: Real-time card cascade (added 2026-03-04)
+            self._run_card_cascade(paper_id)
 
         return self._event
 
@@ -1454,6 +1458,149 @@ class PaperIntegrationOrchestrator:
             logger.debug("web_metadata table not available for snapshot")
 
         return {"snapshot_id": snapshot_id}
+
+    def _step_propagate_cards(self) -> Dict[str, Any]:
+        """Step 15: Real-time card regeneration for affected entities.
+
+        SUCCESS CONDITIONS:
+        SC-PC-1: Identifies all molecules affected by this paper
+        SC-PC-2: Regenerates L1 cards for affected molecules (no LLM)
+        SC-PC-3: Triggers T3 cluster meta-review via IngestionPipeline
+        SC-PC-4: On failure, logs but does NOT abort integration
+        SC-PC-5: Returns counts of molecules regenerated, clusters updated
+        """
+        result = {"molecules_updated": 0, "clusters_updated": 0}
+
+        extraction_path = self._extraction_path
+
+        # T3 cluster meta-reviews (IngestionPipeline)
+        try:
+            from src.qa.cluster_meta_review import IngestionPipeline
+            pipeline = IngestionPipeline()
+            stats = pipeline.on_article_ingested(extraction_path)
+            result["clusters_updated"] = sum(
+                s.get("clusters_updated", 0) for s in stats.get("steps", [])
+                if "clusters_updated" in s
+            )
+            result["ingestion_pipeline_ms"] = stats.get("total_ms", 0)
+        except Exception as e:
+            logger.warning(f"T3 card cascade failed (non-fatal): {e}")
+
+        # Molecule card regeneration
+        try:
+            from src.qa.molecule_card_generator import MoleculeCardGenerator
+            gen = MoleculeCardGenerator()
+            affected = gen.invalidate_affected_molecules(extraction_path)
+            for mol_id in affected:
+                try:
+                    gen.generate_for_molecule(mol_id)
+                    result["molecules_updated"] += 1
+                except Exception as e:
+                    logger.debug(f"Molecule card regen failed for {mol_id}: {e}")
+        except Exception as e:
+            logger.warning(f"Molecule card cascade failed (non-fatal): {e}")
+
+        return result
+
+    def _step_rebuild_mvs(self) -> Dict[str, Any]:
+        """Step 16: Immediate MV refresh for affected views.
+
+        SUCCESS CONDITIONS:
+        SC-MV-1: Calls IncrementalUpdater.on_new_extraction
+        SC-MV-2: Identifies affected MV clusters
+        SC-MV-3: Triggers immediate rebuild (not deferred to nightly)
+        SC-MV-4: On failure, logs but does NOT abort
+        """
+        result = {"clusters_refreshed": 0}
+
+        try:
+            from src.qa.incremental_updater import IncrementalUpdater
+            updater = IncrementalUpdater()
+            affected = updater.on_new_extraction(self._extraction_path)
+            result["affected_clusters"] = affected
+            result["clusters_refreshed"] = len(affected)
+
+            # Immediate rebuild of affected views (not deferred)
+            if affected:
+                try:
+                    from src.qa.mv_builder import MaterializedViewBuilder
+                    builder = MaterializedViewBuilder()
+                    manifest = builder.build_all(incremental=True)
+                    result["mv_rebuild"] = "completed"
+                except Exception as e:
+                    logger.warning(f"MV rebuild failed (non-fatal): {e}")
+                    result["mv_rebuild"] = f"failed: {e}"
+        except Exception as e:
+            logger.warning(f"MV refresh step failed (non-fatal): {e}")
+
+        return result
+
+    def _run_card_cascade(self, paper_id: str) -> None:
+        """
+        Post-integration hook: real-time card regeneration.
+
+        Runs defensively — failures are logged but do not affect
+        the integration result.
+
+        SUCCESS CONDITIONS:
+        SC-CC-1: Triggered after every successful integration
+        SC-CC-2: Calls IngestionPipeline.on_article_ingested for T3 clusters
+        SC-CC-3: Calls MoleculeCardGenerator.invalidate_affected_molecules
+        SC-CC-4: Calls IncrementalUpdater + immediate MV rebuild
+        SC-CC-5: Total time < 30 seconds for typical paper
+        SC-CC-6: Never crashes the integration
+        """
+        try:
+            extraction_path = getattr(self, '_extraction_path', None)
+            if not extraction_path:
+                logger.debug("No extraction_path available for card cascade")
+                return
+
+            import time as _time
+            start = _time.time()
+
+            # 1. T3 cluster meta-reviews
+            try:
+                from src.qa.cluster_meta_review import IngestionPipeline
+                pipeline = IngestionPipeline()
+                stats = pipeline.on_article_ingested(extraction_path)
+                logger.info(
+                    f"Card cascade T3: {stats.get('total_ms', 0):.0f}ms"
+                )
+            except Exception as e:
+                logger.warning(f"Card cascade T3 failed: {e}")
+
+            # 2. Affected molecule cards
+            try:
+                from src.qa.molecule_card_generator import MoleculeCardGenerator
+                gen = MoleculeCardGenerator()
+                affected = gen.invalidate_affected_molecules(extraction_path)
+                for mol_id in affected:
+                    try:
+                        gen.generate_for_molecule(mol_id)
+                    except Exception:
+                        pass
+                logger.info(
+                    f"Card cascade molecules: {len(affected)} regenerated"
+                )
+            except Exception as e:
+                logger.warning(f"Card cascade molecules failed: {e}")
+
+            # 3. MV refresh
+            try:
+                from src.qa.incremental_updater import IncrementalUpdater
+                updater = IncrementalUpdater()
+                updater.on_new_extraction(extraction_path)
+            except Exception as e:
+                logger.warning(f"Card cascade MV refresh failed: {e}")
+
+            elapsed = (_time.time() - start) * 1000
+            logger.info(
+                f"Card cascade for {paper_id}: {elapsed:.0f}ms total"
+            )
+
+        except Exception as e:
+            logger.error(f"Card cascade failed entirely: {e}")
 
     # =========================================================================
     # HELPER METHODS

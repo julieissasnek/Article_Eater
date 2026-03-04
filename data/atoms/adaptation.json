@@ -1,0 +1,20 @@
+{
+  "atom_id": "adaptation",
+  "name": "Adaptation",
+  "description": "Reduced neural response to sustained or repeated stimulation. Allows the nervous system to adjust sensitivity based on stimulus history. Mechanisms include synaptic depression, calcium-dependent inactivation, and intrinsic membrane properties.",
+  "maturity": "CANONICAL",
+  "neural_substrate": ["retina", "cortex", "thalamus", "periphery"],
+  "computational_signature": "response(t) = baseline * (1 - exp(-t/tau_slow)) + exp(-t/tau_fast)",
+  "t1_frameworks": ["sensory-coding", "predictive-processing", "homeostasis"],
+  "key_references": [
+    "Webster, M. A. (2011). Adaptation and visual coding. Journal of Vision, 11(5), 1-23.",
+    "Abbott, L. F., Varela, J. A., Sen, K., & Nelson, S. B. (1997). Synaptic depression and cortical gain control. Science, 275(5297), 220-224."
+  ],
+  "empirical_evidence": "Ubiquitous across sensory systems with multiple timescales (ms to hours). Early-stage adaptation involves synaptic mechanisms; longer timescales involve gene expression. Explains contrast sensitivity, texture perception, and stimulus selectivity. Functionally important for detecting changes in the environment.",
+  "cross_domain_confirmed": true,
+  "parameters": {
+    "fast_timescale": "100-500 ms (synaptic/intrinsic)",
+    "slow_timescale": "seconds to hours (activity-dependent)",
+    "recovery_rate": "slower than adaptation onset"
+  }
+}

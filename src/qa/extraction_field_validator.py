@@ -319,7 +319,12 @@ class ExtractionFieldValidator:
             self._check_consistency_rules(finding, article_family, index)
         )
 
-        # 13. EPISTEMIC PRINCIPLE-COMPLIANCE FIELDS (P1-P10)
+        # 13. STIMULUS DESCRIPTION & STIMULUS IMAGES
+        report.violations.extend(
+            self._validate_stimulus_description(finding, antecedent, index)
+        )
+
+        # 14. EPISTEMIC PRINCIPLE-COMPLIANCE FIELDS (P1-P10)
         report.violations.extend(
             self._validate_principle_fields(finding, article_family, index)
         )
@@ -1141,6 +1146,139 @@ class ExtractionFieldValidator:
                 message=f"Small sample (N={sample_size}) with causal claim (likely underpowered)",
                 finding_index=idx,
             ))
+
+        return violations
+
+    # --- Stimulus Description Validators ---
+
+    def _validate_stimulus_description(self, finding: dict, antecedent: str,
+                                       idx: int) -> list[Violation]:
+        """
+        Validate stimulus_description and stimulus_images fields.
+
+        Rules:
+        - For empirical findings: stimulus_description MUST be present (not null)
+        - primary_type must be one of the 8 canonical values
+        - components array should have at least 1 entry
+        - delivery_method must be specified for empirical claims
+        - If sensory language in antecedent but no stimulus, warn
+        """
+        violations = []
+        claim_type = finding.get("claim_type")
+        is_empirical = claim_type in (
+            "empirical_finding", "causal", "associational", "statistical",
+        )
+
+        stimulus = finding.get("stimulus_description")
+        stimulus_images = finding.get("stimulus_images", [])
+
+        # ST1: Stimulus required for empirical findings
+        if is_empirical and (stimulus is None or not isinstance(stimulus, dict)):
+            violations.append(Violation(
+                rule_id="ST1_STIMULUS_REQUIRED", field="stimulus_description",
+                severity=Severity.ERROR,
+                message="stimulus_description required for empirical findings (stimulus null or not dict)",
+                finding_index=idx,
+            ))
+            return violations  # Can't check further if no stimulus
+
+        # ST2: Check primary_type if stimulus exists
+        if stimulus and isinstance(stimulus, dict):
+            primary_type = stimulus.get("primary_type")
+            valid_types = {
+                "visual_scene", "soundscape", "thermal", "olfactory",
+                "spatial", "lighting", "material", "mixed"
+            }
+            if primary_type not in valid_types:
+                violations.append(Violation(
+                    rule_id="ST2_INVALID_PRIMARY_TYPE", field="stimulus_description",
+                    severity=Severity.ERROR,
+                    message=f"Invalid primary_type '{primary_type}'; must be one of {valid_types}",
+                    finding_index=idx,
+                ))
+
+            # ST3: Components array should have content
+            components = stimulus.get("components", [])
+            if not components or not isinstance(components, list) or len(components) == 0:
+                violations.append(Violation(
+                    rule_id="ST3_EMPTY_COMPONENTS", field="stimulus_description",
+                    severity=Severity.WARNING,
+                    message="stimulus_description.components is empty; should describe stimulus details",
+                    finding_index=idx,
+                ))
+
+            # ST4: Delivery method should be specified
+            delivery = stimulus.get("delivery_method")
+            valid_delivery = {"in_situ", "VR", "photo", "video", "audio", "imagined"}
+            if delivery not in valid_delivery and delivery is not None:
+                violations.append(Violation(
+                    rule_id="ST4_INVALID_DELIVERY", field="stimulus_description",
+                    severity=Severity.WARNING,
+                    message=f"Invalid delivery_method '{delivery}'; should be one of {valid_delivery}",
+                    finding_index=idx,
+                ))
+            elif is_empirical and delivery is None:
+                violations.append(Violation(
+                    rule_id="ST4_DELIVERY_REQUIRED", field="stimulus_description",
+                    severity=Severity.WARNING,
+                    message="delivery_method should be specified for empirical findings",
+                    finding_index=idx,
+                ))
+
+        # ST5: Warn if antecedent mentions sensory/environmental terms but no stimulus detail
+        if is_empirical and stimulus and isinstance(stimulus, dict):
+            components = stimulus.get("components", [])
+            # Check if components are minimal (all unnamed or just "Details not provided")
+            minimal_components = (
+                len(components) == 0 or
+                (len(components) == 1 and "not provided" in str(components[0].get("name", "")).lower())
+            )
+            sensory_terms = [
+                r"light|lighting|lux|CCT|kelvin",
+                r"sound|acoustic|dB|noise|reverberation|frequency",
+                r"room|space|ceiling|height|dimension|area|volume",
+                r"material|texture|finish|wood|concrete|stone|fabric",
+                r"color|hue|saturation|brightness",
+                r"thermal|temperature|warm|cool",
+                r"smell|olfactory|odor"
+            ]
+            if minimal_components and antecedent:
+                for pattern in sensory_terms:
+                    if re.search(pattern, antecedent, re.IGNORECASE):
+                        violations.append(Violation(
+                            rule_id="ST5_STIMULUS_UNDERSPECIFIED", field="stimulus_description",
+                            severity=Severity.WARNING,
+                            message=(f"Antecedent mentions '{pattern}' stimulus details "
+                                    "but stimulus_description.components are minimal; add specifics"),
+                            finding_index=idx,
+                        ))
+                        break
+
+        # ST6: Check stimulus_images if visual stimulus
+        if stimulus and isinstance(stimulus, dict):
+            primary_type = stimulus.get("primary_type")
+            is_visual = primary_type in ("visual_scene", "lighting", "material", "mixed")
+            if is_visual and is_empirical:
+                if not stimulus_images or not isinstance(stimulus_images, list):
+                    violations.append(Violation(
+                        rule_id="ST6_VISUAL_STIMULUS_MISSING_IMAGES", field="stimulus_images",
+                        severity=Severity.INFO,
+                        message="Visual stimulus but no stimulus_images provided; figures are valuable",
+                        finding_index=idx,
+                    ))
+                else:
+                    # Validate image entries
+                    for img_idx, img in enumerate(stimulus_images):
+                        if isinstance(img, dict):
+                            img_type = img.get("image_type")
+                            valid_img_types = {"photo", "rendering", "diagram", "floor_plan", "graph"}
+                            if img_type not in valid_img_types and img_type is not None:
+                                violations.append(Violation(
+                                    rule_id="ST6_INVALID_IMAGE_TYPE", field="stimulus_images",
+                                    severity=Severity.WARNING,
+                                    message=f"stimulus_images[{img_idx}] has invalid image_type '{img_type}'",
+                                    finding_index=idx,
+                                ))
 
         return violations
 

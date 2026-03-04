@@ -1,0 +1,20 @@
+{
+  "atom_id": "divisive_normalization",
+  "name": "Divisive Normalization",
+  "description": "Response normalization by divisive inhibition from population activity. Called the canonical neural computation by Carandini & Heeger. Explains contrast adaptation, cross-orientation suppression, gain control, and surround suppression across visual system.",
+  "maturity": "CANONICAL",
+  "neural_substrate": ["V1", "V2", "MT", "retina", "thalamus"],
+  "computational_signature": "r_i = (a_i * x_i) / (sigma + b * sum(x_j))",
+  "t1_frameworks": ["predictive-processing", "multisensory-integration", "gain-control"],
+  "key_references": [
+    "Carandini, M., & Heeger, D. J. (2012). Normalization as a canonical neural computation. Nature Reviews Neuroscience, 13(1), 51-62.",
+    "Heeger, D. J. (1992). Normalization of cell responses in cat striate cortex. Visual Neuroscience, 9(2), 181-197."
+  ],
+  "empirical_evidence": "Quantitatively accounts for contrast adaptation, cross-orientation suppression, surround effects, and gain modulation in V1 and beyond. Consistent with both intracellular and population recordings. Biophysical implementation via shunting inhibition.",
+  "cross_domain_confirmed": true,
+  "parameters": {
+    "normalization_constant": "sigma ~ 5-10% of mean response",
+    "weighting_function": "typically uniform across nearby neurons",
+    "temporal_filtering": "low-pass, 100-500 ms"
+  }
+}

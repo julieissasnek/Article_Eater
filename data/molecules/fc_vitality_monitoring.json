@@ -1,0 +1,81 @@
+{
+  "molecule_id": "FC_VITALITY_MONITORING",
+  "name": "Vitality/Energy Monitoring Circuit",
+  "short_description": "Integrates interoceptive signals, fatigue level, sleep pressure, and metabolic rate to estimate resource availability and regulate activity motivation.",
+  "components": [
+    {
+      "name": "INTEROCEPTIVE_INTEGRATOR",
+      "template_ids": [
+        "T_INTEROCEPTION"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Aggregates internal bodily state signals including heart rate, respiration, and visceral cues"
+    },
+    {
+      "name": "FATIGUE_MONITOR",
+      "template_ids": [
+        "T_FATIGUE"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Tracks cumulative fatigue and recovery status"
+    },
+    {
+      "name": "RESOURCE_ESTIMATOR",
+      "template_ids": [
+        "T_RESOURCE_EST"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Synthesizes interoceptive state, fatigue, and metabolic signals to estimate overall energy resources"
+    }
+  ],
+  "constituent_templates": [
+    "T_INTEROCEPTION",
+    "T_FATIGUE",
+    "T_RESOURCE_EST"
+  ],
+  "interaction_graph": {
+    "T_INTEROCEPTION": {
+      "T_FATIGUE": "SYNERGISTIC"
+    },
+    "T_FATIGUE": {
+      "T_RESOURCE_EST": "SYNERGISTIC"
+    }
+  },
+  "framework_ids": [
+    "interoceptive-constructionist-affect"
+  ],
+  "domain": "restoration",
+  "molecule_type": "FUNCTIONAL_CIRCUIT",
+  "scope_conditions": [
+    "Access to interoceptive feedback pathways",
+    "Functional circadian and homeostatic systems",
+    "Integration with motivational networks"
+  ],
+  "overall_maturity": "TENTATIVE",
+  "key_references": [
+    "Craig, A. D. (2009). How do you feel\u2014now? The anterior insula and human awareness. Nature Reviews Neuroscience, 10(1), 59\u201370.",
+    "Barrett, L. F. (2017). How Emotions Are Made: The Secret Life of the Brain. Houghton Mifflin Harcourt.",
+    "Kaplan, S. (1995). The restorative benefits of nature. Journal of Environmental Psychology, 15(3), 169\u2013182."
+  ],
+  "empirical_support": "PRELIMINARY",
+  "competing_theories": [],
+  "design_implications": [
+    "Restorative environments should provide sensory richness to facilitate interoceptive awareness; natural elements (water, vegetation) promote bodily awareness and recovery",
+    "High-demand environments should offer microrests aligned with fatigue and circadian rhythms; design spaces for brief restoration cycles"
+  ],
+  "confidence_intervals": null,
+  "parent_t1_5_theory": null,
+  "linked_archetypes": [
+    "CONVERGENT_STATE_MONITORING"
+  ],
+  "inputs": [
+    "interoceptive_signals",
+    "fatigue_level",
+    "sleep_pressure",
+    "metabolic_rate"
+  ],
+  "outputs": [
+    "resource_signal",
+    "activity_motivation"
+  ]
+}

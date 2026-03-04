@@ -1,7 +1,7 @@
 {
   "doi": "10.1371/journal.pone.0030420",
   "article_type": "empirical_v2",
-  "quality_action": "accept",
+  "quality_action": "v3_surgical_update",
   "quality_score": 0.798,
   "n_findings": 17,
   "extracted_at": "2026-02-25T10:05:47.585608+00:00",
@@ -1642,5 +1642,66 @@
     "min_template_score": 0.25,
     "min_tier_support_score": 0.3,
     "top_k_templates": 5
-  }
+  },
+  "stimulus_description": {
+    "environmental_features": [
+      "common everyday objects (e.g., comb, key, spoon, toothbrush, coin, paperclip, eraser, button, marble, thimble)"
+    ],
+    "duration_exposure": "until object identification or 60-second time limit per object",
+    "control_conditions": [
+      "younger adult group (20-30 years old)",
+      "older adult group (60-80 years old)"
+    ],
+    "ecological_validity": "lab"
+  },
+  "mechanism_chain": {
+    "description": "Age-related cognitive decline, specifically in working memory and processing speed, mediates the decline in haptic object recognition performance.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Age",
+        "to_construct": "Cognitive decline (working memory, processing speed)",
+        "mechanism_type": "physiological",
+        "evidence_strength": "assumed"
+      },
+      {
+        "step": 2,
+        "from_construct": "Cognitive decline (working memory, processing speed)",
+        "to_construct": "Haptic object recognition performance",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "instruments_used": [
+    {
+      "name": "Haptic Object Recognition Task",
+      "construct": "haptic object recognition performance",
+      "description": "Participants identified common objects by touch only, without visual input. Measures included number of errors and time to recognition.",
+      "type": "behavioral"
+    },
+    {
+      "name": "Digit Span Test",
+      "construct": "working memory",
+      "description": "Standard neuropsychological test measuring verbal working memory (forward and backward digit span).",
+      "type": "behavioral"
+    },
+    {
+      "name": "Symbol Digit Modalities Test (SDMT)",
+      "construct": "processing speed",
+      "description": "Standard neuropsychological test measuring processing speed and attention.",
+      "type": "behavioral"
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "photograph of the set of common objects used as haptic stimuli",
+      "figure_ref": "Figure 1",
+      "image_type": "stimulus_set"
+    }
+  ],
+  "paper_sample_size": 60,
+  "paper_sample_size_source": "reported",
+  "extraction_version": "v3.0",
+  "surgical_update_at": "2026-03-04T14:37:40.808448+00:00"
 }

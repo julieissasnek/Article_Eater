@@ -449,6 +449,20 @@ def ingest_pipeline(dry_run: bool = False, skip_integration: bool = False,
             result.extracted = True
             result.extraction_file = extraction_path
 
+            # V13 Audit Fix: Notify IncrementalUpdater that new extraction arrived.
+            # This marks affected materialized view clusters as STALE so precomputed
+            # answer cards get rebuilt on the next nightly run.
+            try:
+                from src.qa.incremental_updater import IncrementalUpdater
+                updater = IncrementalUpdater()
+                affected = updater.on_new_extraction(extraction_path)
+                if affected:
+                    logger.info(f"  📊 MV updater: {len(affected)} cluster(s) marked STALE")
+            except ImportError:
+                pass  # IncrementalUpdater not available
+            except Exception as e:
+                logger.debug(f"  MV updater skipped: {e}")
+
             # Stage 3: QA GATE
             logger.info(f"  ✅ Stage 3: QA GATE")
             result.stage = "qa"

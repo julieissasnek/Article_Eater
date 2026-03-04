@@ -1,0 +1,91 @@
+{
+  "molecule_id": "FC_SENSORY_PE",
+  "name": "Sensory Prediction Error Circuit",
+  "short_description": "Compares expected sensory states against actual inputs, weighted by precision estimates, to generate prediction error signals that drive model updates.",
+  "components": [
+    {
+      "name": "PREDICTION_GENERATOR",
+      "template_ids": [
+        "T_PREDICTION_GEN"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Generates predictions of forthcoming sensory states based on internal models"
+    },
+    {
+      "name": "SENSORY_COMPARATOR",
+      "template_ids": [
+        "T_COMPARATOR"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Computes mismatch between predicted and actual sensory input"
+    },
+    {
+      "name": "PRECISION_ESTIMATOR",
+      "template_ids": [
+        "T_PRECISION_EST"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Estimates reliability of sensory channels and weightings"
+    },
+    {
+      "name": "PE_WEIGHTER",
+      "template_ids": [
+        "T_PE_WEIGHT"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Weights prediction error by precision to generate learning signal"
+    }
+  ],
+  "constituent_templates": [
+    "T_PREDICTION_GEN",
+    "T_COMPARATOR",
+    "T_PRECISION_EST",
+    "T_PE_WEIGHT"
+  ],
+  "interaction_graph": {
+    "T_PREDICTION_GEN": {
+      "T_COMPARATOR": "SYNERGISTIC"
+    },
+    "T_COMPARATOR": {
+      "T_PRECISION_EST": "SYNERGISTIC"
+    },
+    "T_PRECISION_EST": {
+      "T_PE_WEIGHT": "SYNERGISTIC"
+    }
+  },
+  "framework_ids": [
+    "predictive-processing"
+  ],
+  "domain": "perception",
+  "molecule_type": "FUNCTIONAL_CIRCUIT",
+  "scope_conditions": [
+    "Active sensory input stream",
+    "Intact predictive models",
+    "Operational precision weighting system"
+  ],
+  "overall_maturity": "TENTATIVE",
+  "key_references": [
+    "Rao, R. P., & Ballard, D. H. (1999). Predictive coding in the visual cortex: A functional interpretation of some extra-classical receptive-field effects. Nature Neuroscience, 2(1), 79\u201387.",
+    "Clark, A. (2013). Whatever next? Predictive brains, situated agents, and the future of cognitive science. Behavioral and Brain Sciences, 36(3), 181\u2013204."
+  ],
+  "empirical_support": "PRELIMINARY",
+  "competing_theories": [],
+  "design_implications": [
+    "Predictable, coherent sensory environments reduce prediction error and cognitive load; use consistent signage, wayfinding, and spatial organization",
+    "Novel or surprising elements generate prediction errors that capture attention; use novelty strategically in engagement-critical spaces"
+  ],
+  "confidence_intervals": null,
+  "parent_t1_5_theory": null,
+  "linked_archetypes": [
+    "PREDICTIVE_CODING"
+  ],
+  "inputs": [
+    "expected_sensory_state",
+    "actual_sensory_input",
+    "precision_weight"
+  ],
+  "outputs": [
+    "prediction_error_magnitude",
+    "model_update_signal"
+  ]
+}

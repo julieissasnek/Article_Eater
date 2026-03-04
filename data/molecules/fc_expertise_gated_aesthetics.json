@@ -1,0 +1,91 @@
+{
+  "molecule_id": "FC_EXPERTISE_GATED_AESTHETICS",
+  "name": "Expertise-Gated Aesthetic Processing Circuit",
+  "short_description": "Gates depth of aesthetic processing based on expertise level and perceptual fluency, allowing novices and experts to engage aesthetic objects at appropriate levels of complexity.",
+  "components": [
+    {
+      "name": "EXPERTISE_GATE",
+      "template_ids": [
+        "T_EXPERTISE_GATE"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Opens or closes aesthetic processing pathways based on domain expertise"
+    },
+    {
+      "name": "COMPLEXITY_PROCESSOR",
+      "template_ids": [
+        "T_COMPLEXITY_PROC"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Processes stimulus complexity, depth of features, and stylistic details"
+    },
+    {
+      "name": "FLUENCY_INTEGRATOR",
+      "template_ids": [
+        "T_FLUENCY_INT"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Combines perceptual fluency with expertise gate to determine processing depth"
+    },
+    {
+      "name": "APPRECIATION_INTEGRATOR",
+      "template_ids": [
+        "T_APPRECIATION_INT"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Generates aesthetic appreciation based on appropriately-gated complexity processing"
+    }
+  ],
+  "constituent_templates": [
+    "T_EXPERTISE_GATE",
+    "T_COMPLEXITY_PROC",
+    "T_FLUENCY_INT",
+    "T_APPRECIATION_INT"
+  ],
+  "interaction_graph": {
+    "T_EXPERTISE_GATE": {
+      "T_COMPLEXITY_PROC": "SYNERGISTIC"
+    },
+    "T_COMPLEXITY_PROC": {
+      "T_FLUENCY_INT": "SYNERGISTIC"
+    },
+    "T_FLUENCY_INT": {
+      "T_APPRECIATION_INT": "SYNERGISTIC"
+    }
+  },
+  "framework_ids": [
+    "IE-DPT"
+  ],
+  "domain": "aesthetics",
+  "molecule_type": "FUNCTIONAL_CIRCUIT",
+  "scope_conditions": [
+    "Complex aesthetic stimulus",
+    "Visitor expertise information available",
+    "Accessible perceptual fluency signals"
+  ],
+  "overall_maturity": "TENTATIVE",
+  "key_references": [
+    "Leder, H., Belke, B., Oeberst, A., & Augustin, D. (2004). A model of aesthetic appreciation and aesthetic judgments. British Journal of Psychology, 95(4), 489\u2013508.",
+    "Silvia, P. J. (2005). Emotional responses to art: From collation and arousal to cognition and emotion. Review of General Psychology, 9(4), 342\u2013357."
+  ],
+  "empirical_support": "PRELIMINARY",
+  "competing_theories": [],
+  "design_implications": [
+    "Novice and expert audiences appreciate different aspects of complex works; provide layered aesthetic content (surface beauty + conceptual depth) to serve audiences at varying expertise levels",
+    "Museums and galleries should scaffold aesthetic learning; begin with accessible perceptual features and gradually reveal complexity to support expertise development"
+  ],
+  "confidence_intervals": null,
+  "parent_t1_5_theory": null,
+  "linked_archetypes": [
+    "GATED_PROPAGATION"
+  ],
+  "inputs": [
+    "stimulus_complexity",
+    "expertise_level",
+    "fluency_signal"
+  ],
+  "outputs": [
+    "aesthetic_appreciation",
+    "depth_of_processing"
+  ]
+}

@@ -58,13 +58,13 @@ class Molecule:
     empirical_support: str = "PRELIMINARY"
 
     # --- New fields from Schema Expansion (2026-02-24) ---
-    
+
     # Competing/alternative theories that explain the same phenomena
     competing_theories: List[str] = field(default_factory=list)
-    
+
     # Actionable guidance for practitioners derived from this molecule
     design_implications: List[str] = field(default_factory=list)
-    
+
     # Numeric spread of effect sizes across constituent templates
     # e.g. {"cohens_d_range": [0.2, 0.8], "typical_d": 0.45}
     confidence_intervals: Optional[Dict[str, Any]] = None
@@ -73,6 +73,14 @@ class Molecule:
     # [C4] Molecule keeps its own constituent_templates (no auto-derivation from T1.5)
     # [HC] Links molecule to its canonical T1.5 parent theory
     parent_t1_5_theory: Optional[str] = None
+
+    # --- Functional Circuit Fields (2026-03-03) ---
+    # molecule_type values now include: THEORY, MECHANISM, PHENOMENON, DESIGN_PATTERN, FUNCTIONAL_CIRCUIT
+    # Functional circuits are molecules whose internal structure follows T2 archetype patterns.
+    # These fields connect the molecule to the T2 computational archetype grammar.
+    linked_archetypes: List[str] = field(default_factory=list)  # e.g. ["PREDICTIVE_CODING", "HOMEOSTATIC_REGULATION"]
+    inputs: List[str] = field(default_factory=list)   # named input variables from archetype
+    outputs: List[str] = field(default_factory=list)  # named output variables
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -92,7 +100,10 @@ class Molecule:
             "competing_theories": self.competing_theories,
             "design_implications": self.design_implications,
             "confidence_intervals": self.confidence_intervals,
-            "parent_t1_5_theory": self.parent_t1_5_theory
+            "parent_t1_5_theory": self.parent_t1_5_theory,
+            "linked_archetypes": self.linked_archetypes,
+            "inputs": self.inputs,
+            "outputs": self.outputs
         }
 
     @classmethod
@@ -114,5 +125,8 @@ class Molecule:
             competing_theories=data.get("competing_theories", []),
             design_implications=data.get("design_implications", []),
             confidence_intervals=data.get("confidence_intervals"),
-            parent_t1_5_theory=data.get("parent_t1_5_theory")
+            parent_t1_5_theory=data.get("parent_t1_5_theory"),
+            linked_archetypes=data.get("linked_archetypes", []),
+            inputs=data.get("inputs", []),
+            outputs=data.get("outputs", [])
         )

@@ -1,0 +1,20 @@
+{
+  "atom_id": "lateral_inhibition",
+  "name": "Lateral Inhibition",
+  "description": "Suppression of neural responses by activity in neighboring neurons. A foundational computation for contrast enhancement and boundary detection. Discovered in the Limulus lateral eye and observed across all sensory systems.",
+  "maturity": "CANONICAL",
+  "neural_substrate": ["retina", "V1", "auditory_cortex", "somatosensory_cortex"],
+  "computational_signature": "y_i = x_i - w * sum(x_j) for j in neighborhood",
+  "t1_frameworks": ["predictive-processing", "multisensory-integration", "sensory-coding"],
+  "key_references": [
+    "Hartline, H. K., & Ratliff, F. (1957). Inhibitory interaction of receptor units in the eye of Limulus. Journal of General Physiology, 40(3), 357-376.",
+    "Carandini, M., & Heeger, D. J. (2012). Normalization as a canonical neural computation. Nature Reviews Neuroscience, 13(1), 51-62."
+  ],
+  "empirical_evidence": "Directly observed in Limulus retina using intracellular recording. Extensive evidence in vertebrate retina, visual cortex (V1), and auditory brainstem. Mathematical characterization via difference-of-Gaussians and DoG-like receptive fields.",
+  "cross_domain_confirmed": true,
+  "parameters": {
+    "inhibition_radius": "varies by layer and species",
+    "weight_profile": "Mexican hat / difference of Gaussians",
+    "temporal_dynamics": "tens of milliseconds"
+  }
+}

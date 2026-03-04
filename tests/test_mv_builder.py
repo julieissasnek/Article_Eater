@@ -127,15 +127,18 @@ class TestMVBuilder:
         assert art_gap[0]["n_papers"] >= 1
 
     def test_build_framework_voices(self, mv_builder):
-        """Framework voices are pre-rendered."""
+        """Framework voices are pre-computed from corpus data."""
         result = mv_builder.build_framework_voices()
-        # If FRAMEWORK_VOICES is available, should have entries
+        # Should have entries (either corpus-grounded or error)
         if "error" not in result:
             assert len(result) > 0
-            # Each voice should have expected structure
-            for name, voice in result.items():
+            # Each voice should have corpus-grounded structure
+            for abbr, voice in result.items():
                 assert "framework" in voice
-                assert "perspective" in voice
+                assert "name" in voice
+                assert "n_papers" in voice
+                assert "n_findings" in voice
+                assert "source" in voice
 
     def test_build_all_creates_manifest(self, mv_builder, tmp_path):
         """build_all creates a build manifest."""

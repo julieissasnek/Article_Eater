@@ -1,0 +1,91 @@
+{
+  "molecule_id": "FC_ATTENTIONAL_SELECTION",
+  "name": "Attentional Selection Circuit",
+  "short_description": "Combines saliency-driven bottom-up signals with task-relevance top-down biases in winner-take-all competition to select attended target and implement inhibition of return.",
+  "components": [
+    {
+      "name": "SALIENCY_CALCULATOR",
+      "template_ids": [
+        "T_SALIENCY_CALC"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Computes visual saliency based on stimulus features (luminance, color, motion, orientation contrasts)"
+    },
+    {
+      "name": "TASK_BIAS_GENERATOR",
+      "template_ids": [
+        "T_TASK_BIAS"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Generates task-relevant attentional biases from goal representations"
+    },
+    {
+      "name": "CURRENT_FIXATION_TRACKER",
+      "template_ids": [
+        "T_FIXATION_TRACK"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Tracks current attentional locus for inhibition of return implementation"
+    },
+    {
+      "name": "WINNER_TAKE_ALL_SELECT",
+      "template_ids": [
+        "T_WTA_SELECT"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Implements biased competition with winner-take-all dynamics and inhibition of return"
+    }
+  ],
+  "constituent_templates": [
+    "T_SALIENCY_CALC",
+    "T_TASK_BIAS",
+    "T_FIXATION_TRACK",
+    "T_WTA_SELECT"
+  ],
+  "interaction_graph": {
+    "T_SALIENCY_CALC": {
+      "T_TASK_BIAS": "SYNERGISTIC"
+    },
+    "T_TASK_BIAS": {
+      "T_FIXATION_TRACK": "SYNERGISTIC"
+    },
+    "T_FIXATION_TRACK": {
+      "T_WTA_SELECT": "SYNERGISTIC"
+    }
+  },
+  "framework_ids": [
+    "predictive-processing"
+  ],
+  "domain": "perception",
+  "molecule_type": "FUNCTIONAL_CIRCUIT",
+  "scope_conditions": [
+    "Visual scene with multiple candidate targets",
+    "Defined task context with relevance structure",
+    "Functional oculomotor control systems"
+  ],
+  "overall_maturity": "TENTATIVE",
+  "key_references": [
+    "Desimone, R., & Duncan, J. (1995). Neural mechanisms of selective visual attention. Annual Review of Neuroscience, 18, 193\u2013222.",
+    "Itti, L., & Koch, C. (2001). Computational modelling of visual attention. Nature Reviews Neuroscience, 2(3), 194\u2013203."
+  ],
+  "empirical_support": "PRELIMINARY",
+  "competing_theories": [],
+  "design_implications": [
+    "Task-relevant information should be salient or uniquely located; in complex visual environments (forms, dashboards, public signage), distinguish critical elements through color, contrast, or spatial isolation",
+    "Attentional capture wastes cognitive resources; minimize irrelevant visual salience (flashing, bright colors, movement) in task-focused contexts"
+  ],
+  "confidence_intervals": null,
+  "parent_t1_5_theory": null,
+  "linked_archetypes": [
+    "COMPETITIVE_SELECTION"
+  ],
+  "inputs": [
+    "saliency_map",
+    "task_relevance_map",
+    "current_fixation"
+  ],
+  "outputs": [
+    "selected_target",
+    "inhibition_of_return"
+  ]
+}

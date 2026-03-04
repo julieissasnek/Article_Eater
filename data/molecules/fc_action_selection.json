@@ -1,0 +1,91 @@
+{
+  "molecule_id": "FC_ACTION_SELECTION",
+  "name": "Action Selection Circuit",
+  "short_description": "Competes action options based on learned values, urgency signals, and conflict level to select highest-valued action and modulate response timing.",
+  "components": [
+    {
+      "name": "VALUE_COMPARATOR",
+      "template_ids": [
+        "T_VALUE_COMPARE"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Evaluates and compares learned values of competing action options"
+    },
+    {
+      "name": "URGENCY_RAMP",
+      "template_ids": [
+        "T_URGENCY_RAMP"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Generates time-dependent urgency signal to accelerate decision with rising pressure"
+    },
+    {
+      "name": "CONFLICT_DETECTOR",
+      "template_ids": [
+        "T_CONFLICT_MON"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Detects conflict when multiple actions have similar values"
+    },
+    {
+      "name": "SELECTION_FINALIZER",
+      "template_ids": [
+        "T_SELECT_FINAL"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Finalizes action selection based on value, urgency, and conflict; modulates response time"
+    }
+  ],
+  "constituent_templates": [
+    "T_VALUE_COMPARE",
+    "T_URGENCY_RAMP",
+    "T_CONFLICT_MON",
+    "T_SELECT_FINAL"
+  ],
+  "interaction_graph": {
+    "T_VALUE_COMPARE": {
+      "T_URGENCY_RAMP": "SYNERGISTIC"
+    },
+    "T_URGENCY_RAMP": {
+      "T_CONFLICT_MON": "SYNERGISTIC"
+    },
+    "T_CONFLICT_MON": {
+      "T_SELECT_FINAL": "SYNERGISTIC"
+    }
+  },
+  "framework_ids": [
+    "neuromodulatory-systems"
+  ],
+  "domain": "behavior",
+  "molecule_type": "FUNCTIONAL_CIRCUIT",
+  "scope_conditions": [
+    "Multiple action options available",
+    "Learned action value representations",
+    "Time pressure or urgency context"
+  ],
+  "overall_maturity": "TENTATIVE",
+  "key_references": [
+    "Cisek, P. (2007). Cortical mechanisms of action selection: The affordance competition hypothesis. Philosophical Transactions of the Royal Society B, 362(1485), 1585\u20131599.",
+    "Bogacz, R., Brown, E., Moehlis, J., Holmes, P., & Cohen, J. D. (2006). The physics of optimal decision making: A formal analysis of models of performance in two-alternative forced-choice tasks. Psychological Review, 113(4), 700\u2013765."
+  ],
+  "empirical_support": "PRELIMINARY",
+  "competing_theories": [],
+  "design_implications": [
+    "Action choice times increase with conflict; minimize decision burden in time-pressured contexts by reducing option complexity or pre-filtering less-valued alternatives",
+    "Urgency-driven decisions trade accuracy for speed; design environments where critical decisions have low time pressure and decision-supporting information is accessible"
+  ],
+  "confidence_intervals": null,
+  "parent_t1_5_theory": null,
+  "linked_archetypes": [
+    "COMPETITIVE_SELECTION"
+  ],
+  "inputs": [
+    "action_values",
+    "urgency_signal",
+    "conflict_level"
+  ],
+  "outputs": [
+    "selected_action",
+    "response_time"
+  ]
+}

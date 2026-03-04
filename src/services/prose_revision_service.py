@@ -312,6 +312,15 @@ class ProseRevisionService:
         - First/last sentence coherence
         - Paragraph length
         - Section flow
+
+        SUCCESS CONDITIONS (SC-PR-STRUCT):
+        1. SC-PR-STRUCT-1: Returns list[Diagnostic]
+        2. SC-PR-STRUCT-2: Topic-only headings flagged (Introduction, Methods, Results, etc.)
+        3. SC-PR-STRUCT-3: Informative headings not flagged
+        4. SC-PR-STRUCT-4: Paragraphs > max_paragraph_sentences flagged as WARNING
+        5. SC-PR-STRUCT-5: Single-sentence paragraphs flagged as INFO
+        6. SC-PR-STRUCT-6: Paragraph location correctly identified
+        7. SC-PR-STRUCT-7: Empty text returns empty list
         """
         diagnostics = []
         headings = self._extract_headings(text)
@@ -372,6 +381,15 @@ class ProseRevisionService:
 
         Identifies nominalizations — abstract nouns derived from verbs —
         and suggests restoring the buried verb.
+
+        SUCCESS CONDITIONS (SC-PR-FINDNOM):
+        1. SC-PR-FINDNOM-1: Returns list[Diagnostic]
+        2. SC-PR-FINDNOM-2: All items have category == DiagnosticCategory.NOMINALIZATION
+        3. SC-PR-FINDNOM-3: Density diagnostic severity matches threshold comparisons
+        4. SC-PR-FINDNOM-4: No false positives on NOMINALIZATION_EXCEPTIONS
+        5. SC-PR-FINDNOM-5: Sentence-level clusters flagged when >=3 nominalizations
+        6. SC-PR-FINDNOM-6: Suggestion includes Paramedic Method reference
+        7. SC-PR-FINDNOM-7: Empty text returns empty list
         """
         diagnostics = []
         words = self._tokenize(text)
@@ -431,6 +449,14 @@ class ProseRevisionService:
         WRITING_STYLE_GUIDE §1.3: Active Voice.
 
         Identifies passive constructions (was/were/is/are + past participle).
+
+        SUCCESS CONDITIONS (SC-PR-FINDPASS):
+        1. SC-PR-FINDPASS-1: Returns list[Diagnostic]
+        2. SC-PR-FINDPASS-2: All items have category == DiagnosticCategory.PASSIVE_VOICE
+        3. SC-PR-FINDPASS-3: Severity matches passive_voice_pct thresholds
+        4. SC-PR-FINDPASS-4: Percentage calculation correct (passive sentences / total)
+        5. SC-PR-FINDPASS-5: Message includes percentage and count
+        6. SC-PR-FINDPASS-6: Empty text returns empty list
         """
         diagnostics = []
         sentences = self._split_sentences(text)
@@ -476,6 +502,15 @@ class ProseRevisionService:
         WRITING_STYLE_GUIDE §8.1: Hedge stacking.
 
         Finds sentences with multiple hedging words.
+
+        SUCCESS CONDITIONS (SC-PR-FINDHEDGE):
+        1. SC-PR-FINDHEDGE-1: Returns list[Diagnostic]
+        2. SC-PR-FINDHEDGE-2: All items have category == DiagnosticCategory.HEDGE_STACK
+        3. SC-PR-FINDHEDGE-3: All items have severity == Severity.WARNING
+        4. SC-PR-FINDHEDGE-4: Only triggered when hedge_count >= threshold
+        5. SC-PR-FINDHEDGE-5: Message includes hedge_count
+        6. SC-PR-FINDHEDGE-6: Location correctly identifies sentence number
+        7. SC-PR-FINDHEDGE-7: Empty text returns empty list
         """
         diagnostics = []
         sentences = self._split_sentences(text)
@@ -500,6 +535,14 @@ class ProseRevisionService:
         Norm 1 (Pinker): Classic Style violations.
 
         Finds meta-commentary, self-referential phrases, and slow windups.
+
+        SUCCESS CONDITIONS (SC-PR-FINDTHROAT):
+        1. SC-PR-FINDTHROAT-1: Returns list[Diagnostic]
+        2. SC-PR-FINDTHROAT-2: All items have category == DiagnosticCategory.THROAT_CLEARING
+        3. SC-PR-FINDTHROAT-3: All items have severity == Severity.WARNING
+        4. SC-PR-FINDTHROAT-4: Message contains the matched phrase
+        5. SC-PR-FINDTHROAT-5: Original field matches the actual text found
+        6. SC-PR-FINDTHROAT-6: Empty text returns empty list
         """
         diagnostics = []
         for pattern in THROAT_CLEARERS:
@@ -519,6 +562,14 @@ class ProseRevisionService:
         Norm 9 (Carson/Sagan): Honest Uncertainty.
 
         Finds overclaiming language that doesn't match evidence level.
+
+        SUCCESS CONDITIONS (SC-PR-FINDOVER):
+        1. SC-PR-FINDOVER-1: Returns list[Diagnostic]
+        2. SC-PR-FINDOVER-2: All items have category == DiagnosticCategory.CONFIDENCE_CALIBRATION
+        3. SC-PR-FINDOVER-3: All items have severity == Severity.WARNING
+        4. SC-PR-FINDOVER-4: Message contains the overclaimed word
+        5. SC-PR-FINDOVER-5: Original field matches the actual word found
+        6. SC-PR-FINDOVER-6: Empty text returns empty list
         """
         diagnostics = []
         for pattern in OVERCLAIM_WORDS:
@@ -534,7 +585,18 @@ class ProseRevisionService:
         return diagnostics
 
     def find_long_sentences(self, text: str) -> list[Diagnostic]:
-        """Check sentence length distribution."""
+        """
+        Check sentence length distribution.
+
+        SUCCESS CONDITIONS (SC-PR-FINDLONG):
+        1. SC-PR-FINDLONG-1: Returns list[Diagnostic]
+        2. SC-PR-FINDLONG-2: All items have category == DiagnosticCategory.SENTENCE_LENGTH
+        3. SC-PR-FINDLONG-3: Severity WARNING when 45 < word_count < 60
+        4. SC-PR-FINDLONG-4: Severity CRITICAL when word_count >= 60
+        5. SC-PR-FINDLONG-5: Message includes word count and max threshold
+        6. SC-PR-FINDLONG-6: Location correctly identifies sentence number
+        7. SC-PR-FINDLONG-7: Empty text returns empty list
+        """
         diagnostics = []
         sentences = self._split_sentences(text)
 
@@ -554,7 +616,17 @@ class ProseRevisionService:
         return diagnostics
 
     def find_weak_openers(self, text: str) -> list[Diagnostic]:
-        """Sword's Writer's Diet: weak sentence openers (it is, there are, this is)."""
+        """
+        Sword's Writer's Diet: weak sentence openers (it is, there are, this is).
+
+        SUCCESS CONDITIONS (SC-PR-FINDWEAK):
+        1. SC-PR-FINDWEAK-1: Returns list[Diagnostic]
+        2. SC-PR-FINDWEAK-2: All items have category == DiagnosticCategory.NOMINALIZATION
+        3. SC-PR-FINDWEAK-3: All items have severity == Severity.WARNING
+        4. SC-PR-FINDWEAK-4: Only triggered when weak_count/sentences > 15%
+        5. SC-PR-FINDWEAK-5: Message includes count and percentage
+        6. SC-PR-FINDWEAK-6: Empty text returns empty list
+        """
         diagnostics = []
         sentences = self._split_sentences(text)
         weak_count = 0
@@ -577,7 +649,17 @@ class ProseRevisionService:
         return diagnostics
 
     def find_citation_clusters(self, text: str) -> list[Diagnostic]:
-        """WRITING_STYLE_GUIDE §4.4: Citation clusters that interrupt prose."""
+        """
+        WRITING_STYLE_GUIDE §4.4: Citation clusters that interrupt prose.
+
+        SUCCESS CONDITIONS (SC-PR-FINDCITE):
+        1. SC-PR-FINDCITE-1: Returns list[Diagnostic]
+        2. SC-PR-FINDCITE-2: All items have category == DiagnosticCategory.CITATION_STYLE
+        3. SC-PR-FINDCITE-3: All items have severity == Severity.ADVISORY
+        4. SC-PR-FINDCITE-4: Only triggers on 3+ consecutive citations
+        5. SC-PR-FINDCITE-5: Message includes the citation cluster found
+        6. SC-PR-FINDCITE-6: Empty text returns empty list
+        """
         diagnostics = []
         # Pattern: multiple (Author, Year) citations in sequence
         cluster_pattern = re.compile(
@@ -606,6 +688,16 @@ class ProseRevisionService:
         - Technical terms that may not be defined
         - Abbreviations used without expansion
         - Implicit reasoning steps
+
+        SUCCESS CONDITIONS (SC-PR-FINDCURSE):
+        1. SC-PR-FINDCURSE-1: Returns list[Diagnostic]
+        2. SC-PR-FINDCURSE-2: All items have category == DiagnosticCategory.JARGON
+        3. SC-PR-FINDCURSE-3: All items have severity == Severity.ADVISORY
+        4. SC-PR-FINDCURSE-4: Common abbreviations (fMRI, DNA, etc.) not flagged
+        5. SC-PR-FINDCURSE-5: Expanded abbreviations (Term (ABBREV)) not flagged
+        6. SC-PR-FINDCURSE-6: defined_terms parameter respected
+        7. SC-PR-FINDCURSE-7: Only flags abbreviations <=6 chars without expansion
+        8. SC-PR-FINDCURSE-8: Empty text returns empty list
         """
         diagnostics = []
 
@@ -780,6 +872,20 @@ class ProseRevisionService:
 
         Returns a ProseHealthReport with quantitative metrics,
         diagnostics organized by pass, and an overall score.
+
+        SUCCESS CONDITIONS (SC-PR-FULLCRIT):
+        1. SC-PR-FULLCRIT-1: Returns ProseHealthReport instance
+        2. SC-PR-FULLCRIT-2: Report.word_count matches actual word count in text
+        3. SC-PR-FULLCRIT-3: Report.sentence_count > 0 for non-empty text
+        4. SC-PR-FULLCRIT-4: Report.paragraph_count > 0 for multi-paragraph text
+        5. SC-PR-FULLCRIT-5: Report.overall_score in range [0.0, 10.0]
+        6. SC-PR-FULLCRIT-6: Report.all_diagnostics = pass1 + pass2 + pass3
+        7. SC-PR-FULLCRIT-7: Report.summary contains score and verdict
+        8. SC-PR-FULLCRIT-8: Empty text produces valid report with score >= 0
+        9. SC-PR-FULLCRIT-9: Report.critical_count == count of CRITICAL severity diagnostics
+        10. SC-PR-FULLCRIT-10: Report.warning_count == count of WARNING severity diagnostics
+        11. SC-PR-FULLCRIT-11: defined_terms parameter passed through to knowledge_curse_audit
+        12. SC-PR-FULLCRIT-12: Verdict assignment consistent with overall_score thresholds
         """
         words = self._tokenize(text)
         sentences = self._split_sentences(text)
@@ -898,6 +1004,15 @@ class ProseRevisionService:
 
         Returns the most impactful diagnostics sorted by severity,
         limited to max_suggestions.
+
+        SUCCESS CONDITIONS (SC-PR-SUGREV):
+        1. SC-PR-SUGREV-1: Returns list[Diagnostic]
+        2. SC-PR-SUGREV-2: List length <= max_suggestions
+        3. SC-PR-SUGREV-3: Severity order: CRITICAL before WARNING before ADVISORY before INFO
+        4. SC-PR-SUGREV-4: All returned items are Diagnostic instances
+        5. SC-PR-SUGREV-5: Empty text returns empty list
+        6. SC-PR-SUGREV-6: max_suggestions parameter respected
+        7. SC-PR-SUGREV-7: Calls full_critique internally
         """
         report = self.full_critique(text)
         all_diags = report.all_diagnostics

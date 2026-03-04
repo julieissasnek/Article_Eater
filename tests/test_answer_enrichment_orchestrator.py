@@ -518,6 +518,7 @@ def test_all_enrichments_disabled(orchestrator, mock_base_answer):
     orchestrator._config.enable_language_adaptation = False
     orchestrator._config.enable_figure_suggestions = False
     orchestrator._config.enable_interpretation_context = False
+    orchestrator._config.enable_circuit_context = False
 
     result = orchestrator.enrich(mock_base_answer, "Test?")
 

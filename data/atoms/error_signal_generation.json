@@ -1,0 +1,20 @@
+{
+  "atom_id": "error_signal_generation",
+  "name": "Error Signal Generation",
+  "description": "Computation of mismatch between prediction (or expectation) and observation. Fundamental to learning and adaptation. Provides teaching signals for reinforcement learning and forms the core of predictive processing frameworks.",
+  "maturity": "CANONICAL",
+  "neural_substrate": ["midbrain_dopamine", "cerebellum", "PFC", "ACC"],
+  "computational_signature": "error = observation - prediction",
+  "t1_frameworks": ["predictive-processing", "learning", "reinforcement-learning"],
+  "key_references": [
+    "Rescorla, R. A., & Wagner, A. R. (1972). A theory of Pavlovian conditioning: Variations in the effectiveness of reinforcement and non-reinforcement. In A. H. Black & W. F. Prokasy (Eds.), Classical Conditioning II. Appleton-Century-Crofts.",
+    "Schultz, W. (1997). Dopamine neurons and their role in reward mechanisms. Journal of Neurophysiology, 97(3), 1867-1879."
+  ],
+  "empirical_evidence": "Dopamine neurons show phasic responses to unexpected rewards, consistent with reward prediction error. Cerebellar Purkinje cells encode sensorimotor prediction error. fMRI shows error signals in ACC and lateral PFC during learning and decision-making. Underlies both Pavlovian and instrumental conditioning.",
+  "cross_domain_confirmed": true,
+  "parameters": {
+    "error_magnitude": "unbounded, though typically scaled by salience",
+    "temporal_dynamics": "rapid (tens of ms) for dopamine transients",
+    "valence": "signed for some contexts (reward vs. punishment)"
+  }
+}

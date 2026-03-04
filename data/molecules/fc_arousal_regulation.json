@@ -1,0 +1,91 @@
+{
+  "molecule_id": "FC_AROUSAL_REGULATION",
+  "name": "Arousal Regulation Circuit",
+  "short_description": "Monitors current arousal level against optimal setpoint, modulated by stimulus complexity, to generate approach-avoid signals and behavioral adjustment.",
+  "components": [
+    {
+      "name": "AROUSAL_SENSOR",
+      "template_ids": [
+        "T_AROUSAL_SENSE"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Monitors autonomic arousal indicators including heart rate, skin conductance, and respiratory rate"
+    },
+    {
+      "name": "SETPOINT_COMPARATOR",
+      "template_ids": [
+        "T_SETPOINT_COMPARE"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Compares current arousal to optimal arousal setpoint for context"
+    },
+    {
+      "name": "COMPLEXITY_INTEGRATOR",
+      "template_ids": [
+        "T_COMPLEXITY_INT"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Assesses stimulus complexity to modulate optimal arousal target"
+    },
+    {
+      "name": "DRIVE_CONTROLLER",
+      "template_ids": [
+        "T_DRIVE_CONTROL"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Translates arousal discrepancy into approach-avoid motivation and behavioral direction"
+    }
+  ],
+  "constituent_templates": [
+    "T_AROUSAL_SENSE",
+    "T_SETPOINT_COMPARE",
+    "T_COMPLEXITY_INT",
+    "T_DRIVE_CONTROL"
+  ],
+  "interaction_graph": {
+    "T_AROUSAL_SENSE": {
+      "T_SETPOINT_COMPARE": "SYNERGISTIC"
+    },
+    "T_SETPOINT_COMPARE": {
+      "T_COMPLEXITY_INT": "SYNERGISTIC"
+    },
+    "T_COMPLEXITY_INT": {
+      "T_DRIVE_CONTROL": "SYNERGISTIC"
+    }
+  },
+  "framework_ids": [
+    "neuromodulatory-systems"
+  ],
+  "domain": "affect",
+  "molecule_type": "FUNCTIONAL_CIRCUIT",
+  "scope_conditions": [
+    "Functional autonomic nervous system",
+    "Access to stimulus complexity information",
+    "Intact emotional regulation pathways"
+  ],
+  "overall_maturity": "TENTATIVE",
+  "key_references": [
+    "Berlyne, D. E. (1971). Aesthetics and Psychobiology. Appleton-Century-Crofts.",
+    "Yerkes, R. M., & Dodson, J. D. (1908). The relation of strength of stimulus to rapidity of habit-formation. Journal of Comparative Neurology and Psychology, 18(5), 459\u2013482."
+  ],
+  "empirical_support": "MIXED",
+  "competing_theories": [],
+  "design_implications": [
+    "Optimal arousal increases with task complexity (Yerkes-Dodson); provide appropriate challenge level\u2014high-complexity tasks need lower baseline arousal, simple tasks tolerate higher arousal",
+    "Overstimulation and understimulation both reduce engagement; design spaces with variable complexity to accommodate different arousal preferences and temporal variation"
+  ],
+  "confidence_intervals": null,
+  "parent_t1_5_theory": "BERLYNE_AROUSAL",
+  "linked_archetypes": [
+    "HOMEOSTATIC_REGULATION"
+  ],
+  "inputs": [
+    "current_arousal_level",
+    "optimal_arousal_setpoint",
+    "stimulus_complexity"
+  ],
+  "outputs": [
+    "arousal_discrepancy",
+    "approach_avoid_signal"
+  ]
+}

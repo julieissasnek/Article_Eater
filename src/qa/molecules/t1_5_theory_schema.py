@@ -125,7 +125,36 @@ class T1_5Theory:
     google_scholar_count: int = 0
     key_references: List[str] = field(default_factory=list)
     reduced_in: str = ""  # Source document reference
-    
+
+    # --- Structural Boundary Criteria (2026-03-03) ---
+    # Panel Recommendation #3 (Unanimous): Replace sociological boundary
+    # ("published author") with structural criteria. Three independent tests:
+    #
+    # (a) Irreducible residual: Does the theory have genuine emergent content
+    #     that cannot be decomposed into T1 frameworks? Threshold: residual
+    #     must have ≥1 schema gap OR compositional_adequacy != FULLY_DECOMPOSABLE.
+    #
+    # (b) Constitutive relevance (Craver 2007): Does the theory name a
+    #     mechanism that is constitutively relevant to the phenomenon it
+    #     explains? I.e., intervening on the mechanism changes the phenomenon.
+    #
+    # (c) Design-guidance utility: Does the theory generate specific,
+    #     actionable design guidance that is NOT derivable from its constituent
+    #     T1 frameworks alone?
+    #
+    # A theory qualifies as T1.5 if it passes ≥2 of 3 structural tests.
+    # This replaces the prior sociological criterion (Craver, Cartwright,
+    # Smith, Mitchell, Potochnik — unanimous).
+    boundary_criteria: Optional[Dict[str, Any]] = field(default_factory=lambda: None)
+    # Expected structure:
+    # {
+    #   "has_irreducible_residual": bool,    # test (a)
+    #   "constitutive_relevance": bool,      # test (b)
+    #   "design_guidance_utility": bool,     # test (c)
+    #   "structural_score": int,             # count of True (0-3)
+    #   "boundary_justification": str        # narrative explaining why
+    # }
+
     def validate(self) -> List[str]:
         """Return list of validation errors, empty if valid."""
         errors = []
@@ -137,6 +166,14 @@ class T1_5Theory:
             errors.append(f"{self.theory_id}: {self.status} theory must have rejection_rationale [C3]")
         if self.status == "REDUCED" and not self.parent_t1_frameworks:
             errors.append(f"{self.theory_id}: REDUCED theory must have parent_t1_frameworks")
+        # Structural boundary check: REDUCED theories should pass ≥2/3 structural tests
+        if self.status == "REDUCED" and self.boundary_criteria:
+            score = self.boundary_criteria.get("structural_score", 0)
+            if score < 2:
+                errors.append(
+                    f"{self.theory_id}: REDUCED theory passes only {score}/3 structural "
+                    f"boundary tests (need ≥2). Consider CANDIDATE status."
+                )
         return errors
 
     def to_dict(self) -> Dict[str, Any]:
@@ -157,7 +194,8 @@ class T1_5Theory:
             "child_molecules": self.child_molecules,
             "google_scholar_count": self.google_scholar_count,
             "key_references": self.key_references,
-            "reduced_in": self.reduced_in
+            "reduced_in": self.reduced_in,
+            "boundary_criteria": self.boundary_criteria
         }
 
     @classmethod
@@ -182,5 +220,6 @@ class T1_5Theory:
             child_molecules=data.get("child_molecules", []),
             google_scholar_count=data.get("google_scholar_count", 0),
             key_references=data.get("key_references", []),
-            reduced_in=data.get("reduced_in", "")
+            reduced_in=data.get("reduced_in", ""),
+            boundary_criteria=data.get("boundary_criteria")
         )

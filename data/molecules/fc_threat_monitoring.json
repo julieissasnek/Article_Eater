@@ -1,0 +1,92 @@
+{
+  "molecule_id": "FC_THREAT_MONITORING",
+  "name": "Environmental Threat Monitoring Circuit",
+  "short_description": "Monitors enclosure, illumination, visual sharpness, and occlusion density to assess environmental threat and modulate avoidance behavior and physiological responses.",
+  "components": [
+    {
+      "name": "ENCLOSURE_DETECTOR",
+      "template_ids": [
+        "T_ENCLOSURE"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Assesses degree of physical enclosure and spatial confinement"
+    },
+    {
+      "name": "ILLUMINATION_ASSESSOR",
+      "template_ids": [
+        "T_LIGHTING"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Evaluates ambient light levels and visual clarity"
+    },
+    {
+      "name": "OCCLUSION_SCANNER",
+      "template_ids": [
+        "T_OCCLUSION"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Detects visual obstructions and hidden hazards in the environment"
+    },
+    {
+      "name": "THREAT_INTEGRATOR",
+      "template_ids": [
+        "T_THREAT_INTEGRATE"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Combines enclosure, illumination, and occlusion signals into integrated threat assessment"
+    }
+  ],
+  "constituent_templates": [
+    "T_ENCLOSURE",
+    "T_LIGHTING",
+    "T_OCCLUSION",
+    "T_THREAT_INTEGRATE"
+  ],
+  "interaction_graph": {
+    "T_ENCLOSURE": {
+      "T_LIGHTING": "SYNERGISTIC"
+    },
+    "T_LIGHTING": {
+      "T_OCCLUSION": "SYNERGISTIC"
+    },
+    "T_OCCLUSION": {
+      "T_THREAT_INTEGRATE": "SYNERGISTIC"
+    }
+  },
+  "framework_ids": [
+    "EVO_AESTHETICS"
+  ],
+  "domain": "safety",
+  "molecule_type": "FUNCTIONAL_CIRCUIT",
+  "scope_conditions": [
+    "Visual access to environment",
+    "Functional threat detection systems",
+    "Integration with autonomic nervous system"
+  ],
+  "overall_maturity": "TENTATIVE",
+  "key_references": [
+    "Appleton, J. (1975). The Experience of Landscape. John Wiley & Sons.",
+    "Grinde, B., & Patil, G. G. (2009). Biophilia: Does visual contact with nature impact on health and well-being? International Journal of Environmental Research and Public Health, 6(9), 2332\u20132343."
+  ],
+  "empirical_support": "PRELIMINARY",
+  "competing_theories": [],
+  "design_implications": [
+    "Environments with high enclosure and low illumination trigger threat responses; balance concealment with sightlines and lighting to optimize safety perception",
+    "Occluded areas increase threat perception and avoidance; maintain visual transparency in critical spaces (e.g., public pathways, seating areas)"
+  ],
+  "confidence_intervals": null,
+  "parent_t1_5_theory": null,
+  "linked_archetypes": [
+    "CONVERGENT_STATE_MONITORING"
+  ],
+  "inputs": [
+    "enclosure_ratio",
+    "illumination_level",
+    "visual_sharpness",
+    "occlusion_density"
+  ],
+  "outputs": [
+    "avoidance_signal",
+    "cortisol_modulation"
+  ]
+}

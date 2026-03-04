@@ -1,0 +1,91 @@
+{
+  "molecule_id": "FC_CONTEXT_GATED_THREAT",
+  "name": "Context-Gated Threat Response Circuit",
+  "short_description": "Gates threat responses based on contextual safety cues and prior experience, allowing flexible threat regulation across situations and preventing overgeneralization.",
+  "components": [
+    {
+      "name": "THREAT_DETECTOR",
+      "template_ids": [
+        "T_THREAT_DETECT"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Detects presence of threat stimulus"
+    },
+    {
+      "name": "CONTEXT_GATE",
+      "template_ids": [
+        "T_CONTEXT_GATE"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Opens or closes threat response based on contextual safety cues and learned associations"
+    },
+    {
+      "name": "PRIOR_EXPERIENCE_INTEGRATOR",
+      "template_ids": [
+        "T_PRIOR_EXPERIENCE"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Integrates learned threat history in similar contexts"
+    },
+    {
+      "name": "RESPONSE_MODULATOR",
+      "template_ids": [
+        "T_RESPONSE_MOD"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Modulates threat response magnitude based on context gate and experience"
+    }
+  ],
+  "constituent_templates": [
+    "T_THREAT_DETECT",
+    "T_CONTEXT_GATE",
+    "T_PRIOR_EXPERIENCE",
+    "T_RESPONSE_MOD"
+  ],
+  "interaction_graph": {
+    "T_THREAT_DETECT": {
+      "T_CONTEXT_GATE": "SYNERGISTIC"
+    },
+    "T_CONTEXT_GATE": {
+      "T_PRIOR_EXPERIENCE": "SYNERGISTIC"
+    },
+    "T_PRIOR_EXPERIENCE": {
+      "T_RESPONSE_MOD": "SYNERGISTIC"
+    }
+  },
+  "framework_ids": [
+    "interoceptive-constructionist-affect"
+  ],
+  "domain": "safety",
+  "molecule_type": "FUNCTIONAL_CIRCUIT",
+  "scope_conditions": [
+    "Presence of threat stimulus",
+    "Contextual information available",
+    "Prior learning history accessible"
+  ],
+  "overall_maturity": "TENTATIVE",
+  "key_references": [
+    "Maren, S., Phan, K. L., & Liberzon, I. (2013). The contextual brain: Implications for fear conditioning, extinction and psychopathology. Nature Reviews Neuroscience, 14(6), 417\u2013428.",
+    "Bouton, M. E. (2004). Context and behavioral processes in extinction. Learning and Memory, 11(5), 485\u2013494."
+  ],
+  "empirical_support": "PRELIMINARY",
+  "competing_theories": [],
+  "design_implications": [
+    "Context-specific threat learning prevents generalized anxiety; design threat-reduction spaces with distinctive contextual markers (visual, acoustic) so safety associations are learned specifically to that context",
+    "Extinction learning requires safe re-exposure in context; therapeutic or anxiety-reducing environments should use consistent cues and repeated safe contact to update threat associations"
+  ],
+  "confidence_intervals": null,
+  "parent_t1_5_theory": null,
+  "linked_archetypes": [
+    "GATED_PROPAGATION"
+  ],
+  "inputs": [
+    "threat_stimulus",
+    "context_safety_cues",
+    "prior_experience"
+  ],
+  "outputs": [
+    "threat_response_magnitude",
+    "context_modulated_fear"
+  ]
+}

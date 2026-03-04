@@ -1,0 +1,91 @@
+{
+  "molecule_id": "FC_SOCIAL_PE",
+  "name": "Social Prediction Error Circuit",
+  "short_description": "Compares expected social responses against actual responses in context to detect norm violations and generate social learning signals.",
+  "components": [
+    {
+      "name": "SOCIAL_EXPECTATION_MODEL",
+      "template_ids": [
+        "T_SOCIAL_EXPECT"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Maintains predictive models of social partner behavior based on context and history"
+    },
+    {
+      "name": "RESPONSE_COMPARATOR",
+      "template_ids": [
+        "T_SOCIAL_COMPARE"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Detects mismatch between social prediction and actual social response"
+    },
+    {
+      "name": "CONTEXT_INTEGRATOR",
+      "template_ids": [
+        "T_CONTEXT_INTEGRATE"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Integrates contextual information to assess appropriateness of response"
+    },
+    {
+      "name": "NORM_VIOLATION_DETECTOR",
+      "template_ids": [
+        "T_NORM_VIOLATION"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Synthesizes response mismatch and context to detect social norm violations"
+    }
+  ],
+  "constituent_templates": [
+    "T_SOCIAL_EXPECT",
+    "T_SOCIAL_COMPARE",
+    "T_CONTEXT_INTEGRATE",
+    "T_NORM_VIOLATION"
+  ],
+  "interaction_graph": {
+    "T_SOCIAL_EXPECT": {
+      "T_SOCIAL_COMPARE": "SYNERGISTIC"
+    },
+    "T_SOCIAL_COMPARE": {
+      "T_CONTEXT_INTEGRATE": "SYNERGISTIC"
+    },
+    "T_CONTEXT_INTEGRATE": {
+      "T_NORM_VIOLATION": "SYNERGISTIC"
+    }
+  },
+  "framework_ids": [
+    "predictive-processing"
+  ],
+  "domain": "social",
+  "molecule_type": "FUNCTIONAL_CIRCUIT",
+  "scope_conditions": [
+    "Functional social memory systems",
+    "Access to contextual cues",
+    "Active social interaction"
+  ],
+  "overall_maturity": "TENTATIVE",
+  "key_references": [
+    "Kilner, J. M., Friston, K. J., & Frith, C. D. (2007). Predictive coding: An account of the mirror neuron system. Cognitive Processing, 8(3), 159\u2013166.",
+    "Kube, A., Rozenkrantz, L., & Schaafsma, S. M. (2020). Advances in social neuroscience research: Bridging neurobiology and social psychology. Current Opinion in Psychology, 31, 52\u201358."
+  ],
+  "empirical_support": "PRELIMINARY",
+  "competing_theories": [],
+  "design_implications": [
+    "Social spaces should clearly communicate norms and expectations; use visible cues (signage, layout, examples) to establish behavioral expectations",
+    "Spaces for cross-cultural interaction should accommodate diverse social prediction models; avoid implicit norm assumptions that exclude unfamiliar groups"
+  ],
+  "confidence_intervals": null,
+  "parent_t1_5_theory": null,
+  "linked_archetypes": [
+    "PREDICTIVE_CODING"
+  ],
+  "inputs": [
+    "expected_social_response",
+    "actual_social_response",
+    "social_context"
+  ],
+  "outputs": [
+    "social_prediction_error",
+    "norm_violation_signal"
+  ]
+}

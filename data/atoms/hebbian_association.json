@@ -1,0 +1,20 @@
+{
+  "atom_id": "hebbian_association",
+  "name": "Hebbian Association",
+  "description": "Activity-dependent synaptic strengthening: cells that fire together wire together. The foundational principle of synaptic plasticity and learning. Implemented via calcium-dependent mechanisms like AMPA receptor insertion and protein synthesis.",
+  "maturity": "CANONICAL",
+  "neural_substrate": ["hippocampus", "cortex", "cerebellum", "striatum"],
+  "computational_signature": "delta_w_ij = alpha * pre_j * post_i",
+  "t1_frameworks": ["learning", "memory", "predictive-processing"],
+  "key_references": [
+    "Hebb, D. O. (1949). The Organization of Behavior: A Neuropsychological Theory. Wiley.",
+    "Caporale, N., & Dan, Y. (2008). Spike timing-dependent plasticity: a Hebbian learning rule. Annual Review of Neuroscience, 31, 25-46."
+  ],
+  "empirical_evidence": "Direct evidence via voltage clamp recordings, two-photon imaging of spine dynamics, and molecular markers. Long-term potentiation (LTP) is the canonical example. Observed in hippocampus, cortex, cerebellum, and other regions. Underlies memory consolidation and skill learning.",
+  "cross_domain_confirmed": true,
+  "parameters": {
+    "time_window": "tens to hundreds of milliseconds for spike-timing dependence",
+    "learning_rate": "varies by synapse type and neuromodulatory state",
+    "ceiling": "limited by available postsynaptic resources"
+  }
+}
