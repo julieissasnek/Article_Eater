@@ -1,10 +1,10 @@
 {
   "version": "1.0.0",
   "created": "2026-03-01",
-  "description": "Success Conditions Registry for Article_Eater_PostQuinean_v1 — All critical scripts and modules. Each condition is measurable and testable. This registry directly addresses the mandate: prevent silent failures and zero-output problems through explicit success criteria.",
+  "description": "Success Conditions Registry for Article_Eater_PostQuinean_v1 \u2014 All critical scripts and modules. Each condition is measurable and testable. This registry directly addresses the mandate: prevent silent failures and zero-output problems through explicit success criteria.",
   "conditions": {
     "scripts/scheduled_pipeline.py": {
-      "description": "Main pipeline orchestrator — runs discovery, triage, extraction, QA, integration in sequence or individually",
+      "description": "Main pipeline orchestrator \u2014 runs discovery, triage, extraction, QA, integration in sequence or individually",
       "script_entry_point": "python scripts/scheduled_pipeline.py",
       "conditions": [
         {
@@ -322,7 +322,7 @@
       ]
     },
     "scripts/run_panel_1_outcomes.py": {
-      "description": "Panel-1: Outcome Vocabulary Resolution — Classifies unresolved outcome terms",
+      "description": "Panel-1: Outcome Vocabulary Resolution \u2014 Classifies unresolved outcome terms",
       "script_entry_point": "python scripts/run_panel_1_outcomes.py",
       "conditions": [
         {
@@ -460,7 +460,7 @@
       ]
     },
     "src/services/overseer.py": {
-      "description": "OVERSEER: Superordinate Monitoring — Health monitoring and epistemic invariant enforcement",
+      "description": "OVERSEER: Superordinate Monitoring \u2014 Health monitoring and epistemic invariant enforcement",
       "module_entry_point": "from src.services.overseer import OverseerSystem, HealthMonitor, IntegrityChecker",
       "conditions": [
         {
@@ -538,7 +538,7 @@
       ]
     },
     "src/extraction/revised_prompts_v3.py": {
-      "description": "REVISED EXTRACTION PROMPTS V3 — Comprehensive prompt set for Gemini extraction",
+      "description": "REVISED EXTRACTION PROMPTS V3 \u2014 Comprehensive prompt set for Gemini extraction",
       "module_entry_point": "from src.extraction.revised_prompts_v3 import get_prompt, CANONICAL_DIRECTIONS, ARTICLE_FAMILIES",
       "conditions": [
         {
@@ -639,7 +639,7 @@
         },
         {
           "id": "FTR-SC3",
-          "name": "Annotation persistence ratio is 100% — all resolved findings are persisted",
+          "name": "Annotation persistence ratio is 100% \u2014 all resolved findings are persisted",
           "description": "All findings processed by resolve_findings() are written to web_persistence_v2.db with epistemic_v2 annotation",
           "metric": "persisted_beliefs / total_resolved_beliefs",
           "threshold": ">= 0.99",
@@ -727,7 +727,7 @@
       ]
     },
     "scripts/nightly_integration_pipeline.py": {
-      "description": "Nightly integration — runs overseer checks, constraint propagation, AESHI, and reflex repairs",
+      "description": "Nightly integration \u2014 runs overseer checks, constraint propagation, AESHI, and reflex repairs",
       "script_entry_point": "python scripts/nightly_integration_pipeline.py",
       "conditions": [
         {
@@ -760,7 +760,7 @@
       ]
     },
     "scripts/compute_system_health.py": {
-      "description": "AESHI (Article Eater System Health Index) computation — composite health metric",
+      "description": "AESHI (Article Eater System Health Index) computation \u2014 composite health metric",
       "script_entry_point": "python scripts/compute_system_health.py --skip-gates",
       "conditions": [
         {
@@ -802,7 +802,7 @@
       ]
     },
     "scripts/classify_grounding.py": {
-      "description": "Grounding classification — classifies beliefs as GROUNDED, COHERENT_ONLY, or UNJUSTIFIED",
+      "description": "Grounding classification \u2014 classifies beliefs as GROUNDED, COHERENT_ONLY, or UNJUSTIFIED",
       "script_entry_point": "python scripts/classify_grounding.py",
       "conditions": [
         {
@@ -835,7 +835,7 @@
       ]
     },
     "scripts/propagate_constraints.py": {
-      "description": "Constraint propagation — connects isolated beliefs via edge creation",
+      "description": "Constraint propagation \u2014 connects isolated beliefs via edge creation",
       "script_entry_point": "python scripts/propagate_constraints.py --dry-run",
       "conditions": [
         {
@@ -868,7 +868,7 @@
       ]
     },
     "scripts/migrate_annotations_to_unified.py": {
-      "description": "Annotation migration — moves L2 CVA JSON annotations into unified SQLite store",
+      "description": "Annotation migration \u2014 moves L2 CVA JSON annotations into unified SQLite store",
       "script_entry_point": "python scripts/migrate_annotations_to_unified.py --dry-run",
       "conditions": [
         {
@@ -901,7 +901,7 @@
       ]
     },
     "scripts/run_acquisition_pipeline.py": {
-      "description": "Acquisition pipeline — 8-step article discovery, search, enrichment, and intake",
+      "description": "Acquisition pipeline \u2014 8-step article discovery, search, enrichment, and intake",
       "script_entry_point": "python scripts/run_acquisition_pipeline.py --dry-run",
       "conditions": [
         {
@@ -943,7 +943,7 @@
       ]
     },
     "src/services/paper_integration/orchestrator.py": {
-      "description": "Integration Cascade — 14-step paper-to-belief integration with rollback",
+      "description": "Integration Cascade \u2014 14-step paper-to-belief integration with rollback",
       "script_entry_point": "python -c 'from src.services.paper_integration.orchestrator import PaperIntegrationOrchestrator; print(\"OK\")'",
       "conditions": [
         {
@@ -992,11 +992,144 @@
           "rationale": "Missing audit trail prevents rollback and accountability"
         }
       ]
+    },
+    "src/qa/cluster_meta_review.py": {
+      "description": "Cluster Meta-Review Generator \u2014 Transforms belief clusters into structured mini meta-reviews for QA, cards, and discovery",
+      "script_entry_point": "python -c 'from src.qa.cluster_meta_review import ClusterMetaReview; print(\"OK\")'",
+      "conditions": [
+        {
+          "id": "CMR-SC1",
+          "name": "Cluster Completeness",
+          "description": "At least 95% of belief clusters have a corresponding meta-review generated",
+          "metric": "len(meta_reviews) / len(belief_clusters) >= 0.95",
+          "threshold": ">=95%",
+          "test_name": "test_cluster_meta_review_completeness",
+          "rationale": "Below 95%, system QA capacity is significantly impaired; gaps in synthesis limit answer quality"
+        },
+        {
+          "id": "CMR-SC2",
+          "name": "Quality Gate Pass Rate",
+          "description": "At least 92% of generated meta-reviews pass all 10 quality criteria (SC-MR-1 through SC-MR-10)",
+          "metric": "count(passing_all_criteria) / len(meta_reviews) >= 0.92",
+          "threshold": ">=92%",
+          "test_name": "test_meta_review_quality_gate",
+          "rationale": "Below 92%, LLM generation is producing substandard output; trigger manual review or model downgrade"
+        },
+        {
+          "id": "CMR-SC3",
+          "name": "Non-Trivial Belief Statements (SC-MR-1)",
+          "description": "Every belief_statement contains at least one of: effect size, CI, sample size, evidence count",
+          "metric": "all(mr.belief_statement contains numeric evidence for mr in meta_reviews)",
+          "threshold": "100%",
+          "test_name": "test_belief_statement_specificity",
+          "rationale": "Vague belief statements ('X affects Y') are useless; they don't inform decision-making"
+        },
+        {
+          "id": "CMR-SC4",
+          "name": "Evidence-Grounded Mechanisms (SC-MR-2)",
+          "description": "Every mechanism has evidence_count >= 1 or is explicitly marked confidence='speculative'",
+          "metric": "all(m.evidence_count > 0 or m.confidence == 'speculative' for m in mr.mechanisms)",
+          "threshold": "100%",
+          "test_name": "test_mechanism_grounding",
+          "rationale": "Mechanisms without evidence are indistinguishable from LLM confabulation"
+        },
+        {
+          "id": "CMR-SC5",
+          "name": "Justified Confidence Levels (SC-MR-3)",
+          "description": "confidence_level matches evidence profile (n_papers, direction_consensus, heterogeneity, replication_status)",
+          "metric": "all(confidence_assignment_defensible(mr) for mr in meta_reviews)",
+          "threshold": "100%",
+          "test_name": "test_confidence_calibration",
+          "rationale": "Unjustified confidence is a credibility killer; defaulting all to MODERATE admits analysis failure"
+        },
+        {
+          "id": "CMR-SC6",
+          "name": "Testable Research Needs (SC-MR-4)",
+          "description": "Each research_need is operationalizable as an actual study design; no generic 'more research needed'",
+          "metric": "all(is_testable_as_study(rn) for rn in mr.research_needs)",
+          "threshold": "100%",
+          "test_name": "test_research_need_specificity",
+          "rationale": "Generic research gaps add no value; specificity enables actual research planning"
+        },
+        {
+          "id": "CMR-SC7",
+          "name": "Quantified Heterogeneity (SC-MR-5)",
+          "description": "If heterogeneity='high', heterogeneity_assessment includes numeric breakdown (I\u00b2, subset effect sizes, or ranges)",
+          "metric": "all(heterogeneity_assessment contains numbers or heterogeneity != 'high')",
+          "threshold": "100%",
+          "test_name": "test_heterogeneity_quantification",
+          "rationale": "Unquantified heterogeneity is an admission of unclear analysis; numbers are essential"
+        },
+        {
+          "id": "CMR-SC8",
+          "name": "Explicit Scope Conditions (SC-MR-6)",
+          "description": "scope_conditions explicitly specifies population, setting, and at least one of (duration, intensity, dosage)",
+          "metric": "all(mr.scope_conditions contains min(population, setting, dosage/duration/intensity))",
+          "threshold": "100%",
+          "test_name": "test_scope_specificity",
+          "rationale": "Unscoped claims generalize inappropriately; practitioners need to know when cluster applies"
+        },
+        {
+          "id": "CMR-SC9",
+          "name": "Effect Size with Uncertainty (SC-MR-7)",
+          "description": "effect_size_summary includes CI or explicit 'not available' with reason; never bare point estimates",
+          "metric": "all(mr.effect_size_summary contains CI or 'not available')",
+          "threshold": "100%",
+          "test_name": "test_effect_size_uncertainty",
+          "rationale": "Point estimates without CIs are misleading; full uncertainty context is non-negotiable"
+        },
+        {
+          "id": "CMR-SC10",
+          "name": "Cited Theory Links (SC-MR-8)",
+          "description": "Every theory_link includes author(s) and year in format 'Theory Name (Author, Year)'",
+          "metric": "all(has_author_and_year(tl) for tl in mr.theory_links)",
+          "threshold": "100%",
+          "test_name": "test_theory_citation_format",
+          "rationale": "Uncited theories are unverifiable; proper citation enables readers to follow reasoning"
+        },
+        {
+          "id": "CMR-SC11",
+          "name": "High-Confidence Cluster Coverage",
+          "description": "At least 85% of well-evidenced clusters (n_papers >= 5) are assigned HIGH or MOD_HIGH confidence",
+          "metric": "count(confidence in [HIGH, MOD_HIGH] for mr in meta_reviews where n_papers >= 5) / count(n_papers >= 5) >= 0.85",
+          "threshold": ">=85%",
+          "test_name": "test_high_evidence_confidence",
+          "rationale": "Well-evidenced clusters should receive high confidence; failure suggests miscalibration"
+        },
+        {
+          "id": "CMR-SC12",
+          "name": "Heterogeneity Visibility",
+          "description": "At least 88% of clusters with moderate/high heterogeneity have non-empty heterogeneity_assessment with numeric breakdown",
+          "metric": "count(heterogeneity_assessment contains numbers for mr in meta_reviews where heterogeneity in [moderate, high]) / count(heterogeneity in [moderate, high]) >= 0.88",
+          "threshold": ">=88%",
+          "test_name": "test_heterogeneity_documentation",
+          "rationale": "Unexplained heterogeneity is scientific negligence; visibility enables interpretation"
+        },
+        {
+          "id": "CMR-SC13",
+          "name": "No Hallucinated Mechanisms",
+          "description": "Every mechanism claim is either sourced from findings_ids in evidence base or explicitly marked 'theoretical extrapolation'",
+          "metric": "all(m._sourced_from is not empty or m.confidence == 'speculative' for m in mr.mechanisms)",
+          "threshold": "100%",
+          "test_name": "test_mechanism_source_accountability",
+          "rationale": "Unsourced causal chains are indistinguishable from LLM hallucination; sourcing is mandatory"
+        },
+        {
+          "id": "CMR-SC14",
+          "name": "Field Consistency",
+          "description": "confidence_level, effect_size_summary, n_papers, and direction_consensus are internally consistent",
+          "metric": "all(is_consistent(mr) for mr in meta_reviews)",
+          "threshold": "100%",
+          "test_name": "test_field_consistency",
+          "rationale": "Inconsistencies catch cases where LLM agrees with one field but contradicts another"
+        }
+      ]
     }
   },
   "meta": {
     "purpose": "This registry provides explicit, measurable success conditions for every critical script and module in the system. Each condition has: (1) unique ID, (2) human-readable description, (3) quantitative metric, (4) threshold, (5) test name. This prevents silent failures by requiring proof of success at each stage.",
     "enforcement": "The test suite (tests/test_success_conditions.py) verifies every condition. CI/CD should run this suite before any pipeline execution.",
     "addition_procedure": "When adding new scripts/modules: (1) identify 4-8 success conditions, (2) add to this JSON, (3) write corresponding tests in test_success_conditions.py, (4) update docs/SUCCESS_CONDITIONS_REGISTRY_2026-03-01.md with human-readable summary"
-  }
+  },
+  "last_updated": "2026-03-04T19:17:17.988194"
 }
