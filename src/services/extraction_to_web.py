@@ -1150,6 +1150,35 @@ def claim_to_belief(
         environment_id = _extract_environment_id(claim)
         outcome_id = _extract_outcome_id(claim)
 
+        # Upstream quality gate: if API didn't populate env/outcome,
+        # extract from content text using FTR bridge vocabularies.
+        # This catches the ~90% of findings where constructs.environment_factors
+        # is empty because the Gemini API returned flat antecedent/consequent.
+        if not environment_id or not outcome_id:
+            try:
+                from src.services.belief_env_outcome_extractor import (
+                    extract_env_outcome, WRITE_THRESHOLD
+                )
+                extraction = extract_env_outcome(
+                    belief_id=claim_id, content=statement
+                )
+                if not environment_id and extraction.best_env_confidence >= WRITE_THRESHOLD:
+                    environment_id = extraction.best_env_id
+                    logger.info(
+                        f"Content-extracted env_id '{environment_id}' "
+                        f"(conf={extraction.best_env_confidence:.2f}) for {claim_id}"
+                    )
+                if not outcome_id and extraction.best_outcome_confidence >= WRITE_THRESHOLD:
+                    outcome_id = extraction.best_outcome_id
+                    logger.info(
+                        f"Content-extracted outcome_id '{outcome_id}' "
+                        f"(conf={extraction.best_outcome_confidence:.2f}) for {claim_id}"
+                    )
+            except ImportError:
+                pass  # Extractor not available, skip gracefully
+            except Exception as e:
+                logger.debug(f"Content extraction fallback error: {e}")
+
         # Sprint 2.6 Track A: Task context extraction (P-TC Panel)
         task_context = extract_task_context(claim)
         result.inference_basis = task_context.inference_basis

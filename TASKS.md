@@ -1,6 +1,6 @@
 # TASKS.md
 
-*Last updated: 2026-03-03 (Session 21 continuation 4 — MATH NORMS + FORMALIZATION SESSION. (1) MATH_EXPLANATION_NORMS: 7 mandatory norms synthesized from Strogatz, Devlin, Ellenberg, Stewart, Mazur, du Sautoy, Tsitsiklis, Bertsekas — four-layer explanation, provenance, justified constants, assumptions/scope, common-sense labels, figures, diverse examples. Contract: `contracts/MATH_EXPLANATION_NORMS.md`. Added to CLAUDE.md. (2) §48.1A d-value provenance: Full justification for 7 transfer reliability d-values — 3-round expert calibration history, sensitivity analysis (±0.10 d → ±0.015–0.018 p_target), empirical validation roadmap. (3) 5 constant annotations: δ default/min, ω bounds, TEA weights, AESHI weights — all tagged STIPULATED/THEORETICAL/CALIBRATED with provenance. (4) §84.2A Coherence C* formalization: C* = (A − λ·V) / A_max, λ=2.0 (Thagard 1989), 5 agreement/conflict cases, 3 worked examples, O(|E|) algorithm. (5) §121.3A VOI formalization: VOI(g) = [α·VOI_structural + (1−α)·VOI_epistemic]·w(type), adapted from Howard (1966) & Good (1950), 3 worked examples, decision rules. (6) Phase 6 figure plan: 8 new math explanation figures (M-25 through M-32) identified, FIGURE_INDEX.md updated. Previous: figure generation, consistency tracking, common-sense labeling, math audit.)*
+*Last updated: 2026-03-04 (Session 22 — CIRCUIT QA LATENT VARIABLE REFRAMING + SEARCH TARGET WIRING. (1) Reframed functional circuits as latent variables per David's directive. Rewrote ontological statements in ATLAS voice (Pinker classic style, Sagan honest uncertainty). (2) Added testability sections with accessible descriptions, data requirements, and article search targets. (3) Wired search_targets into recommendation loop: circuit QA responses queue suggestions with source='circuit_qa' for automated evidence acquisition. 44 tests passing.) Previous: 2026-03-03 (Session 21 continuation 4 — MATH NORMS + FORMALIZATION SESSION. (1) MATH_EXPLANATION_NORMS: 7 mandatory norms synthesized from Strogatz, Devlin, Ellenberg, Stewart, Mazur, du Sautoy, Tsitsiklis, Bertsekas — four-layer explanation, provenance, justified constants, assumptions/scope, common-sense labels, figures, diverse examples. Contract: `contracts/MATH_EXPLANATION_NORMS.md`. Added to CLAUDE.md. (2) §48.1A d-value provenance: Full justification for 7 transfer reliability d-values — 3-round expert calibration history, sensitivity analysis (±0.10 d → ±0.015–0.018 p_target), empirical validation roadmap. (3) 5 constant annotations: δ default/min, ω bounds, TEA weights, AESHI weights — all tagged STIPULATED/THEORETICAL/CALIBRATED with provenance. (4) §84.2A Coherence C* formalization: C* = (A − λ·V) / A_max, λ=2.0 (Thagard 1989), 5 agreement/conflict cases, 3 worked examples, O(|E|) algorithm. (5) §121.3A VOI formalization: VOI(g) = [α·VOI_structural + (1−α)·VOI_epistemic]·w(type), adapted from Howard (1966) & Good (1950), 3 worked examples, decision rules. (6) Phase 6 figure plan: 8 new math explanation figures (M-25 through M-32) identified, FIGURE_INDEX.md updated. Previous: figure generation, consistency tracking, common-sense labeling, math audit.)*
 
 Active task tracking for Article_Eater_PostQuinean_v1.
 For completed sprints (Feb 2026), see `docs/TASKS_ARCHIVE_2026_Feb.md`.
@@ -34,6 +34,263 @@ For completed sprints (Feb 2026), see `docs/TASKS_ARCHIVE_2026_Feb.md`.
 **Previous Session**: 2026-02-25 (Session 6) — Paper Integration Pipeline (Sprint INTEGRATION-1). Phase 1: 7 new files in src/services/paper_integration/ (orchestrator, supersession, rollback, tag_engine, molecule_linker, models, __init__). 4 DB migrations. 22/22 tests. Phase 2: Gap audit (docs/INTEGRATION_PIPELINE_GAP_AUDIT_2026-02-25.md) identified 9 skeletal areas. Wired Steps 4-5 to extraction_to_web.py (full credence computation with theory inference, entrenchment boosts, reflective equilibrium). Wired Step 9 to BetaBernoulliEdge.update() (real conjugate prior BN learning). Wired Step 13 to EpistemicOrchestrator.compute_full_state() (P2-P6 recomputation + coherence delta). OVERSEER module proposed for panel review (8 design questions, O-1..O-8).
 **Previous Session**: 2026-02-25 (Session 5) — Master paper 17,785 lines. Saved as MASTER_DOC_CMR_2026-02-25.md. Session 5 additions: (1) Reviewed AG's complete T1.5 implementation; wrote §34.5.7 documenting it. Updated §34.5.4/§34.5.5. (2) Created Goldilocks Principle as 13th T1.5 theory: T1.5 JSON definition (data/theories/goldilocks_principle.json) with 5 constructs, 19 constituent templates, PP:35%/IC:25%/NM:20%/IE-DPT:15%/EC:5%, three-part irreducible residual (cross-modal universality claim). PHENOMENON molecule (data/molecules/goldilocks_principle.json) with 16 templates, 6 components, 7 design implications. Added §78.2a to master paper (~65 paragraphs): mechanism (PE optimization + metabolic efficiency + reward convergence + individual differences), 6 domain calibrations with quantified optima, subsumption of Berlyne. Updated §78.2 Berlyne deferral with subsumption note. Added to canonical roster table as #13.
 **Previous Session**: 2026-02-24 (Sessions 1-4) — Master paper expanded from 10,863 to ~17,700 lines. All 124 sections + 5 appendices at full depth. §34.5 three-level architecture added. Doc sync scanner baseline established. Zero skeleton markers remain.
+
+---
+
+## In Progress (2026-03-04)
+
+### Card System Full Specification — IN PROGRESS
+**Plan**: `docs/CARD_SYSTEM_SPECIFICATION_PLAN_2026-03-04.md`
+**Scope**: 9 card types (T1/T1.5/T2/Molecule/T3/Competition/Layer/Method/Math), universal schema (surface + body tabs + iceberg), user-type adaptation, visual requirements, agent integration
+**Phases**: (1) Code schema, (2) Master doc Part XXVI (§174-§180), (3) Precompute Tier A cards, (4) Visual generation, (5) Agent integration
+**Status**: Part XXVI writing campaign COMPLETE. All 7 sections written (§174-§180, ~22,000 words total).
+**Master doc gaps RESOLVED**:
+- §174 Molecules inventory — COMPLETE (~3,000 words)
+- §175 Annotation layer — COMPLETE (~2,800 words)
+- §176 Interpretation space — COMPLETE (~3,000 words)
+- §177 Argumentation system — COMPLETE (~2,500 words)
+- §178 Card system spec — COMPLETE (~4,200 words)
+- §179 Math cards — COMPLETE (~2,900 words)
+- §180 System architecture — COMPLETE (~3,800 words)
+**Next**: Science agent quality review, then Phase 1 code schema
+
+### Science Agent Quality Review — IN PROGRESS
+**Scope**: Review AG's agent spec (distributed across COORDINATION files + services), improve, consider panel
+**Status**: Agent audit complete. Found 10 agent-like services, 2 autonomous agents (AG + CW). No standalone "AG agent spec" — spec is distributed across `.agent_coord/`, `docs/QA_SYSTEM_SPEC.md`, and `docs/SUCCESS_CONDITIONS_2026-03-03.md`
+**David's directive**: Agent must call Opus whenever useful. Writing can lead to questions about content → store in 'context' appendix of each card/sheet
+**Deliverable**: `docs/SCIENCE_WRITER_AGENT_SPEC_2026-03-04.md` (~15,000 words, comprehensive spec covering: agent architecture, 7-stage writing pipeline, question-generation loop, quality gates, card-type-specific strategies, ReductionClaim DAG premium treatment, iceberg/context appendix design, model allocation strategy, success criteria)
+
+---
+
+## Recently Completed (2026-03-04)
+
+### Part XXVI: System Presentation and Knowledge Artifacts — COMPLETE (2026-03-04)
+- **7 sections written** (§174-§180), totaling ~22,000 words
+- §174 Molecules Inventory (~3,000 words): 38 molecules across 4 types, factor analysis discovery method, molecules vs T1.5 distinction
+- §175 Annotation Layer (~2,800 words): 25 types across 6 layers, three parallel systems, immutable design, integration problem
+- §176 Interpretation Space (~3,000 words): 4 epistemic zones, question-type operators, endogenous value function V(G), probatory rule sets R₁-R₄
+- §177 Argumentation System (~2,500 words): Walton's 5 schemes, Toulmin structure, debate clusters, gap discovery pipeline
+- §178 Card System (~4,200 words): 9 card types, universal schema (surface/body/iceberg), tab architecture, ReductionClaim DAGs with premium irreducible-residual treatment, staleness lifecycle, science writer agent
+- §179 Math Cards (~2,900 words): three-layer explanation architecture (Intuition/Transparent/Details), 10 math domains, science writer agent for intuition layers
+- §180 System Architecture (~3,800 words): layer-by-layer guide, cross-layer data flow worked example, agent architecture, design decision on layered vs monolithic
+- All sections in `docs/master_doc_parts/PART_XXVI_*.md` files
+- DEPENDENCY_MANIFEST.json updated (total_sections: 148→155)
+
+### Science Writer Agent Specification — COMPLETE (2026-03-04)
+- **Comprehensive spec**: `docs/SCIENCE_WRITER_AGENT_SPEC_2026-03-04.md` (~15,000 words)
+- Agent audit found 10 agent-like services, 2 autonomous agents (AG+CW), NO standalone science writer
+- Spec covers: stateful architecture, 7-stage writing pipeline, question-generation loop (questions as first-class artifacts stored in card iceberg), 3 quality gates, card-type-specific strategies, ReductionClaim DAG premium visualization, model allocation (Opus for theoretical, Sonnet for routine), integration with 10 existing services
+- Key innovation: questions generated DURING writing are captured in structured format and accumulated in master question registry — reveals system gaps and user confusion patterns
+- Ready for David's review and AG coordination
+
+### QA Answer Norms — COMPLETE (2026-03-04)
+- **Deliverable**: `contracts/QA_ANSWER_NORMS.md` (~8,962 words)
+- AG requested in Message 009, David confirmed "very important"
+- 12 mandatory norms grounded in Reference Group of 8 scholars (Kahneman, Tetlock, Oreskes, Pinker, Sagan, Gelman, Nosek, Mayo)
+- Maps all 9 enrichment orchestrator outputs to answer presentation sections
+- Covers: answer structure, provenance citation, credence communication, framework attribution, uncertainty framing, document applicability, popular science standards
+- Success conditions SC-QAN-1 through SC-QAN-12
+- Forbidden patterns section (false balance, hedging stacks, circular reasoning, COHERENT_ONLY concealment)
+- Integrates with EPISTEMIC_PRINCIPLES.md (Haack, Pollock, Mayo, Cartwright, Pearl)
+
+### Master Doc Update Protocol (MDB System) — COMPLETE (2026-03-04)
+- **Deliverable**: `contracts/MASTER_DOC_UPDATE_PROTOCOL.md` (~4,641 words)
+- Solves David's problem: "forces everyone wherever they are to write up a context and decision justification doc"
+- Master Doc Brief (MDB) template with 11 required sections
+- Precise thresholds for "significant work" vs lightweight Change Notes
+- Storage: `docs/master_doc_briefs/MDB_{AGENT}_{DATE}_{TOPIC}.md`
+- CW integration workflow for mechanical master doc updates
+- **Updated**: COORDINATION.md startup protocol (step 2: read MDB protocol), CLAUDE.md (new mandatory section)
+- Created `docs/master_doc_briefs/` directory with README.md and _index.md
+
+### Unified Content Agent Architecture — COMPLETE (2026-03-04)
+- Reconciled AG's 5-agent decomposition (prose, visual, stats, layout, expert) with CW's Science Writer Agent spec
+- `docs/UNIFIED_CONTENT_AGENT_ARCHITECTURE_2026-03-04.md` (~10,000 words)
+- AG's panel feedback (15 experts) incorporated
+- Model allocation: Opus for theoretical, Gemini for bulk, Sonnet for routine
+
+### Opus Head-to-Head Comparison — COMPLETE (2026-03-04)
+- `docs/OPUS_HEAD_TO_HEAD_2026-03-04.md` (~7,000 words)
+- 4-way comparison on 5 clusters: Data-Only (D), Template (C/D), Gemini (B+/A-), Opus (A/A+)
+- Recommended allocation: Opus ~200 high-stakes, Gemini ~2,788 bulk, hybrid ~800
+
+### Panel Review of Unified Agent Spec — COMPLETE (2026-03-04)
+- `docs/PANEL_REVIEW_UNIFIED_AGENT_SPEC_2026-03-04.md` (~36K)
+- 12-expert panel: Pinker, Yong, Tufte, Gelman, Haack, Pollock, Ellard, Fowler, Hickey, Kirsh
+- Verdict: APPROVED WITH RESERVATIONS
+- 9 refinements incorporated
+
+### Epistemic Loci Terminology + Card Architecture (§173) — COMPLETE (2026-03-04)
+- **Epistemic loci** adopted as term for higher-level belief-cluster cards (David's choice from alternatives: topoi, dossiers, epistemic loci, crystallizations, nexus)
+- **Source cards** = atomic article-tied evidence units; **epistemic loci** = synthesized positions aggregating across the evidence base
+- Three-zone architecture documented: Zone 1 (committed prose), Zone 2 (flagged developments/diffs), Zone 3 (source map/dependency graph)
+- Staleness scoring designed: weighted function of new source cards, credence shifts, competition resolutions; threshold 0.40 triggers regeneration
+- Model allocation: Opus for theoretical loci, Sonnet for engineering loci, with reference-verification pass on all Opus outputs
+- Written as §173 in `docs/master_doc_parts/PART_XXV_WRITING_AND_COMMUNICATION_INFRASTRUCTURE.md` (~2,200 words)
+- Updated DEPENDENCY_MANIFEST.json (total_sections: 147→148)
+
+### Opus vs Sonnet Comparison for Master Doc Fattening — COMPLETE (2026-03-04)
+- Both models wrote identical §129.2 fattening inserts (Typed Credence Propagation theoretical justification)
+- Opus: ~3,400 words, deeper philosophical grounding (Toulmin/Pollock/Woodward + Harman/Lehrer/Thagard unprompted), 17 refs, ~3 hallucinated refs
+- Sonnet: ~3,600 words, tighter prose, sharper engineering insights (load-bearing beam analogy, failing-competitor observation), 6 refs, 0 hallucinations
+- Verdict: Opus for theoretical fattening (with ref verification); Sonnet for engineering sections
+- Comparison files: `docs/comparisons/opus_fattening_129_2.md`, `docs/comparisons/sonnet_fattening_129_2.md`
+
+## Recently Completed (2026-03-03)
+
+### Panel Recommendation Implementation (T-Levels Taxonomy) — COMPLETE (2026-03-03)
+
+**Summary**: Implemented all 4 unanimous panel recommendations from `docs/PANEL_OUTPUT_T_LEVELS_2026-03-03.md`.
+
+**Recommendation #1: Separate canonical from hypothetical T1 atoms** — COMPLETE
+- Created T1 atom registry: `src/qa/molecules/t1_atom_schema.py` (T1Atom dataclass with maturity stratification)
+- Created registry: `src/qa/molecules/t1_atom_registry.py` (T1AtomRegistry with framework/maturity indexes)
+- Created 30 atom JSON files in `data/atoms/`: 10 CANONICAL, 10 ESTABLISHED, 10 HYPOTHETICAL
+- CANONICAL atoms (neurally grounded, cross-domain): lateral inhibition, divisive normalization, gain control, Hebbian association, temporal integration, adaptation, oscillatory coupling, homeostatic regulation, error signal generation, spatial mapping
+- HYPOTHETICAL atoms (limited evidence): empathic resonance, affordance computation, aesthetic fluency, narrative binding, place cell coding, allostatic prediction, social baseline, circadian entrainment, multisensory binding, default mode suppression
+- Tests: 52 in `tests/test_t1_atom_registry.py` (all passing)
+
+**Recommendation #3: Reground T1.5 boundary structurally** — COMPLETE
+- Added `boundary_criteria` field to T1_5Theory schema (`t1_5_theory_schema.py`)
+- Three structural tests replace sociological "published author" criterion:
+  (a) has_irreducible_residual: emergent content not decomposable into T1
+  (b) constitutive_relevance: names mechanism whose intervention changes phenomenon
+  (c) design_guidance_utility: generates specific design guidance beyond T1
+- All 13 REDUCED theories populated: 11 score 3/3, 2 score 2/3 (Biophilia: no specific mechanism; Place Attachment: underspecified mechanism)
+- Validation rule: REDUCED theories with boundary_criteria scoring <2 trigger warning
+
+**Recommendation #4: Formalize decomposition of three relations** — COMPLETE
+- Created `src/qa/molecules/hierarchy_relations.py` (316 lines):
+  - ExplanatoryHierarchy: T1 → T1.5 → T2 (top-down causal account)
+  - EvidentialHierarchy: T3 → T2 → T1.5 → T1 (bottom-up empirical support)
+  - CompositionHierarchy: Molecule → T2 templates, FC → Archetypes (parts-whole)
+  - ThreeRelationIndex: Unified cross-relation query interface
+- Each relation independently indexed with separate edge semantics
+- HierarchyEdge dataclass with source/target tiers, confidence, provenance
+- Tests: 39 in `tests/test_hierarchy_relations.py` (all passing)
+
+**Recommendation #2: Validate T3 corpus against AI extraction bias** — PLAN COMPLETE
+- Created `docs/T3_EXTRACTION_BIAS_AUDIT_PLAN_2026-03-03.md` (687 lines)
+- 5 bias types with quantitative detection metrics
+- Gold standard construction plan (50 articles, 2 raters, κ ≥ 0.70)
+- Automated detection script specification
+- Timeline: ~52 person-hours across 6-8 weeks
+- Blocked on: human rater recruitment (David decision needed)
+
+**New tests this session**: 91 (52 atom + 39 hierarchy), all passing. Total with prior session: 246.
+
+### Sprint SC (Success Conditions) — COMPLETE
+
+**Summary**: V13 Ruthless Audit scored 3.8/10. Root cause: 142 functions across 5 core service files lacked explicit success conditions. Sprint SC addressed this systematically.
+
+**Total New Tests**: 389 (all passing) + Layer 2/3 infrastructure
+
+| Sprint | Service | Functions | New Tests | Status |
+|--------|---------|-----------|-----------|--------|
+| SC-1 | Answer Enrichment Orchestrator | 35 | 82 (37 L1 + 20 P0 + 25 systemic) | ✅ COMPLETE |
+| SC-2 | Integrated Query Service | 15 | 64 | ✅ COMPLETE |
+| SC-3 | Arbitrary QA Handler | 48 (7 critical) | 36 | ✅ COMPLETE |
+| SC-4 | Language Adaptation Service | 19 | 116 | ✅ COMPLETE |
+| SC-5 | Prose Revision Service | 25 | 91 | ✅ COMPLETE |
+| SC-6 | Layer 2/3 Infrastructure | — | scripts + markers | ✅ COMPLETE |
+
+**Three-Layer QA Architecture**:
+- Layer 1: 389 success condition tests (deterministic, every commit)
+- Layer 2: 45 systemic failure tests with `@pytest.mark.layer2_nightly` + `scripts/run_nightly_audit.py`
+- Layer 3: Adversarial audit template at `scripts/run_adversarial_audit.py`
+
+**Key Deliverables**:
+- Success conditions written as structured docstrings (SC-*) in all 5 service files
+- Sprint plan: `docs/SPRINT_SUCCESS_CONDITIONS_PLAN_2026-03-03.md`
+- Test files: `tests/test_success_conditions_{orchestrator,iqs,qa_handler,language_adaptation,prose_revision}.py`
+- P0 fix validation: `tests/test_p0_fixes_validation.py`
+- Systemic tests: `tests/test_systemic_failure_modes.py`
+
+**Next**: Subsystem-level health contracts for 20 subsystems (V11 decomposition). Cross-boundary data integrity tests. Integration into overseer nightly cycle.
+
+### Circuit QA Latent Variable Reframing + Search Target Wiring — COMPLETE (2026-03-04)
+
+**Summary**: Per David's directive, reframed functional circuits as latent variables (statistical regularities in neural-behavioral covariance) rather than localized neural modules. Added testability sections with article search triggers that feed the recommendation loop.
+
+**Key insight (David)**: Circuits "may not designate actual neural components that implement that very function, or at least not in any localized manner, but they might be latent variables in an analysis of what is going on."
+
+**Changes**:
+- `src/services/circuit_qa_service.py`: Rewrote `_build_ontological_statement()` in ATLAS voice (concrete-first, Sagan honest uncertainty, orchestra metaphor). Added `_build_testability_section()` generating accessible test descriptions, data requirements, and article search targets. Added `testability` field to CircuitQACard.
+- `src/services/arbitrary_qa_handler.py`: Added `_queue_circuit_search_targets()` — when circuit answers include search targets, they are inserted as `source='circuit_qa'` suggestions in the interpretation_space_suggestions table for the recommendation loop to dispatch.
+- `src/services/recommendation_loop.py`: Added Step 2b `_harvest_circuit_qa_targets()` — picks up circuit QA search targets alongside QA backlog and interpretation space gaps.
+- Epistemic status levels reframed: STRONG = latent variable recovered across paradigms with intervention evidence; MODERATE = hypothesized latent variable with covariance support; HYPOTHETICAL = predicted by theory, not yet extracted from data (Barrett 2017 warning).
+- Search targets for HYPOTHETICAL circuits trigger article acquisition through recommendation loop.
+- Tests: 44 tests in `tests/test_circuit_qa_service.py` including 10 new testability tests (all passing).
+
+### Part XXV: Writing & Communication Infrastructure — COMPLETE (2026-03-04)
+
+**Summary**: New master doc Part documenting the writing infrastructure (§168–§172, ~3,200 words). Created per David's standing directive that all theoretically or engineering-interesting progress must be documented in the master doc with grounds and spec. Covers science communication norms (12 norms, 10 practitioners), prose revision service architecture (3-pass diagnostics, Writer's Diet, lard factor), integration architecture (QA pipeline, advisory not blocking), and Smart Book dependency validation. Also added §151.1 Subsystem Health Contracts pointer to Part XXII. Standing directive added to CLAUDE.md.
+
+### Functional Circuits Integration — COMPLETE (2026-03-03)
+
+**Summary**: Integrated 20 functional circuits into the ATLAS annotation system per David's directive that "functional circuits and other new concepts such as atoms have to be part of the annotation system and be worked into explanations in an intelligent and often revelatory manner."
+
+**Schema changes**:
+- `src/qa/molecules/schema.py`: Added `linked_archetypes`, `inputs`, `outputs` fields to Molecule dataclass
+- `src/qa/molecules/registry.py`: Added `_archetype_index`, `find_by_archetype()`, `get_functional_circuits()`
+- `molecule_type` now includes: THEORY, MECHANISM, PHENOMENON, DESIGN_PATTERN, **FUNCTIONAL_CIRCUIT**
+
+**Data created**: 20 functional circuit molecule JSONs in `data/molecules/fc_*.json`
+
+| T2 Archetype | Circuits | Examples |
+|-------------|----------|----------|
+| CONVERGENT_STATE_MONITORING | 4 | Coherence monitor, threat monitor, vitality monitor, social safety |
+| PREDICTIVE_CODING | 4 | Sensory PE, social PE, reward PE, aesthetic expectation violation |
+| HOMEOSTATIC_REGULATION | 3 | Arousal regulation, cognitive load regulation, thermoregulatory affect |
+| ACCUMULATION_TO_BOUND | 3 | Familiarity detection, dread accumulation, curiosity accumulation |
+| COMPETITIVE_SELECTION | 3 | Attentional selection, action selection, interpretive selection |
+| GATED_PROPAGATION | 3 | Affective memory gating, context-gated threat, expertise-gated aesthetics |
+
+**Tests**: 44 tests in `tests/test_functional_circuits.py` (schema, registry, archetype index, data quality, JSON format, backward compatibility)
+
+### T-Levels Taxonomy Panel — COMPLETE (2026-03-03)
+
+**Panel prompt**: `docs/PANEL_PROMPT_T_LEVELS_FUNCTIONAL_CIRCUITS_2026-03-03.md` (282 lines)
+- CW added 3 implementation-derived insights (concerns #8-#10)
+- 5 new panelists added (Thelen, Heyes, Godfrey-Smith, Barry Smith, Pearl)
+- 10 identified weaknesses for panel review
+
+**Panel output**: `docs/PANEL_OUTPUT_T_LEVELS_2026-03-03.md` (~1,390 lines)
+- 15 panelists across 5 blocks (A-E)
+- Cross-commentary with 6 major disagreements, 3 convergences
+- Synthesis with unanimous/majority/minority concerns
+- 11 concrete ranked recommendations (4 Tier-1, 4 Tier-2, 3 Tier-3)
+
+**Unanimous panel findings** (MUST address):
+1. Separate canonical from hypothetical T1 atoms
+2. Reground T1.5 boundary structurally (not sociologically)
+3. Formalize three separate relations (explanation, evidence, composition)
+4. Validate T3 data against AI extraction bias
+
+### Subsystem Health Contracts + Overseer Upgrade — COMPLETE (2026-03-03)
+
+**Health contract specification**: `contracts/SUBSYSTEM_HEALTH_CONTRACTS.md` (946 lines)
+- Entry/exit contracts, health invariants for all 20 subsystems
+- 12 cross-boundary contracts (XB-1 through XB-12)
+
+**Overseer upgrade**: `src/services/overseer_self_healing.py` expanded from 17→20 subsystems
+- 3 new subsystems: Answer Enrichment Orchestrator, Norm Services, Agent Coordination
+- Richer success conditions (min 2 per subsystem, total ~50)
+- 3 new probe methods for V11 subsystems
+- Enhanced theory_templates probe (T1/T1.5/T2/molecule counts)
+
+**Cross-boundary tests**: `tests/test_cross_boundary_contracts.py` (20 tests)
+- XB-1: Template-registry contract
+- XB-2: Framework referential integrity
+- XB-3: Circuit-archetype integrity
+- XB-4: T1.5-molecule parent link
+- XB-5: Subsystem registry consistency (20 count, conditions, categories, deps, cycles)
+- XB-6: Extraction→WoB data flow
+- XB-7: Molecule registry health
+- XB-8: Success condition testability
+- XB-9: Health probe coverage
+
+**Test totals this session**: 128 new tests (44 functional circuits + 64 IQS/services + 20 cross-boundary), all passing.
 
 ---
 
@@ -359,6 +616,16 @@ These items are research topics that feed into CVA-1-REV (Tier 2 constraint cali
 
 ---
 
+## New Tasks (2026-03-04)
+
+| ID | Task | Context | Status |
+|----|------|---------|--------|
+| DB-HEALTH-1 | **Wire check_db_health.py into overseer nightly pipeline** | `scripts/check_db_health.py` created with 10 success conditions (SC-DB-1 through SC-DB-10). Should run as Stage 0 in nightly pipeline BEFORE other health checks. Currently 7 pass, 3 warnings (overseer db_locator usage, template_ids coverage, migration 023). CW action needed. | **OPEN** |
+| DB-HEALTH-2 | **Fix overseer to use db_locator** | Per SC-DB-6 and MT-16, `overseer.py` should default to `get_web_db()` when no explicit path given. Prevents endemic DB path confusion. | **OPEN** |
+| DB-HEALTH-3 | **Run migration 023 on overseer.db** | `overseer_health_metrics` table missing per SC-DB-8. Need to apply migration. | **OPEN** |
+
+---
+
 ## Blocked Tasks
 
 | Task | Blocked By | Resolution Path | Status |
@@ -395,6 +662,9 @@ These items are research topics that feed into CVA-1-REV (Tier 2 constraint cali
 
 | ID | Task | Completed | Outcome |
 |----|------|-----------|---------|
+| CIRCUIT-QA-SERVICE | Circuit QA Service | 2026-03-03 | `src/services/circuit_qa_service.py` — 20 functional circuits with epistemically framed QA cards. CircuitQACard dataclass with evidence stratification (STRONG/MODERATE/HYPOTHETICAL), ontological framing per Barrett (2017)/Batterman (2002), competing accounts, knowledge gaps. 35 tests passing. |
+| CIRCUIT-QA-WIRING | Circuit QA Wiring | 2026-03-03 | Wired CircuitQAService into `arbitrary_qa_handler.py` (FUNCTIONAL_CIRCUIT and ARCHETYPE_GUIDE question types), `annotation_service.py` (Layer 6: CIRCUIT_ASSOCIATION, ARCHETYPE_TAG), and `answer_enrichment_orchestrator.py` (Step 10: circuit_context enrichment). |
+| AG-COORD-011 | AG Coordination Message 011 | 2026-03-03 | Sent Message 011 via `.agent_coord/MESSAGE_BOARD.md` informing AG about circuit QA integration and requesting circuit annotation population during extraction Phases 3A-3D. |
 | PRED-1 | Prediction Discovery Engine | 2026-02-24 | `scripts/prediction_discovery_engine.py` — 6,175 type-level predictions from 103 templates |
 | PRED-2 | Instance Library Builder | 2026-02-24 | `scripts/instance_library_builder.py` — 649 instances across 19 slot types, organized by causal attribute |
 | PRED-3 | Ambience-Activity Prior Model | 2026-02-24 | `scripts/ambience_activity_priors.py` — 11 activity profiles, 6 time-of-day modifiers, feature co-occurrence priors |
@@ -570,3 +840,35 @@ These items are research topics that feed into CVA-1-REV (Tier 2 constraint cali
 ---
 
 *For historical tasks, see `docs/TASKS_ARCHIVE_2026_Feb.md`*
+
+### SC-6: Layer 2/3 QA Infrastructure (COMPLETE 2026-03-03)
+
+**Summary**: Built complete nightly + weekly QA infrastructure for systemic failure detection and adversarial auditing.
+
+**Tasks Completed**:
+- SC-6.1: Added `@pytest.mark.layer2_nightly` markers to all 45 systemic failure mode tests (5 test classes + 4 P0 fix classes)
+- SC-6.2: Created `scripts/run_nightly_audit.py` (283 lines) — runs Layer 2 tests, generates JSON + Markdown reports
+- SC-6.3: Created `scripts/run_adversarial_audit.py` (480 lines) — generates comprehensive Layer 3 audit prompt for LLM
+- SC-6.4: Verified all 45 Layer 2 tests pass; zero regressions
+
+**Output**:
+- `pytest.ini`: Registered `layer2_nightly` + `layer1_success` markers
+- `tests/test_systemic_failure_modes.py`: 5 test classes marked (25 tests)
+- `tests/test_p0_fixes_validation.py`: 4 test classes marked (20 tests)
+- `scripts/run_nightly_audit.py`: Nightly overseer runner with JSON + Markdown reporting
+- `scripts/run_adversarial_audit.py`: Layer 3 template generator (audit prompt for LLM)
+- `docs/SPRINT_SC6_COMPLETION_2026-03-03.md`: Completion report
+
+**Design Decisions**:
+- D1: Marker-based organization (non-invasive, flexible) vs. directory restructuring
+- D2: Dual JSON + Markdown reports (machine + human readable)
+- D3: Template-only adversarial audit (requires explicit user action for LLM invocation)
+- D4: Five-category failure mode grouping (data integrity, silent failure, epistemic invariants, budget honesty, schema consistency)
+
+**Testing**: 45/45 Layer 2 tests PASS. Full three-tier QA architecture now COMPLETE:
+- Layer 1: Success conditions (5,933+ tests, every commit)
+- Layer 2: Systemic failures (45 tests, nightly)
+- Layer 3: Adversarial audit (template ready, weekly LLM-based)
+
+**Impact**: Systemic failure detection now integrated into nightly overseer pipeline. Ready for OVERSEER integration (Sprint SC-7).
+

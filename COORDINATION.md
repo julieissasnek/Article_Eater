@@ -1,19 +1,23 @@
 # COORDINATION.md
 
-*Last updated: 2026-03-01T14:00Z by CW*
+*Last updated: 2026-03-04T07:00Z by CW*
 
 **Purpose**: Shared state between AG (Gemini/autonomous agent) and CW (Cowork/Claude). David acts as dispatcher — just tell each system "read COORDINATION.md" at session start.
 
-**Protocol**:
+**Startup Protocol (MANDATORY)**:
 1. At session start: READ this file COMPLETELY before doing any work
-2. Check the Handoff Queue AND the Micro-Task Queue for items assigned to you
-3. Before starting ANY task, check if the other system already did it (check their Sprint Status)
-4. Do the work
-5. Update your Sprint Status section
-6. Post new items to Handoff Queue or Micro-Task Queue for the other system
-7. Update TASKS.md with completions
+2. **READ THE MASTER DOC UPDATE PROTOCOL** — `contracts/MASTER_DOC_UPDATE_PROTOCOL.md` (§1-3 minimum). This mandates that significant work produces Master Doc Briefs.
+3. Check the Handoff Queue AND the Micro-Task Queue for items assigned to you
+4. Before starting ANY task, check if the other system already did it (check their Sprint Status)
+5. Do the work
+6. If your work is significant (§2 of protocol), produce an MDB and store in `docs/master_doc_briefs/`
+7. Update your Sprint Status section
+8. Post new items to Handoff Queue or Micro-Task Queue for the other system
+9. Update TASKS.md with completions
 
 **Anti-Duplication Rule (MANDATORY)**: Before creating ANY script, data file, or fix — grep the repo for similar files. If AG already built it, USE theirs. Don't rebuild.
+
+**Master Doc Update Rule (MANDATORY)**: Every significant work session MUST produce a Master Doc Brief (MDB) in `docs/master_doc_briefs/`. See protocol §2 (what counts as significant), §3 (template), §4 (storage). Lightweight "Change Notes" are acceptable for small fixes — see protocol §8.
 
 ---
 
@@ -33,8 +37,16 @@ Quick tasks that don't need a full handoff. Check this every time you read COORD
 | MT-8 | CW | AG | **RV5-3 extraction pipeline audit DONE**: Score 7.35/10 (up from 3.5/10). CRITICAL: 78.2% missing effect_sizes, 95.6% missing sample_sizes. Direction normalization 99.1% canonical. Antecedent specificity 99.7%. Template matching 87.7%. **AG action needed**: Investigate effect_size extraction in Gemini prompts — this is the P0 gap blocking quantitative meta-analysis. Report: `docs/RV5_3_EXTRACTION_PIPELINE_AUDIT_2026-03-01.md`. | 2026-03-01T15:30Z | OPEN |
 | MT-9 | CW | AG | **QA SYSTEM SPEC REVIEWED**: AG's `docs/QA_SYSTEM_SPEC.md` is excellent — thorough inventory of 9 subsystems (~8,500 lines). CW analysis: AG's "organs not wired together" diagnosis maps onto Interpretation Space residuals. Key gaps (provenance→QA, annotations→QA, rollback→QA) are failures of R₂/R₄ closure. AG's proposed nightly discovery stage (§7.3) is a lightweight self-interrogation. **Two-track proposal**: Track A (AG): implement quick wins from §9 (WarrantStatusReflex, annotation harvest, VOI→AESHI, principles doc). Track B (CW, needs DK approval): begin Interpretation Space Phase 1 pilot as unifying framework. Tracks are complementary — A strengthens organs, B wires them together. | 2026-03-01T17:00Z | INFO |
 | MT-12 | CW | AG | **AG QA INTEGRATION TASK LIST — DO THESE NOW** (Posted 2026-03-01T18:10Z, time-sensitive). See detailed instructions below in §AG-QA-TASKS. | 2026-03-01T18:10Z | **URGENT** |
+| MT-13 | CW | AG | **AESHI CRITICAL FIX — OVERSEER REPAIRED (2026-03-04)**: CW fixed 3 SQL bugs in `overseer.py` that were returning 0 for core metrics. (1) `_count_total_beliefs()` queried empty `belief_versions` table → now queries `beliefs` table (4,888 rows). (2) `_count_orphan_beliefs()` same fix → detects 2,583 orphans (52.84%). (3) `_check_template_belief_coverage()` looked for wrong belief_id prefix → now checks `template_ids` column. **Result: AESHI 65→70**. Added `audit_aeshi_comprehensiveness()` meta-check — currently 52.9% comprehensive (9/17 recommended metrics). See `docs/AESHI_FIXES_2026-03-04.md` for full details. | 2026-03-04T07:00Z | INFO |
+| MT-14 | CW | AG | **REMAINING AESHI GAPS (8 metrics to add)**: Per comprehensiveness audit, AESHI should measure: (1) test_pass_rate (6,500+ tests), (2) subsystem_health (per-service operational), (3) success_condition_coverage (389 SC tests), (4) extraction_quality (field-level accuracy), (5) bn_calibration (Bayesian network correctness), (6) reflex_health (reflexive monitoring), (7) annotation_integration (user annotations→beliefs), (8) interpretation_space (R₁-R₄ closure). AG can help wire test_pass_rate into AESHI formula. | 2026-03-04T07:00Z | OPEN |
+| MT-15 | CW | AG | **TEMPLATE_IDS COLUMN EMPTY**: Template coverage metric returns 0% because `template_ids` column in `beliefs` table is unpopulated. 4,888 beliefs need template linkage. This is blocking 10 AESHI points. AG can help populate this if BN integration scripts already have template→belief mappings. | 2026-03-04T07:00Z | **IN PROGRESS** — AG root-caused and built fix (see MT-19) |
+| MT-19 | AG | CW | **⚠️ STOP: READ BEFORE RUNNING template backfill.** AG root-caused MT-15: `_extract_environment_id()` in `extraction_to_web.py` silently returns None for ~90% of findings because Gemini API returns flat antecedent/consequent strings without `constructs.environment_factors`. CW's `scripts/backfill_template_ids.py` will score 0% AGAIN unless env/outcome fields are populated first. **CORRECT SEQUENCE**: (1) Run `python3 -m src.services.belief_env_outcome_extractor --db data/web_persistence.db --write` to populate env_id/outcome_id with confidence grading. (2) THEN run `scripts/backfill_template_ids.py`. AG also patched `extraction_to_web.py` with upstream fallback so future ingestions auto-extract. New module: `src/services/belief_env_outcome_extractor.py` (500 lines, 6 success conditions SC-FTR-1..6, 19 tests pass). | 2026-03-04T10:30Z | **URGENT — CW READ THIS** |
+| MT-16 | AG | CW | **OVERSEER MUST USE db_locator**: `overseer.py` takes `web_db_path` as constructor arg but never imports `get_web_db()` from `src/services/db_locator`. This causes the endemic DB confusion — callers pass wrong paths. Fix: `__init__` should default to `get_web_db()` when no explicit path given. The db_locator is the canonical API (13 files use it, overseer doesn't). | 2026-03-04T09:55Z | **URGENT** |
+| MT-17 | AG | CW | **`beliefs` TABLE DOES NOT EXIST ON DISK**: ~~AG scanned ALL 37 .db files in the repo — zero have a `beliefs` table.~~ **CORRECTED**: Opus verified `data/web_persistence.db` HAS `beliefs` table with 4,888 rows. The issue was `run_blocked_tasks.py` finding empty `ae.db` in root before canonical DB. Fixed by using `db_locator`. AESHI now 70/100 PASS. | 2026-03-04T09:55Z | **RESOLVED** |
+| MT-18 | Opus | CW+AG | **NEW: DB HEALTH CHECK SCRIPT CREATED**: `scripts/check_db_health.py` with 10 success conditions (SC-DB-1 through SC-DB-10). Checks: db_locator resolution, beliefs table existence/data, required columns, shadowing DBs, overseer db_locator usage, template_ids coverage, migration 023, FK integrity, theory orphan rate. Outputs JSON for overseer integration (`--json` flag). **CW ACTION**: Wire this into overseer nightly pipeline (Stage 0 or Stage 1). Call `run_all_checks()` and log results to `overseer_health_metrics`. Current results: 7 pass, 3 warnings (SC-DB-6 overseer no db_locator, SC-DB-7 template_ids 0%, SC-DB-8 migration 023 missing). | 2026-03-04T18:10Z | **ACTION NEEDED** |
 | MT-11 | CW | AG | **EPISTEMIC_PRINCIPLES.md INTEGRATED INTO PLAN**: AG's 10 science-writer principles (Pollock, Haack, Mayo, Cartwright, Pearl, Longino, Simon, Thagard) now wired into the Extraction Pipeline plan. 6 new schema fields (defeat_relationships, justification_status, defeater_search_status, scope_conditions, causal_tier, source_quality_indicators). Pass 3D added for principle compliance inference. Panel E added. Prompt v3 validation suffix expanded from 5→10 checks. **Key for AG**: When re-extraction runs (Phase 5), Gemini prompts will enforce causal language matching design tier (P5 Pearl) and require defeater documentation (P3 Mayo). AG should review updated plan in `.claude/plans/sparkling-roaming-blossom.md`. | 2026-03-01T18:00Z | INFO |
 | MT-10 | CW | AG | **Interpretation Space Spec v2.0 COMPLETE**: Probatory rule sets framework added. 4 rule sets (R₁ argumentation, R₂ warrant, R₃ mechanism, R₄ interpretation) with formal opening/closing conditions, closure operators, purpose-relative adequacy, interactive residuals. AG's 22 QA success conditions map cleanly onto the closure lattice (Tier 1→R₂, Tier 2→R₁+R₂, Tier 3→wiring, Tier 4→R₃+R₄, Tier 5→R₄). Spec: `docs/INTERPRETATION_SPACE_SPEC_2026-03-01.md`. Rational reconstruction: `docs/RATIONAL_RECONSTRUCTION_INTERPRETATION_SPACE_2026-03-01.docx` (35 KB, 281 paragraphs). | 2026-03-01T17:00Z | INFO |
+
 
 ---
 
@@ -139,7 +151,28 @@ What's stuck and why. Both systems should check this to see if they can unblock 
 
 ## Sprint Status — CW (Cowork/Claude)
 
-**Last session**: 2026-03-01T08:00Z
+**Last session**: 2026-03-04T07:00Z
+
+### Completed — Session 2026-03-04 (AESHI Diagnosis + Critical Fixes)
+- **AESHI Root Cause 1**: OVERSEER was pointing at `web_of_belief.db` (20 KB, empty) instead of `web_persistence.db` (89 MB, 4,888 beliefs). This caused pipeline_utilization = 0%, hard-capping AESHI at 50.
+- **AESHI Root Cause 2 FIXED**: Two methods (`_count_total_beliefs()`, `_count_orphan_beliefs()`) queried `belief_versions` table (0 rows) instead of `beliefs` table (4,888 rows). Fixed SQL in `overseer.py:1653-1676`.
+- **AESHI Root Cause 3 FIXED**: `_check_template_belief_coverage()` looked for `belief_id LIKE 'template:%'` but actual IDs use `disc:doi:...` format. Changed to check `template_ids` column. Fixed in `overseer.py:945-964`.
+- **AESHI Score Improvement**: 50 (capped) → 65 (correct DB) → **70/100** (after SQL fixes)
+- **AESHI Comprehensiveness Audit**: Added `audit_aeshi_comprehensiveness()` method. Currently **52.9% comprehensive** (9/17 recommended metrics). Missing 8: test_pass_rate, subsystem_health, success_condition_coverage, extraction_quality, bn_calibration, reflex_health, annotation_integration, interpretation_space.
+- **Test Pass Rate Infrastructure**: Added `_check_test_pass_rate()` method (INV-11) — placeholder for reading pytest results.
+- **Documentation**: Created `docs/AESHI_FIXES_2026-03-04.md` with full diagnosis, fixes, justification, and remaining work.
+- **Pipeline Runs**: L2/L3 summaries (33/33 molecules), V3 surgical update (17/17 articles, 16 v3 fields enriched, $0.0079), Paper integration (100/100 skipped — already integrated), Nightly pipeline (15/15 stages OK), Test suite (6,519 passed, 6 failed).
+
+### Current AESHI Breakdown (2026-03-04)
+| Metric | Value | Points | Status |
+|--------|-------|--------|--------|
+| Pipeline Utilization | 4.60 (460%) | 15/15 | ✅ |
+| Evidence Diversity | 1.00 (100%) | 5/5 | ✅ |
+| Theory Linkage | 0.48 (52% linked) | 5.2/10 | ⚠️ 2,583 orphans |
+| Template Coverage | 0.00 | 0/10 | ❌ template_ids empty |
+| Provenance | 1.00 | 15/15 | ✅ |
+| Conflict Rate | 0.00 | 10/10 | ✅ |
+| **TOTAL** | | **70/100** | |
 
 ### Completed — Session 2026-02-28 (prior session)
 - Collected 23,029 stimulus descriptions from 1,043 articles → `data/stimulus_descriptions_from_articles.json` (22 MB)
@@ -235,51 +268,50 @@ What's stuck and why. Both systems should check this to see if they can unblock 
 
 ## Sprint Status — AG (Gemini)
 
-**Last session**: 2026-03-02T14:45Z
+**Last session**: 2026-03-04T10:35Z
 
-### Completed — Session 2026-03-02
+### Completed — Session 2026-03-04 (continued)
 
-#### Test Suite — 5,584 Passed, 0 Failed ✅
-- SQLite deadlock fix in `building_eval.py` (5.4s → 0.025s)
-- Fixed missing `get_web_db` import in `grounded_expert_agent.py`
-- Graceful skip for sandbox-blocked WoB integration tests
-- 2 benchmarks marked `@pytest.mark.slow`
-- **Result**: 5,584 passed, 0 failed, 0 errors, 46 skipped
+#### MT-15 Root Cause + Fix ✅ (NEW)
+- **Root cause**: `_extract_environment_id()` in `extraction_to_web.py:L1675` silently returns `None` for ~90% of findings. Gemini API returns flat `antecedent`/`consequent` strings — never populates `constructs.environment_factors`. FTR scoring weights env 42% + outcome 33% → empty fields = max 25% score → below 0.35 threshold → 0% template matches.
+- **Fix Layer 1 (upstream)**: Patched `extraction_to_web.py:L1152` — when `_extract_environment_id()` returns None, content-based extraction auto-runs at ingestion. Future beliefs will have env/outcome populated.
+- **Fix Layer 2 (backfill)**: New `src/services/belief_env_outcome_extractor.py` (500 lines). Confidence-graded extraction from belief content using FTR bridge vocabularies. Levels: HIGH (≥0.70, auto-write), MEDIUM (0.45-0.69, write+flag), LOW (0.25-0.44, log only).
+- **Success conditions**: SC-FTR-1 through SC-FTR-6 (coverage, precision, env/outcome coverage, bridge utilization, low-confidence ratio). JSON output for overseer integration.
+- **Tests**: 19/19 pass (0.18s) — `tests/test_belief_env_outcome_extractor.py`
+- **⚠️ CW's `scripts/backfill_template_ids.py` must run AFTER this extractor** (see MT-19)
 
-#### QA Handler — 10/10 Query Types ✅
-- Evidence queries: 15-19 findings with provenance trace (DOI, title, theories, sample size, effect size)
-- Mechanism queries: 5 findings with causal pathways
-- Comparison queries: Supporting vs opposing via ArgumentationEngine + tension detection
-- Definition queries: Related theories, antecedent/consequent roles
-- + surprise, dispute, design_params, frontier, hooks, effect_size, catalogs
-- **0 AI calls needed for 9/10 query types**
+#### Test Suite — 6,509 Passed, 1 Failed ✅
+- Fixed 5 test failures from cascade extension (STEPS 14→16, services ≥9, circuit_context)
+- Added `test_reachability_audit.py` (47 tests) + `test_functional_integration.py` (22 tests)
+- Router priority bug fixed (molecule names before type keywords)
+- EnrichmentConfig.max_figures missing — fixed
+- **Result**: 6,509 passed, 1 failed (confounder risk diagnostic), 51 skipped
 
-#### Unified Argumentation Engine ✅
-- New file: `src/argument/engine.py` (214 lines)
-- Composes CritiqueAggregator + HierarchyAggregator + MetaAnalyticAggregator + ArgumentQueryHandler
-- `find_arguments("stress reduction")` → 37 supporting, 13 opposing, 14 tensions
-- Wired into QA handler for COMPARISON queries
+#### L1 Card Generation — 45 Cards ✅
+- New: `src/qa/molecule_card_generator.py` (860 lines)
+- Generated L1 cards for 38 molecules + 6 archetypes + 1 index = 45 files in `data/qa_cache/`
+- Corpus-grounded (no LLM). L2/L3 marked PENDING for MolecularQAPrecomputer.
 
-#### V3 Re-extraction Complete ✅ (UNBLOCKS CW Phase 5)
-- 1,022 articles at v3.0 (1,000 prior + 22 enriched)
-- Cost: $0.01, Time: 38 seconds
-- **CW Phase 5 blocker RESOLVED**
+#### Real-Time Cascade — Steps 15-16 ✅
+- Extended `PaperIntegrationOrchestrator` STEPS: added `propagate_cards` and `rebuild_mvs`
 
-### ⚠️ BN Integration Assessment
-- 39 BN-related files exist across 4 modules
-- `incremental_bn.get_edge_estimate` is importable
-- **BLOCKER**: 0% of extraction findings have `environment_id` or `outcome_id`
-- **Fix needed**: Bulk mapping script to assign env/outcome IDs to findings
+#### Card Quality Comparison + Content Agent Specs ✅
+- 3-way comparison doc: `docs/CARD_QUALITY_COMPARISON_2026-03-04.md`
+- 5 agents designed + panel reviewed: `docs/CONTENT_AGENT_SPEC_2026-03-04.md`
 
-### 🔓 TASKS CW CAN PICK UP NOW
+#### COORDINATION Reconciliation + DB Health ✅
+- Read all 356 lines, reconciled all MTs and Hs
+- Created `scripts/run_blocked_tasks.py` + `scripts/check_db_health.py` (10 SCs)
 
-| # | Task | Est |
-|---|------|-----|
-| CW-1 | **BN data mapping**: Write bulk script to map antecedent→environment_id, consequent→outcome_id in extraction findings. Unblocks BN integration (0% → target 50%). | 4h |
-| CW-2 | **Interpretation Space pilot**: INTERP-SPACE-IMPL Phase 1. Spec at `docs/INTERPRETATION_SPACE_SPEC_2026-03-01.md`. Wire R₁-R₄ closures. | 4h |
-| CW-3 | **Source Quality → Credence Feedback**: Wire SQ composite from `source_quality.py` into credence update. ~40 lines. | 2h |
-| CW-4 | **Wire 12 vision attributes**: All 12 attrs exist (120 tests pass). Need wiring into main image pipeline. | 3h |
-| CW-5 | **DB path cleanup**: 51 files still need manual review per `fix_db_paths_v2.py`. `reflex_system.py` has 8 hardcoded fallbacks. | 2h |
+### ⚠️ Still Blocked (DB/API access needed)
+
+| Task | Script | Blocker |
+|------|--------|---------|
+| MT-1: AESHI re-score | `python3 scripts/run_blocked_tasks.py --task mt1` | DB access |
+| MT-3: FTR Tier2 coverage | `--task mt3` | DB access |
+| MT-14: Test results cache | `--task mt14` | Needs pytest run |
+| MT-15: Env/outcome backfill | `python3 -m src.services.belief_env_outcome_extractor --db data/web_persistence.db --write` | DB write |
+| H12: V3 re-extraction | `--task h12` | GEMINI_API_KEY |
 
 ### Remaining blockers
 | Blocked | By | Who |

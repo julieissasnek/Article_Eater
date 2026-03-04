@@ -702,7 +702,7 @@ def test_user_type_enum_values():
     assert UserType.RESEARCHER.value == "researcher"
     assert UserType.STUDENT.value == "student"
     assert UserType.CLINICIAN.value == "clinician"
-    assert UserType.POLICY_MAKER.value == "policy_maker"
+    assert UserType.ARCHITECT_DESIGNER.value == "architect_designer"
     assert UserType.GENERAL_PUBLIC.value == "general_public"
 
 

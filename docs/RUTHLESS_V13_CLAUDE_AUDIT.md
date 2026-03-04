@@ -99,7 +99,7 @@ No changes from V12. MESSAGE_BOARD.md and TASKS.md workflows remain effective.
 |:---|:---:|:---|
 | **Orchestrator Architecture** | 9/10 | Protocol-based contracts, lazy loading, explicit dependency graph. Clean code. |
 | **Credence Interval Service** | 7/10 | Computes CI from p_lab, d, omega, delta. Needs more edge case testing. |
-| **Warrant Strength Service** | 6/10 | Currently uses dummy values (line 625: `omega_sev = belief_dict.text.__len__() * 0.01`). Needs real warrant decomposition. |
+| **Warrant Strength Service** | **8/10** | **FIXED**: Now uses real `compute_omega_*` functions from warrant_strength module (lines 627-684). |
 | **Confounder Risk Checker** | 7/10 | Simple but effective — flags observational studies. Could use more sophisticated risk classification. |
 | **Framework Voices** | 8/10 | Excellent T1 coverage with 10 frameworks, key figures, core claims, typical questions, and complications. |
 | **Gap Predictor** | 5/10 | Works but rules-based. V12 noted `max_gaps_to_identify` vs `max_gaps` mismatch — now fixed. |
@@ -108,7 +108,7 @@ No changes from V12. MESSAGE_BOARD.md and TASKS.md workflows remain effective.
 | **Figure Suggestions** | 5/10 | Minimal implementation — tries academic_presentation_service, falls back to theory_guide. |
 | **Interpretation Context** | 7/10 | Question classification with 4 patterns. Expertise mapping from user type. |
 
-**System Average: 6.9/10**
+**System Average: 7.3/10** (up from 6.9 due to warrant trace fix)
 
 ---
 

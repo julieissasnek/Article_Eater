@@ -116,8 +116,9 @@ class UserType(str, Enum):
     RESEARCHER = "researcher"
     STUDENT = "student"
     CLINICIAN = "clinician"
-    POLICY_MAKER = "policy_maker"
+    ARCHITECT_DESIGNER = "architect_designer"  # was POLICY_MAKER — practical spatial advice
     GENERAL_PUBLIC = "general_public"
+    DEEP_RESEARCHER = "deep_researcher"  # V14: unlimited depth, research tools, thread-following
 
 
 @dataclass
@@ -467,6 +468,37 @@ class AnswerEnrichmentOrchestrator:
                 f"No beliefs found in base_answer. Keys: {list(base_answer.keys())}"
             )
             beliefs = []
+
+        # ====================================================================
+        # Step 0: GROUNDING GATE (Haack's Foundherentist Principle)
+        # Before any enrichment, verify empirical anchoring.
+        # If the query has zero supporting evidence, return explicit abstention.
+        # ====================================================================
+        try:
+            from src.qa.grounding_gate import GroundingGate
+            grounding_gate = GroundingGate()
+            grounding_result = grounding_gate.check(question, beliefs)
+            enriched.enrichment_metadata["grounding"] = {
+                "has_empirical_anchor": grounding_result.has_empirical_anchor,
+                "n_supporting_findings": grounding_result.n_supporting_findings,
+                "coherence_status": grounding_result.coherence_status,
+                "recommendation": grounding_result.recommendation,
+                "grounding_time_ms": grounding_result.grounding_time_ms,
+            }
+            if grounding_result.should_abstain:
+                logger.warning(
+                    f"Grounding gate ABSTAIN: {grounding_result.reason}"
+                )
+                enriched.enrichment_metadata["abstention"] = {
+                    "applied": True,
+                    "reason": grounding_result.reason,
+                }
+                # Return early — do not enrich ungrounded answers
+                return enriched
+        except Exception as e:
+            logger.warning(f"Grounding gate failed (proceeding with enrichment): {e}")
+            enriched.enrichment_metadata["grounding"] = {"error": str(e)}
+
 
         # V11 Panel Fix: Steps run in dependency order with budget checks.
         # Dependencies declared in STEP_DEPENDENCIES dict.

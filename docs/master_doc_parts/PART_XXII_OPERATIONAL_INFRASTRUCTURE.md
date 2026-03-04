@@ -106,6 +106,14 @@ The overseer embodies Quine's distinction, discussed in Part VI, between periphe
 
 The operational modes and protocols discussed above were not designed by individual engineers in isolation but emerged from a formal panel review. In late 2025, Professor Kirsh convened an eighteen-person expert panel including epistemologists, formal methodologists, database specialists, and cognitive scientists. The panel spent three weeks examining the proposed operational layer, identifying weak points, proposing alternatives, and settling on the design principles that are documented in the overseer specification. This consultative process is a model for future major architectural decisions: acknowledge that complex systems require diverse expertise, bring those perspectives into dialogue, and let the design emerge from genuinely interdisciplinary scrutiny.
 
+### §151.1 Subsystem Health Contracts
+
+*Added 2026-03-04.*
+
+The thirteen invariants above operate at the system level. Below that, each of the twenty subsystems in the ATLAS architecture maintains its own health contract specifying entry conditions (what must be true before the subsystem can operate), exit conditions (what must be true after the subsystem has run), and health invariants (conditions that must hold throughout operation). These contracts are documented in `contracts/SUBSYSTEM_HEALTH_CONTRACTS.md` (946 lines) and include twelve cross-boundary contracts (XB-1 through XB-12) that govern the interfaces between subsystems — template-registry consistency, framework referential integrity, circuit-archetype linkage, and so on.
+
+The design decision to maintain subsystem contracts in a separate specification rather than embedding them in the overseer's invariant list reflects a separation of concerns: the overseer monitors global system health; subsystem contracts enforce local correctness. The overseer can query subsystem health status as part of its nightly cycle, but the contracts themselves are checked independently by the subsystems' own test suites (128 tests covering all cross-boundary contracts). This layered architecture means that a subsystem can be locally healthy while the system is globally unhealthy (or vice versa), and the diagnostic can distinguish between these cases.
+
 ---
 
 ## §152: Signal-Based Coordination — Distributed Epistemic Work
@@ -164,6 +172,38 @@ Finally, the operational layer is designed to support future evolution and integ
 
 ---
 
+## §154.1: Database Health Monitoring — The Canonical Path Problem
+
+A subtle but pervasive failure mode in distributed epistemic systems is *path confusion*: different components addressing different databases, or the same database at different paths, leading to silent divergence between what the system believes and what actually exists. This problem manifests when, for instance, a health monitoring service queries an empty database at `./ae.db` while the actual belief data resides at `./data/web_persistence.db`. The symptoms are insidious: metrics return zero, invariants appear violated, and the system reports failure even though the underlying data is healthy.
+
+The `check_db_health.py` script, created March 2026, addresses this problem through ten explicit success conditions (SC-DB-1 through SC-DB-10) that collectively verify database infrastructure integrity before any epistemic operations begin. The design reflects a principle that might be called *canonical path primacy*: there must be exactly one authoritative mechanism for locating the database, and all components must use it.
+
+**SC-DB-1: db_locator returns existing file.** The `db_locator` service (`src/services/db_locator.py`) is the canonical API for database path resolution. This success condition verifies that the service is importable, functional, and returns an existing file path. Failure here indicates fundamental infrastructure breakdown.
+
+**SC-DB-2: beliefs table exists.** The core data structure is the `beliefs` table. This condition catches migration failures where code assumes a table that was never created, or where schema evolution left incompatible table names (e.g., `belief_versions` vs `beliefs`).
+
+**SC-DB-3: beliefs table has data.** An empty beliefs table indicates either initialization failure or path confusion (querying the wrong database). With 4,888+ beliefs in the production corpus, zero rows is always an error.
+
+**SC-DB-4: Required columns exist.** Schema drift is a common failure mode when multiple developers modify table structures. This condition verifies that essential columns (`belief_id`, `content`, `web_id`, `credence_value`, etc.) exist, and warns about missing recommended columns (`template_ids`, `epistemic_v2`).
+
+**SC-DB-5: No shadowing databases.** A particularly insidious bug occurs when a database file exists at both the project root (`./ae.db`) and the canonical location (`./data/web_persistence.db`). Code that searches for databases in sequence may find the wrong one first. This condition detects such shadowing and alerts operators.
+
+**SC-DB-6: Overseer uses db_locator.** The overseer must use the same path resolution as all other components. Historically, the overseer accepted `web_db_path` as a constructor argument without defaulting to the canonical locator, enabling callers to pass inconsistent paths. This condition verifies that the overseer imports and uses `db_locator`.
+
+**SC-DB-7: template_ids coverage.** Template linkage (belief → template mapping) is required for AESHI scoring. This condition monitors coverage percentage and alerts when it falls below threshold (default 10%).
+
+**SC-DB-8: Migration 023 applied.** Database migrations must be applied in order. Migration 023 creates the `overseer_health_metrics` table required for health monitoring. This condition verifies that the migration was applied.
+
+**SC-DB-9: Foreign key integrity.** Beliefs reference `web_metadata` via `web_id`. Orphaned beliefs (pointing to nonexistent web records) indicate data corruption or incomplete migrations.
+
+**SC-DB-10: Theory orphan rate.** Beliefs should be linked to theoretical frameworks via `theory_id`. A high orphan rate (currently thresholded at 60%) indicates extraction pipeline failures or missing theory assignment logic.
+
+The script supports three modes: interactive (human-readable report), JSON (for programmatic consumption by the overseer), and quick (essential checks only for rapid pre-flight verification). Integration with the overseer nightly pipeline is recommended as Stage 0, running before any other health checks to ensure that subsequent checks query the correct database.
+
+The architectural lesson is that *infrastructure verification must precede epistemic verification*. A system cannot meaningfully assess whether its beliefs are coherent if it cannot first verify that it is examining the right beliefs. The database health check implements this principle as executable code.
+
+---
+
 ## References
 
 Dijkstra, E. W. (1968). Go To Statement Considered Harmful. *Communications of the ACM*, 11(3), 147–148.
@@ -190,6 +230,6 @@ Simon, H. A. (1969). *The Sciences of the Artificial*. MIT Press.
 
 *End of Part XXII*
 
-*Word count: 5,847 | Part Index: §148–§154*
+*Word count: 6,647 | Part Index: §148–§154.1*
 
 *Cross-references: Part VI (Quine and the web of belief), Part VII (Causal inference and Bayesian networks), Part XL (QA answer enrichment orchestrator), §84 (Warrant types and calculation), §140 (answer quality framework)*

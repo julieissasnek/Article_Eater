@@ -43,6 +43,17 @@ python3 -m pytest tests/test_tier_taxonomy_consistency.py -v 2>&1 | tail -20
    - Add any new items discovered
    - Update status on in-progress items
 
+7. Commit and push all changes:
+```bash
+git add -A && git commit -m "Session checkout: $(date -u +%Y-%m-%dT%H:%M:%SZ) — $(git diff --cached --stat | tail -1)" 2>&1
+```
+   - If a remote is configured, also push:
+```bash
+git push 2>&1 || echo "Push failed or no remote configured — local commit preserved"
+```
+   - This prevents uncommitted changes from accumulating across agent sessions
+   - If the commit fails for any reason (sandbox, permissions), note it in MESSAGE_BOARD.md
+
 ## Message Format
 
 ```markdown
@@ -64,5 +75,7 @@ python3 -m pytest tests/test_tier_taxonomy_consistency.py -v 2>&1 | tail -20
 
 - **NEVER** leave a session without updating COORDINATION_STATE and CHANGELOG
 - **ALWAYS** run the test suite before checking out
+- **ALWAYS** commit changes before ending the session (step 7)
 - If tests fail, fix them before checking out (or document the failure in a message)
 - If you touched tier taxonomy, verify `test_tier_taxonomy_consistency.py` passes
+- If git commit fails due to sandbox restrictions, note this in MESSAGE_BOARD.md so the next agent or user can commit
