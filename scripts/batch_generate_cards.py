@@ -356,26 +356,43 @@ async def generate_single_card(
     # Build card
     try:
         from src.qa.cards.card_schema import (
-            create_card, CardSurface, CardBody, CardIceberg,
+            create_card, CardBody, CardIceberg, ConfidenceLevel, Direction,
             IcebergSourceMap, IcebergAgentContext, IcebergQualityScores,
         )
 
-        # Surface
+        # Map omega to confidence level
         omega = source_data.get("omega", source_data.get("confidence_omega", 0.5))
-        surface = CardSurface(
-            title=source_data.get("title", entity_id),
+        if omega >= 0.75:
+            conf = ConfidenceLevel.HIGH
+        elif omega >= 0.60:
+            conf = ConfidenceLevel.MOD_HIGH
+        elif omega >= 0.40:
+            conf = ConfidenceLevel.MODERATE
+        else:
+            conf = ConfidenceLevel.LOW
+
+        # Map direction from source data
+        dir_str = source_data.get("direction_consensus", "na")
+        try:
+            direction = Direction(dir_str)
+        except ValueError:
+            direction = Direction.NA
+
+        # create_card builds CardSurface internally with all required fields
+        card = create_card(
             card_type=card_type,
+            entity_id=entity_id,
+            title=source_data.get("title", entity_id),
+            confidence_level=conf,
             confidence_omega=omega,
-            confidence_label=_omega_to_confidence(omega),
+            direction=direction,
             n_findings=source_data.get("n_findings", 0),
             n_papers=source_data.get("n_papers", 0),
         )
 
-        # Body
-        body = CardBody(tabs=tabs_dict)
-
-        # Iceberg
-        iceberg = CardIceberg(
+        # Attach body and iceberg after creation
+        card.body = CardBody(tabs=tabs_dict)
+        card.iceberg = CardIceberg(
             source_map=IcebergSourceMap(),
             agent_context=IcebergAgentContext(
                 agent_id="batch_generate_cards_pass1",
@@ -385,14 +402,6 @@ async def generate_single_card(
                 generation_duration_ms=stats["elapsed_ms"],
             ),
             quality_scores=IcebergQualityScores(),
-        )
-
-        card = create_card(
-            card_type=card_type,
-            entity_id=entity_id,
-            surface=surface,
-            body=body,
-            iceberg=iceberg,
         )
 
         # Save Pass 1 to disk

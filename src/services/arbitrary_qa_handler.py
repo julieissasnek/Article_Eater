@@ -162,6 +162,10 @@ class QuestionType:
     FUNCTIONAL_CIRCUIT = "functional_circuit"  # "tell me about sensory prediction error circuit"
     ARCHETYPE_GUIDE = "archetype_guide"        # "what uses predictive coding?"
 
+    # Paper-level drill-down queries
+    PAPER_METHODS = "paper_methods"            # "show me methods from Smith (2020)"
+    PAPER_STIMULUS = "paper_stimulus"          # "what stimulus did they use in paper X?"
+
 
 QUESTION_PATTERNS = [
     # Functional circuit queries (high priority — before catalog)
@@ -182,6 +186,30 @@ QUESTION_PATTERNS = [
         r'\s*(?:archetype|pattern)?', re.I)),
     (QuestionType.ARCHETYPE_GUIDE, re.compile(
         r'(?:list|show|what\s+are)\s+(?:all\s+)?(?:the\s+)?(?:circuits?|archetypes?)', re.I)),
+    # Paper-level drill-down queries (SC-PM-1: classify paper reference)
+    (QuestionType.PAPER_METHODS, re.compile(
+        r'(?:show|list|what)\s+(?:are\s+)?(?:the\s+)?(?:method|technique|design|procedure|'
+        r'measure|instrument|stimul|material|protocol)'
+        r'.*?(?:from|in|used\s+(?:in|by))\s+'
+        r'(?:(?:paper|study|article|experiment)\s+)?'
+        r'(?:(?:by\s+)?[A-Z][a-z]+(?:\s+(?:et\s+al\.?|&\s+[A-Z][a-z]+))?\s*'
+        r'[\(\[]?\d{4}[\)\]]?'  # Author (2020) pattern
+        r'|doi[:\s]*10\.\d+)',  # or DOI
+        re.I)),
+    (QuestionType.PAPER_STIMULUS, re.compile(
+        r'(?:what\s+(?:stimulus|stimuli|image|visual|environment|condition)'
+        r'|describe\s+(?:the\s+)?(?:stimulus|stimuli|image|experimental\s+setup))'
+        r'.*?(?:from|in|used\s+(?:in|by))\s+'
+        r'(?:(?:by\s+)?[A-Z][a-z]+(?:\s+(?:et\s+al\.?|&\s+[A-Z][a-z]+))?\s*'
+        r'[\(\[]?\d{4}[\)\]]?'
+        r'|doi[:\s]*10\.\d+)',
+        re.I)),
+    (QuestionType.PAPER_METHODS, re.compile(
+        r'(?:methods?|stimul|procedure|design)\s+(?:of|from|in)\s+(?:the\s+)?'
+        r'(?:(?:by\s+)?[A-Z][a-z]+(?:\s+(?:et\s+al\.?))?'
+        r'\s*[\(\[]?\d{4}[\)\]]?)',
+        re.I)),
+
     # Catalog queries
     (QuestionType.CATALOG_THEORIES, re.compile(
         r'(?:show(?:\s+me)?|list|what\s+are|tell\s+me|give\s+me)\s+(?:all\s+)?(?:the\s+)?'
@@ -1944,6 +1972,9 @@ class ArbitraryQAHandler:
                 # Functional circuit handlers
                 QuestionType.FUNCTIONAL_CIRCUIT: lambda: self._handle_circuit_query(question),
                 QuestionType.ARCHETYPE_GUIDE: lambda: self._handle_archetype_query(question),
+                # Paper-level drill-down handlers
+                QuestionType.PAPER_METHODS: lambda: self._handle_paper_methods_query(question),
+                QuestionType.PAPER_STIMULUS: lambda: self._handle_paper_methods_query(question),
             }
 
             handler = handler_map.get(qtype)
@@ -2066,6 +2097,201 @@ class ArbitraryQAHandler:
             "headline": "Circuit QA service not available",
             "sections": [{"heading": "Unavailable", "items": ["Circuit data not loaded."]}],
             "follow_ups": ["Show me all theories", "What molecules exist?"],
+        }
+
+    def _handle_paper_methods_query(self, question: str) -> Dict[str, Any]:
+        """
+        Handle per-paper method drill-down queries.
+
+        Extracts paper reference (Author Year or DOI) from the question,
+        searches the extraction corpus, and returns structured method details
+        including sample size, study design, stimulus description, and
+        measurement instruments.
+
+        SUCCESS CONDITIONS:
+            SC-PM-1: Identifies paper reference from question
+            SC-PM-2: Returns findings from extraction database when available
+            SC-PM-3: Response includes method, stimulus, sample details
+            SC-PM-7: Graceful degradation if paper not found
+        """
+        q_lower = question.lower()
+
+        # Extract paper reference: Author (Year), Author et al. (Year), or DOI
+        paper_ref = None
+        doi_match = re.search(r'(?:doi[:\s]*)(10\.\d+[^\s,;)]+)', question, re.I)
+        author_year_match = re.search(
+            r'([A-Z][a-z]+(?:\s+(?:et\s+al\.?|&\s+[A-Z][a-z]+))?)\s*[\(\[]?(\d{4})[\)\]]?',
+            question
+        )
+
+        if doi_match:
+            paper_ref = doi_match.group(1)
+        elif author_year_match:
+            paper_ref = f"{author_year_match.group(1)} ({author_year_match.group(2)})"
+
+        if not paper_ref:
+            return {
+                "question_type": QuestionType.PAPER_METHODS,
+                "headline": "Could not identify which paper you mean.",
+                "sections": [{
+                    "heading": "Try a more specific reference",
+                    "items": [
+                        "Include author and year: 'methods from Bratman (2015)'",
+                        "Include DOI: 'methods from doi:10.1016/j.ypmed.2015.07.007'",
+                        "Or paper title: 'methods from the nature experience study'",
+                    ],
+                }],
+                "follow_ups": [
+                    "What methods are used in Kaplan (1995)?",
+                    "Show me stimulus from Appleton (1975)",
+                ],
+            }
+
+        # Search extraction corpus for this paper
+        found_findings = []
+        paper_metadata = {}
+        extractions_dir = Path("data/extractions")
+
+        if extractions_dir.exists():
+            search_terms = set(re.findall(r'\w{3,}', paper_ref.lower()))
+            for json_file in extractions_dir.glob("*.json"):
+                try:
+                    with open(json_file) as f:
+                        data = json.load(f)
+
+                    title = (data.get("title") or "").lower()
+                    authors = (data.get("authors") or "").lower()
+                    doi = (data.get("doi") or "").lower()
+
+                    # Match by DOI, author+year, or title keywords
+                    if doi_match and paper_ref.lower() in doi:
+                        pass  # Exact DOI match
+                    elif len(search_terms & set(re.findall(r'\w{3,}', f"{title} {authors}"))) < 2:
+                        continue
+
+                    # Found a matching paper
+                    paper_metadata = {
+                        "title": data.get("title", json_file.stem),
+                        "authors": data.get("authors", ""),
+                        "doi": data.get("doi", ""),
+                        "year": data.get("year"),
+                        "article_type": data.get("article_type", ""),
+                    }
+
+                    for finding in data.get("findings", []):
+                        found_findings.append(finding)
+
+                    break  # Stop after first match
+                except Exception:
+                    continue
+
+        if not found_findings:
+            return {
+                "question_type": QuestionType.PAPER_METHODS,
+                "headline": f"No extraction data found for '{paper_ref}'.",
+                "sections": [{
+                    "heading": "Paper not in corpus",
+                    "items": [
+                        f"The paper '{paper_ref}' has not yet been extracted.",
+                        "It may be in the wishlist or not yet discovered.",
+                    ],
+                }],
+                "follow_ups": [
+                    "What theories does ATLAS cover?",
+                    "Show me all measurement methods",
+                ],
+            }
+
+        # Build structured response
+        sections = []
+
+        # Study design
+        designs = set(f.get("study_design") for f in found_findings if f.get("study_design"))
+        sample_sizes = [f.get("sample_size") for f in found_findings if f.get("sample_size")]
+        populations = set(f.get("population", f.get("scope_population"))
+                        for f in found_findings
+                        if f.get("population") or f.get("scope_population"))
+
+        if designs or sample_sizes or populations:
+            design_items = []
+            if designs:
+                design_items.append(f"Design: {', '.join(str(d) for d in designs)}")
+            if sample_sizes:
+                design_items.append(f"Sample sizes: {sample_sizes}")
+            if populations:
+                design_items.append(
+                    f"Population: {', '.join(str(p) for p in populations if p)}"
+                )
+            sections.append({"heading": "Study Design", "items": design_items})
+
+        # Stimulus/conditions
+        stimuli = set()
+        stim_details = []
+        for f in found_findings:
+            ant = f.get("antecedent")
+            if ant:
+                stimuli.add(str(ant))
+            stim_desc = f.get("stimulus_description")
+            if stim_desc and isinstance(stim_desc, dict):
+                stim_details.append(
+                    f"{stim_desc.get('primary_type', '')}: "
+                    f"{', '.join(c.get('name', '') for c in stim_desc.get('components', []))}"
+                )
+
+        if stimuli or stim_details:
+            stim_items = []
+            if stim_details:
+                stim_items.extend(stim_details[:5])
+            elif stimuli:
+                stim_items.extend(list(stimuli)[:8])
+            sections.append({
+                "heading": "Stimuli & Experimental Conditions",
+                "items": stim_items,
+            })
+
+        # Findings summary
+        finding_items = []
+        for f in found_findings[:8]:
+            ant = f.get("antecedent", "?")
+            cons = f.get("consequent", "?")
+            direction = f.get("direction", "?")
+            es = f.get("effect_size")
+            line = f"{ant} → {cons} ({direction})"
+            if es:
+                line += f" [d = {es}]"
+            finding_items.append(line)
+
+        if finding_items:
+            sections.append({
+                "heading": f"Key Findings ({len(found_findings)} total)",
+                "items": finding_items,
+            })
+
+        # Measurement instruments
+        instruments = set(f.get("measure_type") or f.get("instrument")
+                         for f in found_findings
+                         if f.get("measure_type") or f.get("instrument"))
+        if instruments:
+            sections.append({
+                "heading": "Measurement Instruments",
+                "items": [str(i) for i in instruments if i],
+            })
+
+        headline = (
+            f"Methods from {paper_metadata.get('title', paper_ref)}"
+            f" ({paper_metadata.get('article_type', 'unknown type')})"
+        )
+
+        return {
+            "question_type": QuestionType.PAPER_METHODS,
+            "headline": headline,
+            "sections": sections,
+            "sources": [paper_metadata.get("doi", paper_ref)],
+            "follow_ups": [
+                f"What evidence supports findings from {paper_ref}?",
+                f"What stimulus was used in {paper_ref}?",
+                "Show me all measurement methods",
+            ],
         }
 
     def _queue_circuit_search_targets(

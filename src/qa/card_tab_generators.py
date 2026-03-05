@@ -41,6 +41,9 @@ Success Conditions:
   SC-TG-8: Sources tab produces per-paper method details for T1/T1.5/T2/Molecule cards
   SC-TG-9: Sources tab includes stimulus descriptions when extraction data available
   SC-TG-10: Sources tab covers ≥ 80% of papers referenced in the card
+  SC-TG-11: Visual tabs (mechanism, evidence, design, connections, debate) receive
+            figure suggestions from FigureSuggestionService extraction corpus
+  SC-TG-12: Figure injection never fails tab generation (graceful degradation)
 
 Author: CW (Claude/Cowork)
 Date: 2026-03-04
@@ -346,7 +349,13 @@ def _build_mechanism_context(source_data: Dict, card_type: CardType) -> str:
 
 
 def _build_evidence_context(source_data: Dict, card_type: CardType) -> str:
-    """Build user prompt context for the Evidence tab."""
+    """Build user prompt context for the Evidence tab.
+    
+    Uses enriched source data (from enrich_card_sources.py) when available:
+    - Full findings with effect_size, sample_size, paper_title, paper_doi
+    - Aggregate stats: mean_effect_size, effect_size_range, n_with_effect_size
+    - Provenance: source file counts
+    """
     parts = []
     parts.append(f"ENTITY: {source_data.get('title', source_data.get('entity_id', ''))}")
 
@@ -363,51 +372,110 @@ def _build_evidence_context(source_data: Dict, card_type: CardType) -> str:
     if direction_counts := source_data.get("direction_counts", {}):
         parts.append(f"DIRECTION BREAKDOWN: {json.dumps(direction_counts)}")
 
+    # Enriched aggregate stats
+    if mean_es := source_data.get("mean_effect_size"):
+        parts.append(f"MEAN_EFFECT_SIZE (d): {mean_es}")
+    if es_range := source_data.get("effect_size_range"):
+        parts.append(f"EFFECT_SIZE_RANGE: {es_range[0]} to {es_range[1]}")
+    if n_es := source_data.get("n_with_effect_size"):
+        parts.append(f"FINDINGS_WITH_EFFECT_SIZE: {n_es}/{n_findings}")
+
     if het := source_data.get("heterogeneity", source_data.get("heterogeneity_metrics", {})):
         parts.append(f"HETEROGENEITY: {json.dumps(het)}")
 
+    # Include more findings with richer fields
     if findings := source_data.get("findings", source_data.get("sample_members", [])):
-        parts.append("ALL FINDINGS:")
-        for i, f in enumerate(findings[:15]):
+        parts.append(f"FINDINGS ({min(len(findings), 30)} of {source_data.get('all_findings_count', len(findings))}):\n")
+        for i, f in enumerate(findings[:30]):
+            es_str = f"d={f['effect_size']:.2f}" if isinstance(f.get('effect_size'), (int, float)) else "d=?"
+            n_str = f"N={f['sample_size']}" if f.get('sample_size') else "N=?"
             parts.append(
                 f"  {i+1}. {f.get('antecedent', '?')} → {f.get('consequent', '?')} "
-                f"(dir={f.get('direction', '?')}, n={f.get('sample_size', '?')}) "
-                f"[{f.get('source_file', '')}]"
+                f"(dir={f.get('direction', '?')}, {es_str}, {n_str}) "
+                f"[{f.get('paper_title', f.get('source_file', ''))[:50]}]"
+            )
+    # Enriched: effect magnitudes with human-scale descriptions (a14)
+    if eff_mag := source_data.get("effect_magnitudes", []):
+        parts.append(f"\nEFFECT MAGNITUDES ({len(eff_mag)} of {source_data.get('n_effect_magnitudes', len(eff_mag))}):\n")
+        for i, em in enumerate(eff_mag[:10]):
+            parts.append(
+                f"  {i+1}. {em.get('antecedent', '?')} -> {em.get('consequent', '?')}: "
+                f"d={em.get('cohens_d', '?')} ({em.get('magnitude_label', '?')}), "
+                f"NNT={em.get('nnt', '?')}, "
+                f"{em.get('human_scale', '')[:80]}"
             )
 
     return "\n".join(parts)
 
 
 def _build_design_context(source_data: Dict, card_type: CardType) -> str:
-    """Build user prompt context for the Design tab."""
+    """Build user prompt context for the Design tab.
+    
+    Uses enriched fields: CVA stimuli, measurements, design implications.
+    """
     parts = []
     parts.append(f"ENTITY: {source_data.get('title', source_data.get('entity_id', ''))}")
     parts.append(f"CONFIDENCE: omega = {source_data.get('omega', '?')}")
 
     if design := source_data.get("design_implications", source_data.get("design_parameters", {})):
-        parts.append(f"EXISTING DESIGN DATA: {json.dumps(design)}")
+        parts.append(f"DESIGN IMPLICATIONS: {json.dumps(design[:5] if isinstance(design, list) else design)}")
+
+    # CVA: stimuli (what environments/conditions were tested)
+    if stimuli := source_data.get("cva_stimuli", []):
+        parts.append(f"CVA STIMULI ({len(stimuli)}):")
+        for s in stimuli[:5]:
+            compact = {k:v for k,v in s.items() if v and k != 'type'}
+            parts.append(f"  - {s.get('stimulus_type', '?')}: {json.dumps(compact)[:120]}")
+
+    # CVA: measurements (what instruments/biomarkers were used)
+    if measurements := source_data.get("cva_measurements", []):
+        parts.append(f"CVA MEASUREMENTS ({len(measurements)}):")
+        for m in measurements[:5]:
+            compact = {k:v for k,v in m.items() if v and k != 'type'}
+            parts.append(f"  - {m.get('modality', '?')}: {json.dumps(compact)[:120]}")
 
     if findings := source_data.get("findings", source_data.get("sample_members", [])):
         parts.append("FINDINGS WITH DESIGN RELEVANCE:")
         for i, f in enumerate(findings[:10]):
             ant = f.get("antecedent", "?")
             cons = f.get("consequent", "?")
-            parts.append(f"  {i+1}. {ant} → {cons} ({f.get('direction', '?')})")
+            parts.append(f"  {i+1}. {ant} -> {cons} ({f.get('direction', '?')})")
 
     if scope := source_data.get("scope_conditions", {}):
         parts.append(f"SCOPE CONDITIONS: {json.dumps(scope)}")
 
     return "\n".join(parts)
 
-
 def _build_connections_context(source_data: Dict, card_type: CardType) -> str:
-    """Build user prompt context for the Connections tab."""
+    """Build user prompt context for the Connections tab.
+    
+    Uses enriched fields: child_templates, child_theories, mechanism_chains.
+    """
     parts = []
     parts.append(f"ENTITY: {source_data.get('title', source_data.get('entity_id', ''))}")
     parts.append(f"CARD TYPE: {card_type.value}")
 
     if theory_links := source_data.get("theory_links", source_data.get("theory_commitments", [])):
         parts.append(f"THEORY LINKS: {json.dumps(theory_links[:10])}")
+
+    # Enriched: child templates (T1 → T2 relationships)
+    if child_templates := source_data.get("child_templates", []):
+        parts.append(f"CHILD T2 TEMPLATES ({len(child_templates)}):")
+        for ct in child_templates[:10]:
+            parts.append(f"  - {ct.get('template_id', '?')}: {ct.get('name', '?')}")
+
+    # Enriched: child theories (T1 → T1.5 domain theories)
+    if child_theories := source_data.get("child_theories", []):
+        parts.append(f"CHILD DOMAIN THEORIES ({len(child_theories)}):")
+        for ct in child_theories[:10]:
+            parts.append(f"  - {ct.get('theory_id', '?')}: {ct.get('name', '?')} (maturity={ct.get('maturity', '?')})")
+
+    # Enriched: mechanism chains
+    if mech_chains := source_data.get("mechanism_chains", []):
+        parts.append(f"MECHANISM CHAINS ({len(mech_chains)}):")
+        for mc in mech_chains[:5]:
+            chain_str = " → ".join(mc.get("chain", [])) if isinstance(mc.get("chain"), list) else str(mc)
+            parts.append(f"  - [{mc.get('template_id', '?')}] {chain_str}")
 
     if molecule_ids := source_data.get("molecule_ids", []):
         parts.append(f"MOLECULE MEMBERSHIP: {json.dumps(molecule_ids[:10])}")
@@ -422,7 +490,10 @@ def _build_connections_context(source_data: Dict, card_type: CardType) -> str:
 
 
 def _build_debate_context(source_data: Dict, card_type: CardType) -> str:
-    """Build user prompt context for the Debate tab."""
+    """Build user prompt context for the Debate tab.
+    
+    Uses enriched fields: annotations, provenance.
+    """
     parts = []
     parts.append(f"ENTITY: {source_data.get('title', source_data.get('entity_id', ''))}")
 
@@ -439,12 +510,35 @@ def _build_debate_context(source_data: Dict, card_type: CardType) -> str:
     if defeaters := source_data.get("defeat_relationships", []):
         parts.append(f"KNOWN DEFEATERS: {json.dumps(defeaters[:5])}")
 
+    # Enriched: annotations from extended_annotations
+    if annotations := source_data.get("annotations", []):
+        parts.append(f"EXTENDED ANNOTATIONS ({len(annotations)} papers):")
+        for a in annotations[:5]:
+            parts.append(f"  - {a.get('source', '?')}: keys={a.get('annotation_keys', [])[:5]}")
+
+    # Enriched: provenance for traceability
+    if prov := source_data.get("provenance", {}):
+        parts.append(f"PROVENANCE: {prov.get('n_source_files', '?')} source files")
+
+    # Enriched: surprise flags (a9) — findings that violate common assumptions
+    if surprises := source_data.get("surprise_flags", []):
+        parts.append(f"SURPRISE FLAGS ({len(surprises)}):")
+        for s in surprises[:5]:
+            parts.append(f"  - ASSUMED: {s.get('common_assumption', '?')}")
+            parts.append(f"    ACTUAL: {s.get('actual_finding', '?')}")
+
+    # Enriched: unanswered questions (a18) — open research frontiers
+    if unanswered := source_data.get("unanswered_questions", []):
+        parts.append(f"UNANSWERED QUESTIONS ({len(unanswered)}):")
+        for q in unanswered[:3]:
+            parts.append(f"  - {q.get('question', '?')} (difficulty: {q.get('estimated_difficulty', '?')})")
+
     if findings := source_data.get("findings", source_data.get("sample_members", [])):
         # Include findings with conflicting directions
-        conflicting = [f for f in findings if f.get("direction") in ("mixed",)]
+        conflicting = [f for f in findings if f.get("direction") in ("mixed", "no_effect")]
         if conflicting:
-            parts.append("CONFLICTING FINDINGS:")
-            for i, f in enumerate(conflicting[:5]):
+            parts.append(f"CONFLICTING/NULL FINDINGS ({len(conflicting)}):")
+            for i, f in enumerate(conflicting[:8]):
                 parts.append(
                     f"  {i+1}. {f.get('antecedent', '?')} → {f.get('consequent', '?')} "
                     f"({f.get('direction', '?')}) [{f.get('source_file', '')}]"
@@ -563,6 +657,61 @@ TAB_GENERATOR_CONFIG: Dict[str, Tuple[str, Callable]] = {
 }
 
 
+def _enrich_tab_with_figures(
+    tab: "CardTab",
+    source_data: Dict[str, Any],
+    max_figures: int = 3,
+) -> "CardTab":
+    """
+    Post-generation figure injection using FigureSuggestionService.
+
+    Tabs that display visual evidence (mechanism, evidence, design, connections,
+    debate) receive figure suggestions matched by topic keywords from the
+    extraction corpus. Suggestions are stored in tab.figures as metadata
+    dicts — actual image rendering happens at display time.
+
+    SC-TG-11: Visual tabs receive figure suggestions from extraction corpus.
+    SC-TG-12: Figure injection never fails tab generation (graceful degradation).
+
+    Args:
+        tab: The CardTab with prose already generated
+        source_data: Card entity source data (contains title, description, etc.)
+        max_figures: Maximum figure suggestions per tab (default 3)
+
+    Returns:
+        Same CardTab with figures field populated (or unchanged on failure)
+    """
+    try:
+        from src.services.figure_suggestion_service import FigureSuggestionService
+
+        topic = source_data.get("title", "")
+        description = source_data.get("description", "")
+        if description:
+            topic = f"{topic} {description}"
+
+        if not topic.strip():
+            return tab
+
+        fig_service = FigureSuggestionService()
+        suggestions = fig_service.suggest_figures_for_topic(
+            topic=topic,
+            limit=max_figures,
+        )
+
+        if suggestions:
+            tab.figures = suggestions
+            logger.debug(
+                f"Injected {len(suggestions)} figure suggestions into "
+                f"tab '{tab.tab_name}' (top relevance: "
+                f"{suggestions[0].get('relevance_score', 0):.2f})"
+            )
+    except Exception as e:
+        # SC-TG-12: Figure injection never blocks tab generation
+        logger.debug(f"Figure injection skipped for tab '{tab.tab_name}': {e}")
+
+    return tab
+
+
 def generate_tab_with_llm(
     tab_name: str,
     card_type: CardType,
@@ -674,6 +823,12 @@ def generate_tab_with_llm(
         prose=prose,
         structured_data=structured_data,
     )
+
+    # Post-generation figure injection for visual tabs
+    # SC-TG-11: Tabs that require visuals get figure suggestions from FigureSuggestionService
+    _VISUAL_TABS = {"mechanism", "evidence", "design", "connections", "debate"}
+    if tab_name in _VISUAL_TABS:
+        tab = _enrich_tab_with_figures(tab, source_data, max_figures=3)
 
     return TabGenerationResult(
         tab=tab,

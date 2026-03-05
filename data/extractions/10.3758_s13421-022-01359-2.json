@@ -32,7 +32,7 @@
     },
     {
       "type": "visual",
-      "description": "Black dots (10-mm diameter) on a white background within a 304 \u00d7 183 mm black frame, drawn from 80 possible locations on an 8 \u00d7 10 grid, for the spatial task.",
+      "description": "Black dots (10-mm diameter) on a white background within a 304 × 183 mm black frame, drawn from 80 possible locations on an 8 × 10 grid, for the spatial task.",
       "n_stimuli": 80,
       "source": "Methods - Serial order reconstruction tasks, p. 5"
     }
@@ -53,8 +53,8 @@
       "claim_type": "null",
       "measure_type": "performance",
       "p_value": ".11",
-      "effect_size": null,
-      "effect_size_type": null,
+      "effect_size": 0.3821,
+      "effect_size_type": "Cohen's d",
       "sample_size": null,
       "confidence_interval": null,
       "test_statistic": "t(71)=1.61",
@@ -117,7 +117,9 @@
         "CROSS_FRAMEWORK": 0.1824,
         "INTEROCEPTION": 0.1821,
         "ATTENTION_RESTORATION_THEORY": 0.1751
-      }
+      },
+      "effect_size_computed": true,
+      "effect_size_method": "t_to_d_equal_groups"
     },
     {
       "id": 2,
@@ -127,8 +129,8 @@
       "claim_type": "associational",
       "measure_type": "performance",
       "p_value": "<0.01",
-      "effect_size": null,
-      "effect_size_type": null,
+      "effect_size": -0.5851,
+      "effect_size_type": "Cohen's d",
       "sample_size": null,
       "confidence_interval": null,
       "test_statistic": "t(89)=2.76",
@@ -195,7 +197,9 @@
         "ATTENTION_RESTORATION": 0.1765,
         "CREATIVE_COGNITION": 0.1765,
         "PREDICTIVE_PROCESSING": 0.1765
-      }
+      },
+      "effect_size_computed": true,
+      "effect_size_method": "t_to_d_equal_groups"
     },
     {
       "id": 3,
@@ -428,7 +432,7 @@
     },
     {
       "id": 6,
-      "antecedent": "Task type (verbal, spatial) \u00d7 Sound condition (silence, steady-state, changing-state)",
+      "antecedent": "Task type (verbal, spatial) × Sound condition (silence, steady-state, changing-state)",
       "consequent": "Serial recall performance (proportion correct)",
       "direction": "mixed",
       "claim_type": "moderated",
@@ -451,7 +455,7 @@
       ],
       "provenance_depth": "section",
       "source": "p. 6",
-      "quote": "significant interaction of task \u00d7 sound condition, ... reflecting a stronger effect of sound on the verbal when compared to the spatial task",
+      "quote": "significant interaction of task × sound condition, ... reflecting a stronger effect of sound on the verbal when compared to the spatial task",
       "outcome_id": "cog.memory",
       "outcome_domain": "cog",
       "outcome_match_type": "substring",
@@ -518,14 +522,14 @@
     },
     {
       "id": 7,
-      "antecedent": "Sound condition (silence, steady-state, changing-state) \u00d7 Age group (children, adults)",
+      "antecedent": "Sound condition (silence, steady-state, changing-state) × Age group (children, adults)",
       "consequent": "Serial recall performance (proportion correct)",
       "direction": "mixed",
       "claim_type": "moderated",
       "measure_type": "performance",
       "p_value": ".08",
-      "effect_size": null,
-      "effect_size_type": "partial_eta_squared",
+      "effect_size": 0.1768,
+      "effect_size_type": "Cohen's d",
       "sample_size": null,
       "confidence_interval": null,
       "test_statistic": "F(2, 320)=2.50",
@@ -541,7 +545,7 @@
       ],
       "provenance_depth": "section",
       "source": "p. 6",
-      "quote": "The sound condition \u00d7 age group interaction approached significance",
+      "quote": "The sound condition × age group interaction approached significance",
       "outcome_id": "cog.memory",
       "outcome_domain": "cog",
       "outcome_match_type": "substring",
@@ -596,18 +600,23 @@
         "CROSS_FRAMEWORK": 0.1507
       },
       "_original_effect_size": 0.02,
-      "_quarantine_reason": "Value 0.02 appears to be a p-value, not an effect size"
+      "_quarantine_reason": "Value 0.02 appears to be a p-value, not an effect size",
+      "effect_size_computed": true,
+      "effect_size_method": "f_to_d_df1_one",
+      "effect_size_assumptions": [
+        "F-test has df1 > 1 (omnibus); d is an approximate directional effect."
+      ]
     },
     {
       "id": 8,
-      "antecedent": "Sound condition (silence, steady-state, changing-state) \u00d7 Task type (verbal, spatial) \u00d7 Age group (children, adults)",
+      "antecedent": "Sound condition (silence, steady-state, changing-state) × Task type (verbal, spatial) × Age group (children, adults)",
       "consequent": "Serial recall performance (proportion correct)",
       "direction": "mixed",
       "claim_type": "moderated",
       "measure_type": "performance",
       "p_value": "<0.05",
-      "effect_size": null,
-      "effect_size_type": "partial_eta_squared",
+      "effect_size": 0.238,
+      "effect_size_type": "Cohen's d",
       "sample_size": null,
       "confidence_interval": null,
       "test_statistic": "F(2, 320)=4.53",
@@ -686,7 +695,12 @@
         "NEUROMODULATORY": 0.1583
       },
       "_original_effect_size": 0.03,
-      "_quarantine_reason": "Value 0.03 appears to be a p-value, not an effect size"
+      "_quarantine_reason": "Value 0.03 appears to be a p-value, not an effect size",
+      "effect_size_computed": true,
+      "effect_size_method": "f_to_d_df1_one",
+      "effect_size_assumptions": [
+        "F-test has df1 > 1 (omnibus); d is an approximate directional effect."
+      ]
     },
     {
       "id": 9,
@@ -783,7 +797,7 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "p. 6",
-      "quote": "significant main effects of ... age group, F (1,71) = 13.19, p < .001, partial \u03b72 = .16, due to better overall performance in the adults.",
+      "quote": "significant main effects of ... age group, F (1,71) = 13.19, p < .001, partial η2 = .16, due to better overall performance in the adults.",
       "outcome_id": "cog.memory",
       "outcome_domain": "cog",
       "outcome_match_type": "substring",
@@ -848,7 +862,7 @@
     },
     {
       "id": 11,
-      "antecedent": "Sound condition \u00d7 Age group in verbal task",
+      "antecedent": "Sound condition × Age group in verbal task",
       "consequent": "Serial recall performance (proportion correct)",
       "direction": "mixed",
       "claim_type": "moderated",
@@ -871,7 +885,7 @@
       ],
       "provenance_depth": "section",
       "source": "p. 6",
-      "quote": "significant sound \u00d7 age interaction, F (2, 142) = 6.98, p < .01, partial n2 = .09, reflecting stronger sound-induced impairments in the children when compared to the adults.",
+      "quote": "significant sound × age interaction, F (2, 142) = 6.98, p < .01, partial n2 = .09, reflecting stronger sound-induced impairments in the children when compared to the adults.",
       "outcome_id": "cog.memory",
       "outcome_domain": "cog",
       "outcome_match_type": "substring",
@@ -1417,7 +1431,7 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "p. 8",
-      "quote": "significant main effects of sound condition, F (2,84) = 13.65, p < .001, partial n\u00b2 = 0.25",
+      "quote": "significant main effects of sound condition, F (2,84) = 13.65, p < .001, partial n² = 0.25",
       "outcome_id": "cog.memory",
       "outcome_domain": "cog",
       "outcome_match_type": "substring",
@@ -1494,7 +1508,7 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "p. 8",
-      "quote": "block, F (3, 126) = 7.84, p < .001, partial n\u00b2 = .16",
+      "quote": "block, F (3, 126) = 7.84, p < .001, partial n² = .16",
       "outcome_id": "cog.memory",
       "outcome_domain": "cog",
       "outcome_match_type": "substring",
@@ -1554,7 +1568,7 @@
     },
     {
       "id": 20,
-      "antecedent": "Sound condition \u00d7 Experimental block (verbal task, children and adults)",
+      "antecedent": "Sound condition × Experimental block (verbal task, children and adults)",
       "consequent": "Serial recall performance (proportion correct)",
       "direction": "no_effect",
       "claim_type": "null",
@@ -1656,7 +1670,7 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "p. 8",
-      "quote": "significant main effect of age group, F (1, 89) = 7.30, p <.01, partial n\u00b2 = .08, resulting from better overall performance in the adults.",
+      "quote": "significant main effect of age group, F (1, 89) = 7.30, p <.01, partial n² = .08, resulting from better overall performance in the adults.",
       "outcome_id": "cog.memory",
       "outcome_domain": "cog",
       "outcome_match_type": "substring",
@@ -1805,7 +1819,7 @@
     },
     {
       "id": 23,
-      "antecedent": "Sound condition \u00d7 Age group in spatial task",
+      "antecedent": "Sound condition × Age group in spatial task",
       "consequent": "Serial recall performance (proportion correct)",
       "direction": "no_effect",
       "claim_type": "null",
@@ -1830,7 +1844,7 @@
       ],
       "provenance_depth": "section",
       "source": "p. 8",
-      "quote": "the sound \u00d7 age interaction were not significant (F (2, 178) < 1 in both cases).",
+      "quote": "the sound × age interaction were not significant (F (2, 178) < 1 in both cases).",
       "outcome_id": "cog.memory",
       "outcome_domain": "cog",
       "outcome_match_type": "substring",
@@ -2177,7 +2191,7 @@
     "crossref_publisher": "Springer Science and Business Media LLC",
     "crossref_type": "journal-article",
     "crossref_subjects": [],
-    "crossref_abstract": "AbstractImmediate serial recall of visually presented items is reliably impaired by task-irrelevant speech that the participants are instructed to ignore (\u201cirrelevant speech effect,\u201d ISE). The ISE is stronger with changing speech tokens (words or syllables) when compared to repetitions of single tokens (\u201cchanging-state effect,\u201d CSE). These phenomena have been attributed to sound-induced diversions of attention away from the focal task (attention capture account), or to specific interference of obligatory, involuntary sound processing with either the integrity of phonological traces in a phonological short-term store (phonological loop account), or the efficiency of a domain-general rehearsal process employed for serial order retention (changing-state account). Aiming to further explore the role of attention, phonological coding, and serial order retention in the ISE, we analyzed the effects of steady-state and changing-state speech on serial order reconstruction of visually presented verbal and spatial items in children (n = 81) and adults (n = 80). In the verbal task, both age groups performed worse with changing-state speech (sequences of different syllables) when compared with steady-state speech (one syllable repeated) and silence. Children were more impaired than adults by both speech sounds. In the spatial task, no disruptive effect of irrelevant speech was found in either group. These results indicate that irrelevant speech evokes similarity-based interference, and thus pose difficulties for the attention-capture and the changing-state account of the ISE.",
+    "crossref_abstract": "AbstractImmediate serial recall of visually presented items is reliably impaired by task-irrelevant speech that the participants are instructed to ignore (“irrelevant speech effect,” ISE). The ISE is stronger with changing speech tokens (words or syllables) when compared to repetitions of single tokens (“changing-state effect,” CSE). These phenomena have been attributed to sound-induced diversions of attention away from the focal task (attention capture account), or to specific interference of obligatory, involuntary sound processing with either the integrity of phonological traces in a phonological short-term store (phonological loop account), or the efficiency of a domain-general rehearsal process employed for serial order retention (changing-state account). Aiming to further explore the role of attention, phonological coding, and serial order retention in the ISE, we analyzed the effects of steady-state and changing-state speech on serial order reconstruction of visually presented verbal and spatial items in children (n = 81) and adults (n = 80). In the verbal task, both age groups performed worse with changing-state speech (sequences of different syllables) when compared with steady-state speech (one syllable repeated) and silence. Children were more impaired than adults by both speech sounds. In the spatial task, no disruptive effect of irrelevant speech was found in either group. These results indicate that irrelevant speech evokes similarity-based interference, and thus pose difficulties for the attention-capture and the changing-state account of the ISE.",
     "crossref_reference_count": 106,
     "crossref_issn": [
       "0090-502X",
@@ -2229,7 +2243,7 @@
   "crossref_type": "journal-article",
   "crossref_publisher": "Springer Science and Business Media LLC",
   "crossref_subjects": [],
-  "crossref_abstract": "AbstractImmediate serial recall of visually presented items is reliably impaired by task-irrelevant speech that the participants are instructed to ignore (\u201cirrelevant speech effect,\u201d ISE). The ISE is stronger with changing speech tokens (words or syllables) when compared to repetitions of single tokens (\u201cchanging-state effect,\u201d CSE). These phenomena have been attributed to sound-induced diversions of attention away from the focal task (attention capture account), or to specific interference of obligatory, involuntary sound processing with either the integrity of phonological traces in a phonological short-term store (phonological loop account), or the efficiency of a domain-general rehearsal process employed for serial order retention (changing-state account). Aiming to further explore the role of attention, phonological coding, and serial order retention in the ISE, we analyzed the effects of steady-state and changing-state speech on serial order reconstruction of visually presented verbal and spatial items in children (n = 81) and adults (n = 80). In the verbal task, both age groups performed worse with changing-state speech (sequences of different syllables) when compared with steady-state speech (one syllable repeated) and silence. Children were more impaired than adults by both speech sounds. In the spatial task, no disruptive effect of irrelevant speech was found in either group. These results indicate that irrelevant speech evokes similarity-based interference, and thus pose difficulties for the attention-capture and the changing-state account of the ISE.",
+  "crossref_abstract": "AbstractImmediate serial recall of visually presented items is reliably impaired by task-irrelevant speech that the participants are instructed to ignore (“irrelevant speech effect,” ISE). The ISE is stronger with changing speech tokens (words or syllables) when compared to repetitions of single tokens (“changing-state effect,” CSE). These phenomena have been attributed to sound-induced diversions of attention away from the focal task (attention capture account), or to specific interference of obligatory, involuntary sound processing with either the integrity of phonological traces in a phonological short-term store (phonological loop account), or the efficiency of a domain-general rehearsal process employed for serial order retention (changing-state account). Aiming to further explore the role of attention, phonological coding, and serial order retention in the ISE, we analyzed the effects of steady-state and changing-state speech on serial order reconstruction of visually presented verbal and spatial items in children (n = 81) and adults (n = 80). In the verbal task, both age groups performed worse with changing-state speech (sequences of different syllables) when compared with steady-state speech (one syllable repeated) and silence. Children were more impaired than adults by both speech sounds. In the spatial task, no disruptive effect of irrelevant speech was found in either group. These results indicate that irrelevant speech evokes similarity-based interference, and thus pose difficulties for the attention-capture and the changing-state account of the ISE.",
   "crossref_fetched_at": "2026-02-25T12:04:53.027200+00:00",
   "tier_resolution_version": "ftr_v1_2026-03-01",
   "tier_resolution_config": {

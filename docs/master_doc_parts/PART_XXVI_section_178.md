@@ -16,7 +16,7 @@ The card system solves both problems through three design principles:
 
 **First, modular units**: ATLAS produces knowledge in nine distinct types, organized across three tiers by their level of synthesis. Each type has a fixed structure, visual requirements, and set of tabs. This modularization makes it possible to design each card type once and render it correctly everywhere.
 
-**Second, layered presentation**: Every card has three layers. The *surface* is what the user sees in a list or search results — a thumbnail that communicates the card's identity, confidence, and freshness at a glance. The *body* consists of seven tabs that adapt to user type: researchers see different tabs in a different order than designers or clinicians. The *iceberg* is what lies beneath, invisible by default but accessible for deepening, regeneration, and audit.
+**Second, layered presentation**: Every card has three layers. The *surface* is what the user sees in a list or search results — a thumbnail that communicates the card's identity, confidence, and freshness at a glance. The *body* consists of eight tabs that adapt to user type: researchers see different tabs in a different order than designers or clinicians. The *iceberg* is what lies beneath, invisible by default but accessible for deepening, regeneration, and audit.
 
 **Third, adaptive UI**: The same card is rendered differently depending on who is viewing it. A researcher opening a T2 mechanism card sees Overview → Evidence → Mechanism tabs first; a designer sees Design → Overview → Mechanism. A student sees simplified prose; a developer sees full technical detail. This is not multiple cards; it is one card with adaptive presentation.
 
@@ -90,7 +90,7 @@ Together, these seven fields occupy roughly 3–4 inches of screen space and pre
 
 ### The Body: The Readable Entry
 
-The body is what the user reads when they click open the card. It is organized as seven tabs, each addressing a different question a user might ask. Not all tabs appear in all cards (see below), but the structure is consistent.
+The body is what the user reads when they click open the card. It is organized as eight tabs, each addressing a different question a user might ask. Not all tabs appear in all cards (see below), but the structure is consistent. (The original design specified seven tabs; the Sources tab was added during implementation — see §178.11 for its rationale and structure.)
 
 **Overview Tab (all cards).** A 2–3 paragraph prose summary written in accessible language, targeting prose health score ≥6.5 (§170). The Overview addresses the "what and why" question: What is this card about? Why does it matter? Who should care about it? For a T2 mechanism card, the Overview might read: "When the morning light is bright (≥2,500 lux), your eye's intrinsically photosensitive retinal ganglion cells detect this as a signal that it is daytime. This signal travels to your brain's suprachiasmatic nucleus, a clock-like structure that governs your circadian rhythm. As a result, your body anticipates the day ahead — increasing alertness, core temperature, and sleep drive at appropriate times — and this leads to better sleep quality at night." This is mechanistic but not technical; it explains the causal chain in terms anyone with secondary education can follow. Key references are cited inline (author, year) to ground the narrative in evidence.
 
@@ -337,17 +337,189 @@ Precomputing all 12,000+ T3 belief cards would create massive storage and mainte
 
 ---
 
-## §178.9 Summary: The Card as a Design Pattern
+## §178.9 The Two-Pass Architecture — Mandatory Opus Polish
 
-The card system is a design pattern that solves three problems:
+The card generation pipeline follows a strict two-pass architecture, reflecting a design principle that ATLAS has learned through iterative failure: no single language model invocation reliably produces publication-quality prose. The first pass extracts and structures; the second pass polishes and commits. This separation is not optional — it is enforced architecturally.
+
+### Pass 1: Extraction and Structuring (Haiku or Sonnet)
+
+In the first pass, a fast, cost-efficient model (Claude Haiku or Sonnet) generates the initial card body. The model receives the entity's source data — for a T2 mechanism card, this includes the mechanism chain, all backing T3 beliefs with effect sizes and confidence intervals, the relevant T1/T1.5 parent theories, scope conditions, population descriptors, and the design parameter registry. The model's task is straightforward: produce structured content for each tab (Overview, Mechanism, Evidence, Design, Connections, Debate, History) and ensure factual accuracy against the source data.
+
+This first pass is optimized for throughput and fidelity rather than elegance. The resulting prose is typically adequate but lacks the qualities that distinguish a serious knowledge resource from a database dump — narrative threading (Pinker, 2014), scaffolded explanation (Sagan, 1980), stress-position emphasis (Williams & Bizup, 2016), and the kind of disciplined honesty about uncertainty that Carson (1962) and Gawande (2009) demonstrate. Pass 1 gets the facts right. Pass 2 makes them sing.
+
+### Pass 2: Mandatory Opus Polish (Always Runs)
+
+The second pass is non-negotiable. Every card, without exception, is passed through an Opus-class model for prose revision and epistemic polishing. The Opus agent receives the Pass 1 output along with the full source data and two critical reference documents: the Writing Style Guide (`contracts/WRITING_STYLE_GUIDE.md`) and the Science Communication Norms (`contracts/SCIENCE_COMMUNICATION_NORMS.md`). Its task is to revise the prose to meet the target prose health score for the card's audience (≥6.5 for researchers and designers, ≥8.0 for students), to verify that confidence language matches evidence strength (the Sagan calibration principle), and to ensure that every tab tells a coherent micro-narrative rather than merely listing facts.
+
+The design decision to make Opus polish mandatory — rather than applying it selectively to cards that "need" it — arose from a pattern observed during early card generation trials. When polish was optional, approximately 40% of cards cleared the quality gate on their first pass without needing Opus. However, the remaining 60% required extensive revision, and the system had no reliable way to predict in advance which cards would need polish and which would not. A T2 card about morning light exposure might emerge from Sonnet in clean, readable prose; the next T2 card, about acoustic masking in open-plan offices, might emerge as a tangle of nominalizations and passive constructions that no reader would tolerate. The solution was to treat Opus polish as infrastructure — a uniform quality floor — rather than as an elective enhancement. The marginal cost of running Opus on cards that were already adequate proved negligible compared to the quality risk of letting inadequate cards through.
+
+This is formalized in the codebase as the `CardGenerationOrchestrator` (§178.7), which always invokes the two-pass pipeline. The orchestrator's quality gate (`_run_quality_gate`) applies after Pass 2 and rejects cards that still fall below the prose health threshold, routing them for another revision pass or human review. The invariant is: *no card reaches canonical storage without Opus polish*. This is analogous to what copy editors do at journals — every manuscript, no matter how well-written the author thinks it is, goes through editorial revision.
+
+### Design Rationale
+
+The two-pass architecture reflects a broader principle in ATLAS: separate concerns that have different performance profiles. Extraction and structuring are parallelizable, fast, and tolerant of imperfect prose. Polish is sequential, slow (Opus costs approximately 15× what Haiku costs per token), and demanding of coherent narrative flow that models can only produce when given full context. Trying to do both in a single pass produces a model that is too expensive for batch extraction and too careless for publication quality. The two-pass split is the economic sweet spot.
+
+This architecture also enables session-mode generation (§178.10), where Pass 1 runs through free-tier Claude sessions rather than API calls — but Pass 2 remains mandatory regardless of how Pass 1 was executed.
+
+---
+
+## §178.10 Session-Mode Generation — Zero-Cost Card Production
+
+### The Problem: API Costs Scale Linearly with Card Count
+
+ATLAS's card inventory is substantial: 207 Tier A entity cards, 32 Tier C system cards, and an indeterminate number of high-leverage Tier B cards. Generating each card through the standard API pipeline costs approximately $0.02–0.15 per card depending on tier and model (Haiku for Pass 1, Opus for Pass 2). For the initial generation of 207 entity cards, this totals roughly $5–30 in API costs — manageable, but the real cost pressure comes from regeneration. With a 6-month lifecycle (§178.6), entity cards cycle through regeneration continuously. A system with 207 entity cards regenerating twice yearly at an average of $0.08 per regeneration incurs ~$33/year in API costs — a modest figure. But David's vision for ATLAS includes thousands of high-leverage Tier B cards, and the research question "Can we eliminate API costs entirely for initial card generation?" has a surprisingly clean answer.
+
+### The Solution: Claude Code Sessions Are the Model
+
+Claude Code (CC), Claude Workbench (CW), and the Agent (AG) are all interactive Claude sessions. When a user runs a CC terminal and asks it to generate prose, the session *is* the language model. The model runs locally through the session, with no per-token API charge to the user's account beyond the session subscription. This insight — that interactive sessions are functionally equivalent to API calls for generation tasks — opens a zero-cost generation pathway.
+
+The implementation is housed in two scripts. The primary entry point is `scripts/terminal_card_gen.py`, a lightweight quick-start script that a user can run in any CC terminal. The script reads the card generation queue (§178.6), claims the next available card, loads the source data from the iceberg, and writes a generation prompt to stdout. The CC session then generates the card body inline. When generation completes, the script saves the card to `data/cards/` in the canonical JSON format and marks the card as complete in the claims registry.
+
+The full-featured CLI is `scripts/session_generate_cards.py`, which adds batch mode (generate multiple cards sequentially), priority filtering (generate only high-priority cards), type filtering (generate only T2 mechanism cards, or only molecule cards), and dry-run mode (show what would be generated without actually generating). Both scripts share the same underlying infrastructure: the `SessionCardWriter` class, which manages the queue, the claims registry, and the file-based coordination protocol.
+
+### Multi-Terminal Parallelism Through the Claims Registry
+
+A single CC terminal generates one card at a time — a throughput limitation if 207 entity cards need initial generation. The solution is to run multiple terminals simultaneously, each generating cards in parallel. This requires coordination to prevent two terminals from generating the same card.
+
+The `ClaimsRegistry` (implemented in `src/qa/session_card_writer.py`) is a file-based coordination system inspired by the pessimistic locking patterns used in distributed databases. Each terminal, before generating a card, *claims* it by writing a claim record to a shared JSON file in `data/cards/.claims/`. The claim record includes the terminal's identifier, a timestamp, and a status field (`claimed`, `completed`, or `failed`). Before claiming, the terminal checks whether any other terminal has already claimed that card. If so, it skips to the next unclaimed card in the queue.
+
+The design supports up to 15 simultaneous terminals. Beyond that limit, file-system contention on the claims file becomes a concern — though in practice, David's typical workflow involves 3–5 terminals working in parallel, well within the safe range. Stale claims (terminals that crash mid-generation) are detected by a configurable timeout (default: 2 hours). After the timeout expires, the stale claim is automatically released and the card becomes available for another terminal to claim.
+
+### What Session Mode Does Not Replace
+
+Session-mode generation replaces the API cost of Pass 1 (extraction and structuring). It does *not* eliminate the need for Pass 2 (Opus polish), because the CC session itself *is* an Opus-class model running Pass 2 inline as part of the generation process. The two-pass architecture is preserved: the session generates structured content (Pass 1), then immediately revises it to publication quality (Pass 2). The difference is economic, not architectural — both passes run within the session's flat-rate subscription rather than through metered API calls.
+
+---
+
+## §178.11 The Sources Tab — Per-Paper Method Drill-Down
+
+### The Eighth Body Tab
+
+The original card design (§178.3) specified seven body tabs: Overview, Mechanism, Evidence, Design, Connections, Debate, and History. Implementation revealed an eighth tab that no user who has worked with scientific evidence would willingly do without: the Sources tab, which provides a per-paper breakdown of the methods, stimuli, sample sizes, and instruments used in the studies backing a card.
+
+The need for this tab emerged from David's observation that "stimulus description and images are super important for real scientists." When a researcher reads a T2 mechanism card claiming that morning light exposure improves sleep quality, the Overview and Evidence tabs tell them *what* the evidence says and *how strong* it is. But the researcher's immediate follow-up question is: "How did they measure this? What exactly was the stimulus? Was the light broadband or monochromatic? Were participants sleeping in a lab or at home? What instruments measured sleep quality — actigraphy, polysomnography, or self-report?" These are not idle curiosities; they are the questions that determine whether the evidence is relevant to the researcher's own work.
+
+### Sources Tab Structure
+
+The Sources tab is generated by the `generate_sources_tab()` function in `src/qa/card_tab_generators.py`. For each paper backing the card's claims, the tab presents a structured entry with the following fields:
+
+**Paper identity**: Author(s), year, title, DOI (linked).
+
+**Study design**: The broad category — randomized controlled trial, quasi-experiment, within-subjects crossover, longitudinal cohort, systematic review, etc. This is extracted during the article extraction phase (§172) and stored in the extraction JSON's `study_design` field.
+
+**Stimulus / Experimental Conditions**: A structured description of what participants actually experienced. For a light exposure study, this might read: "Participants were exposed to 10,000 lux broad-spectrum light from a SAD lamp (Philips goLITE BLU) for 30 minutes within 1 hour of waking, compared to a dim-light control (< 500 lux incandescent) of equal duration." This level of specificity is essential because it enables researchers to assess generalizability — a finding obtained with 10,000 lux broad-spectrum light may not replicate with 2,500 lux blue-enriched LEDs.
+
+**Sample**: N, population characteristics, geographic context. Rendered as, for example, "N = 38 healthy young adults (ages 18–30, 55% female), recruited from Stanford undergraduate pool, no history of sleep disorders."
+
+**Key findings**: The specific effect sizes and statistical tests from this paper that are relevant to the card's claims. Rendered as, for example, "Nature walk reduced subgenual PFC activity relative to urban walk (paired t(37) = 2.13, p = 0.04, d = 0.48, 95% CI [0.04, 0.92])."
+
+**Measurement instruments**: The specific tools used — "Pittsburgh Sleep Quality Index (PSQI), wrist actigraphy (Actiwatch Spectrum), melatonin onset measured via dim-light melatonin onset (DLMO) protocol."
+
+The tab is required for T1, T1.5, T2, and Molecule cards — any card that synthesizes empirical evidence. For T3 belief cards, the sources tab is unnecessary because the card already represents a single paper's finding. For system cards, it is likewise unnecessary.
+
+### Design Rationale: Why a Separate Tab Rather Than Inline Citations
+
+One might argue that per-paper method details could be embedded within the Evidence tab. The Evidence tab already presents effect sizes and study counts; why not add method details there? The answer is cognitive load management (Sweller, 2011). The Evidence tab's purpose is synthesis — helping the reader see the pattern across studies (forest plots, convergence tables, replication status). Interleaving per-paper method details would fragment this synthesis, forcing the reader to alternate between "What is the overall pattern?" and "How did Study 3 measure this?" These are different cognitive tasks that benefit from spatial separation.
+
+The Sources tab also serves a provenance function that is distinct from the Evidence tab's synthesis function. A reader who doubts a specific effect size can navigate to the Sources tab, find the relevant paper, see exactly how the study was conducted, and decide for themselves whether the methodology was adequate. This is Longino's (1990) social epistemology in action: knowledge claims are accountable to the community, and accountability requires transparent access to methods.
+
+---
+
+## §178.12 Visual Evidence Integration — The Figure Suggestion Service
+
+### Connecting Extractions to Visual Assets
+
+ATLAS extracts structured data from scientific articles, but articles also contain visual assets — figures, diagrams, photographs of experimental stimuli, graphs of results, floor plans of studied environments — that are often more informative than the textual description alone. A mechanism chain diagram from the original paper communicates causal structure more immediately than any prose paraphrase. A photograph of the experimental stimulus (the specific forest trail, the open-plan office layout, the light therapy device) grounds the reader's understanding in concrete, perceptual detail.
+
+The `FigureSuggestionService` (`src/services/figure_suggestion_service.py`) bridges the gap between ATLAS's structured extraction corpus and the visual assets embedded in that corpus. On initialization, the service builds a keyword-indexed registry of all figures and tables referenced in the extraction JSONs. Each figure entry records its paper of origin, its figure/table reference number, a text description derived from the finding that references it, and a set of topic keywords extracted from the paper's title, abstract, and the figure's associated text.
+
+When a card is generated, the service is queried with the card's topic (derived from the entity's title and description). The service returns a ranked list of relevant figures, scored by keyword overlap between the query and the figure's keyword set. A minimum relevance threshold of 0.30 filters out tangentially related figures, and a configurable limit (default: 3 per tab) prevents visual clutter.
+
+### Integration Point: Post-Generation Injection
+
+Figure suggestions are injected *after* tab content generation, not during it. This design choice reflects the principle that visual evidence is metadata about the text — it enriches the tab but should not influence the prose generation process itself. The language model writing the Mechanism tab should focus on constructing a clear mechanistic narrative; it should not be distracted by the availability or unavailability of specific figures.
+
+The injection targets five "visual tabs" where figures are most informative: Mechanism, Evidence, Design, Connections, and Debate. The Overview and History tabs are excluded because Overview is prose-centric (a narrative summary rather than an evidence presentation) and History is a version log. The Sources tab already contains per-paper detail that would be redundant with figure suggestions.
+
+The injection is implemented as a post-processing step in `generate_tab_with_llm()`. After the tab's CardTab object is created, the function calls `_enrich_tab_with_figures()`, which queries the FigureSuggestionService and appends the results to the tab's `figures` field. If the service is unavailable (no extractions directory exists, or the import fails), the injection silently degrades — the tab is returned without figures, and a debug-level log message records the skip. This graceful degradation is critical because the figure service depends on the extraction corpus, which may not exist during testing or early-stage deployment.
+
+### Design Rationale
+
+The figure suggestion approach is deliberately lightweight — keyword overlap rather than semantic embedding. This is a conscious trade-off. A semantic embedding approach (encoding figure descriptions and queries into a shared vector space, then computing cosine similarity) would produce more nuanced relevance rankings but would require a vector database, an embedding model, and substantially more infrastructure. The keyword approach is O(1) per query against a pre-built index, requires no external dependencies, and produces relevance rankings that are "good enough" for the purpose of suggesting 3–5 potentially relevant figures per tab. If the ranking occasionally includes a tangentially relevant figure, the cost is minimal — the user simply ignores it. If the ranking misses a highly relevant figure, the user can still find it through the Sources tab's per-paper breakdown. The figure suggestion service augments navigation; it does not replace it.
+
+---
+
+## §178.13 Paper-Level Query Routing — "Show Me the Methods"
+
+### The Problem: Users Ask About Specific Papers
+
+ATLAS's QA system (§175) routes incoming questions through a taxonomy of question types: definitional queries ("What is Attention Restoration Theory?"), causal queries ("Does morning light improve sleep?"), comparison queries ("How does ART compare to Stress Recovery Theory?"), and so forth. But a class of questions that researchers frequently ask does not fit this taxonomy: questions about the methods of a specific paper.
+
+"Show me the methods from Bratman (2015)." "What instruments did Ulrich et al. (1991) use?" "What was the stimulus in the Berman, Jonides, and Kaplan (2008) study?" These questions are not about ATLAS's synthesized knowledge — they are about the raw extraction data from individual articles. The user is not asking "What does the evidence say about nature and attention?" but rather "How did *this specific study* investigate nature and attention?"
+
+### The Solution: QuestionType.PAPER_METHODS
+
+The `ArbitraryQAHandler` (`src/services/arbitrary_qa_handler.py`) now includes two new question types: `PAPER_METHODS` and `PAPER_STIMULUS`. These are classified by regex patterns that detect references to specific papers — either in Author (Year) format (e.g., "Bratman (2015)", "Ulrich et al. 1991") or by DOI reference (e.g., "doi:10.1073/pnas.1510459112").
+
+When a question is classified as `PAPER_METHODS`, the handler extracts the author name and year (or DOI) from the question text, then searches the extraction corpus (`data/extractions/*.json`) for matching papers. The search matches against the paper's title, author list, and DOI fields. If a match is found, the handler returns a structured response with four sections:
+
+**Study Design**: The broad design category and specific methodology.
+
+**Stimuli & Experimental Conditions**: The full stimulus description from the extraction, including delivery method, components, and any figure references.
+
+**Key Findings**: The paper's extracted findings with effect sizes, directions, and confidence intervals.
+
+**Measurement Instruments**: The specific instruments, scales, and physiological measures used.
+
+If no match is found in the extraction corpus, the handler returns a graceful message indicating that the paper has not yet been extracted and suggesting the user submit it for extraction. This degradation is important because ATLAS's corpus currently covers approximately 1,043 articles — a substantial but not exhaustive collection. Users will inevitably ask about papers that are not yet in the system.
+
+### Design Rationale
+
+Paper-level query routing serves a function analogous to what reference librarians call "known-item searching" — the user already knows what they want and needs the system to retrieve it efficiently. This is fundamentally different from exploratory searching ("What affects sleep quality?"), which requires synthesis across multiple sources. The distinction matters architecturally because known-item searches can be satisfied from raw extraction data without invoking the synthesis machinery (web of belief, credence propagation, card generation). The handler reads directly from extraction JSONs, avoiding unnecessary computation.
+
+The regex-based classification approach was chosen over semantic classification for the same reason the figure suggestion service uses keyword overlap rather than embeddings: the patterns are highly stereotyped ("methods from Author (Year)" or "instruments in Author et al. (Year)") and regex captures them with near-perfect precision. A semantic classifier would add latency and infrastructure without meaningful improvement in classification accuracy for this narrow question type.
+
+---
+
+## §178.14 Overseer Monitoring — Card System Health Invariants
+
+### Three New Invariants
+
+The ATLAS overseer (§176) monitors system health through a set of invariants — conditions that must hold for the system to be considered healthy. The card system introduces three new invariants that monitor the quality and integrity of card production.
+
+**INV-17: Sources Tab Coverage (≥80%).** For every card type that requires a Sources tab (T1, T1.5, T2, Molecule), at least 80% of generated cards must have a populated Sources tab. This invariant detects systematic failures in the sources tab generation pipeline — for example, if the extraction corpus is temporarily unavailable, or if a code change accidentally disables sources tab generation. When coverage falls below 80%, the overseer issues a WARNING-level violation and triggers the `REGENERATE_CARDS` remediation action, which queues affected cards for re-generation.
+
+**INV-18: Stimulus Description Coverage (≥50%).** At least 50% of empirical findings in the extraction corpus should have a non-empty `stimulus_description` field. This invariant monitors the output of the stimulus extraction backfill pipeline (§178.11). The threshold of 50% is deliberately conservative — not all empirical studies involve a manipulated stimulus (observational and correlational studies may not have one), so 100% coverage is neither expected nor appropriate. The 50% floor ensures that the backfill pipeline is functioning and that the majority of experimental studies have their stimuli properly characterized. When coverage drops below 50%, the overseer triggers `RUN_STIMULUS_BACKFILL`, which re-runs the extraction scripts on papers with missing stimulus descriptions.
+
+**INV-19: Session Card Claim Integrity.** The claims registry used for session-mode generation (§178.10) must be internally consistent: no card should have two simultaneous active claims (which would indicate a coordination failure), and no claim should be stale beyond the configured timeout (which would indicate a crashed terminal that was not properly cleaned up). This invariant runs a structural check on the claims registry file and reports any orphaned or duplicate claims. When violations are detected, the overseer triggers `CLEAN_STALE_CLAIMS`, which releases stale claims and logs the incident for review.
+
+### Remediation Playbooks
+
+Each invariant has a corresponding remediation playbook in `src/services/overseer_playbooks.py`. The playbooks specify: the invariant code, a human-readable description of what went wrong, the automated remediation action (what the system does without human intervention), the escalation path (what happens if automated remediation fails), and the verification check (how to confirm that the remediation worked).
+
+The remediation actions are conservative by design. `REGENERATE_CARDS` queues affected cards for re-generation but does not delete existing cards — the worst case is that stale cards remain visible until regeneration completes. `RUN_STIMULUS_BACKFILL` re-runs extraction scripts but does not overwrite existing stimulus descriptions — it only fills in missing ones. `CLEAN_STALE_CLAIMS` releases claims but does not delete any generated card data — it only frees up the queue for other terminals. None of these actions risk data loss, which is consistent with ATLAS's governance principle of preferring quarantine over deletion.
+
+### Integration with the Health Dashboard
+
+The three card-system invariants are reported alongside the existing 16 invariants in the ATLAS Ecosystem Health Index (AESHI, §176). They contribute to the "Card Infrastructure" sub-score, which was not previously tracked. The target is for all three invariants to pass consistently once the card generation pipeline reaches steady state — approximately two weeks after initial deployment, based on the regeneration lifecycle described in §178.6.
+
+---
+
+## §178.15 Summary: The Card as a Design Pattern
+
+The card system is a design pattern that solves five problems — two structural, three operational:
 
 1. **Modularity**: Knowledge is organized into 207 entity cards, 12,000+ evidence cards, and 32 system cards. Each card is a self-contained knowledge unit with fixed structure.
 
 2. **Adaptation**: The same card is presented differently to researchers, designers, clinicians, policymakers, students, and developers. Tabs reorder, prose adapts, visuals simplify or complexify based on user type.
 
-3. **Lifecycle management**: Cards are born fresh (S=0), age as evidence accumulates, regenerate when staleness exceeds threshold, and re-enter the deployment cycle. This keeps the system current without requiring whole-document rewrites.
+3. **Quality assurance through mandatory two-pass generation**: Every card passes through fast extraction (Haiku/Sonnet) followed by mandatory Opus polish (§178.9). This architectural invariant eliminates the lottery of single-pass generation, where some cards emerge well-written and others do not. The two-pass split is also the economic foundation for session-mode generation (§178.10), which reduces API costs to zero by using interactive Claude sessions as the language model.
 
-The iceberg architecture enables both user agency (deepening on demand) and system efficiency (regeneration without re-searching). The nine card types and universal schema enable once-and-done rendering infrastructure. The agent-based regeneration system enables the knowledge base to evolve continuously without human bottlenecks.
+4. **Methodological transparency through the Sources tab**: The eighth body tab (§178.11) provides per-paper method drill-down — stimulus descriptions, sample characteristics, instruments, and study designs — that researchers require before trusting a synthesized claim. This tab, combined with the figure suggestion service (§178.12) and paper-level query routing (§178.13), ensures that ATLAS's synthesized knowledge remains continuously traceable to its empirical origins.
+
+5. **Continuous health monitoring through overseer invariants**: Three dedicated invariants (§178.14) — sources tab coverage, stimulus description coverage, and session claim integrity — ensure that the card infrastructure degrades gracefully rather than silently. The overseer detects problems before users encounter them and triggers automated remediation through conservative playbooks that never risk data loss.
+
+The iceberg architecture enables both user agency (deepening on demand) and system efficiency (regeneration without re-searching). The nine card types, eight body tabs, and universal schema enable once-and-done rendering infrastructure. The agent-based regeneration system, session-mode generation, and overseer monitoring together enable the knowledge base to evolve continuously without human bottlenecks — and without ongoing API costs.
 
 ---
 
@@ -367,4 +539,16 @@ Tufte, E. R. (2001). *The visual display of quantitative information* (2nd ed.).
 
 Walton, D. N. (1996). *Argumentation schemes for presumptive reasoning*. Lawrence Erlbaum. [~3,000 GS]
 
+Carson, R. (1962). *Silent spring*. Houghton Mifflin. [~12,000 GS]
+
+Gawande, A. (2009). *The checklist manifesto: How to get things right*. Metropolitan Books. [~4,000 GS]
+
+Longino, H. E. (1990). *Science as social knowledge: Values and objectivity in scientific inquiry*. Princeton University Press. [~5,000 GS]
+
+Sagan, C. (1980). *Cosmos*. Random House. [~3,000 GS]
+
+Sweller, J. (2011). Cognitive load theory. In J. Mestre & B. Ross (Eds.), *Psychology of learning and motivation* (Vol. 55, pp. 37–76). Academic Press. [~4,000 GS]
+
 Williams, J. M. (1990). *Style: Toward clarity and grace*. University of Chicago Press. [~2,000 GS]
+
+Williams, J. M., & Bizup, J. (2016). *Style: Lessons in clarity and grace* (12th ed.). Pearson. [~6,500 GS]

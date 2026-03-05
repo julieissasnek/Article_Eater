@@ -59,32 +59,55 @@ logger = logging.getLogger(__name__)
 
 
 # ---------------------------------------------------------------------------
-# Source Data Loaders — one per card type
+# Enriched Source Data Loaders
+# ---------------------------------------------------------------------------
+# Try enriched sources from data/card_sources/ first (produced by
+# scripts/enrich_card_sources.py), falling back to original loaders.
+# This ensures cards get corpus-grounded data with real findings,
+# provenance, and quality-filtered fields.
 # ---------------------------------------------------------------------------
 
+ENRICHED_DIR = PROJECT_ROOT / "data" / "card_sources"
+
+
+def _load_enriched_sources(card_type_dir: str) -> list:
+    """Load enriched card sources from data/card_sources/{type}/ if available."""
+    src_dir = ENRICHED_DIR / card_type_dir
+    if not src_dir.exists():
+        return []
+    items = []
+    for p in sorted(src_dir.glob("*.json")):
+        try:
+            with open(p) as f:
+                data = json.load(f)
+            items.append(data)
+        except Exception as e:
+            logger.warning(f"Failed to load enriched source {p.name}: {e}")
+    if items:
+        logger.info(f"Loaded {len(items)} enriched sources from {src_dir}")
+    return items
+
+
 def load_t1_frameworks() -> list:
-    """Load T1 Framework source data from web of belief."""
+    """Load T1 Framework source data — enriched first, then fallback."""
+    enriched = _load_enriched_sources("t1-framework")
+    if enriched:
+        return enriched
+    # Fallback to original loader
     path = PROJECT_ROOT / "data" / "theories" / "t1_frameworks.json"
     if not path.exists():
-        # Fallback: use known framework names
-        return [
-            {"entity_id": "ecological_psychology", "title": "Ecological Psychology (Gibson)", "description": "Direct perception of affordances in the environment.", "n_findings": 340, "n_papers": 120, "omega": 0.78, "direction_consensus": "increase"},
-            {"entity_id": "attention_restoration", "title": "Attention Restoration Theory (Kaplan)", "description": "Natural environments restore directed attention capacity.", "n_findings": 280, "n_papers": 95, "omega": 0.72, "direction_consensus": "increase"},
-            {"entity_id": "stress_reduction", "title": "Stress Reduction Theory (Ulrich)", "description": "Natural scenes trigger parasympathetic nervous system recovery.", "n_findings": 210, "n_papers": 78, "omega": 0.69, "direction_consensus": "decrease"},
-            {"entity_id": "biophilia", "title": "Biophilia Hypothesis (Wilson)", "description": "Innate tendency to attend to and affiliate with living systems.", "n_findings": 150, "n_papers": 55, "omega": 0.58, "direction_consensus": "increase"},
-            {"entity_id": "prospect_refuge", "title": "Prospect-Refuge Theory (Appleton)", "description": "Preference for environments offering vista and shelter.", "n_findings": 95, "n_papers": 40, "omega": 0.55, "direction_consensus": "increase"},
-            {"entity_id": "place_identity", "title": "Place Identity (Proshansky)", "description": "Environmental settings contribute to self-concept.", "n_findings": 120, "n_papers": 50, "omega": 0.52, "direction_consensus": "increase"},
-            {"entity_id": "embodied_cognition", "title": "Embodied Cognition", "description": "Cognitive processes shaped by body-environment interactions.", "n_findings": 180, "n_papers": 65, "omega": 0.63, "direction_consensus": "increase"},
-            {"entity_id": "perceptual_fluency", "title": "Perceptual Fluency", "description": "Ease of processing determines aesthetic and affective responses.", "n_findings": 160, "n_papers": 58, "omega": 0.61, "direction_consensus": "increase"},
-            {"entity_id": "predictive_processing", "title": "Predictive Processing", "description": "Brain as prediction machine minimizing surprise.", "n_findings": 200, "n_papers": 70, "omega": 0.65, "direction_consensus": "mixed"},
-            {"entity_id": "environmental_affordance", "title": "Environmental Affordance Theory", "description": "Environment-behavior coupling through perceived action possibilities.", "n_findings": 140, "n_papers": 48, "omega": 0.60, "direction_consensus": "increase"},
-        ]
+        logger.warning("No T1 framework data found — run scripts/enrich_card_sources.py first")
+        return []
     with open(path) as f:
         return json.load(f)
 
 
 def load_molecules() -> list:
-    """Load Molecule source data from molecules directory."""
+    """Load Molecule source data — enriched first, then fallback."""
+    enriched = _load_enriched_sources("molecule")
+    if enriched:
+        return enriched
+    # Original fallback
     mol_dir = PROJECT_ROOT / "data" / "molecules"
     items = []
     if mol_dir.exists():
@@ -96,25 +119,15 @@ def load_molecules() -> list:
                 items.append(data)
             except Exception as e:
                 logger.warning(f"Failed to load molecule {p.name}: {e}")
-    if not items:
-        # Fallback from rasa_attractors.json
-        rasa_path = PROJECT_ROOT / "data" / "rasa_attractors.json"
-        if rasa_path.exists():
-            with open(rasa_path) as f:
-                rasa = json.load(f)
-            for mol_id, mol_data in rasa.get("molecules", {}).items():
-                items.append({
-                    "entity_id": mol_id,
-                    "title": mol_data.get("name", mol_id),
-                    "description": mol_data.get("description", ""),
-                    "n_findings": mol_data.get("n_findings", 0),
-                    "n_papers": mol_data.get("n_papers", 0),
-                })
     return items
 
 
 def load_t2_mechanisms() -> list:
-    """Load T2 Mechanism source data from templates."""
+    """Load T2 Mechanism source data — enriched first, then fallback."""
+    enriched = _load_enriched_sources("t2-mechanism")
+    if enriched:
+        return enriched
+    # Original fallback
     templates_dir = PROJECT_ROOT / "data" / "templates"
     items = []
     if templates_dir.exists():
@@ -131,7 +144,11 @@ def load_t2_mechanisms() -> list:
 
 
 def load_t3_beliefs() -> list:
-    """Load T3 Belief source data from belief clusters."""
+    """Load T3 Belief source data — enriched first, then fallback."""
+    enriched = _load_enriched_sources("t3-belief")
+    if enriched:
+        return enriched
+    # Original fallback
     clusters_path = PROJECT_ROOT / "data" / "materialized_views" / "belief_clusters.json"
     if not clusters_path.exists():
         return []
@@ -153,7 +170,6 @@ def load_t3_beliefs() -> list:
 
 def load_competitions() -> list:
     """Load Competition card source data."""
-    # Competitions come from the web of belief's contested claims
     competitions_path = PROJECT_ROOT / "data" / "competitions"
     if competitions_path.exists():
         items = []
@@ -202,6 +218,7 @@ SOURCE_LOADERS = {
     CardType.METHOD: lambda: load_system_cards(CardType.METHOD),
     CardType.MATH: lambda: load_system_cards(CardType.MATH),
 }
+
 
 
 def populate_queue(orch: CardGenerationOrchestrator) -> dict:

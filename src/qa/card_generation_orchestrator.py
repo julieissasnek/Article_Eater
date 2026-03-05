@@ -77,6 +77,7 @@ from src.qa.cards import (
     compute_staleness_score,
 )
 from src.qa.cards.card_types import CardTypeSpec, get_card_type_spec
+from src.services.annotation_service import AnnotationService, AnnotationType, AnnotationLayer
 
 logger = logging.getLogger(__name__)
 
@@ -287,6 +288,106 @@ class TabGeneratorRegistry:
 
 
 # ---------------------------------------------------------------------------
+# Annotation Enrichment
+# ---------------------------------------------------------------------------
+
+def enrich_source_data_with_annotations(
+    source_data: Dict[str, Any],
+    entity_id: str,
+    target_type: str = "belief",
+    annotation_service: Optional[AnnotationService] = None,
+) -> Dict[str, Any]:
+    """
+    Enrich source_data with annotation data from the annotation service.
+
+    Fetches active annotations for the entity and injects them into source_data
+    under an "annotations" key, organized by type. This enables tab generators
+    to use annotation data (disputes, surprises, replication status, etc.)
+    without being tightly coupled to the annotation service.
+
+    Args:
+        source_data: The original source data dict (beliefs, findings, etc.)
+        entity_id: The entity's canonical ID (e.g., template_id, belief_id)
+        target_type: The target type for annotation queries (default: "belief")
+        annotation_service: AnnotationService instance. If None, creates one.
+
+    Returns:
+        Enriched source_data with "annotations" key containing A9-A18 data.
+        Gracefully handles service unavailability — returns original source_data unchanged.
+
+    Success Condition: SC-ANN-CARD-1
+        Cards for entities with annotations include annotation data in source_data
+    """
+    if annotation_service is None:
+        try:
+            annotation_service = AnnotationService()
+        except Exception as e:
+            logger.warning(
+                f"Could not initialize AnnotationService for {entity_id}: {e}. "
+                "Card generation will continue without annotations."
+            )
+            return source_data
+
+    try:
+        # Query all active annotations for this entity (all layers)
+        annotations = annotation_service.get_active_annotations(target_type, entity_id)
+        if not annotations:
+            return source_data
+
+        # Organize annotations by type for easy access
+        annotations_by_type: Dict[str, List[Dict[str, Any]]] = {}
+        for ann in annotations:
+            ann_type = ann.type.value if hasattr(ann.type, 'value') else str(ann.type)
+            if ann_type not in annotations_by_type:
+                annotations_by_type[ann_type] = []
+            annotations_by_type[ann_type].append({
+                "id": ann.id,
+                "content": ann.content,
+                "author": ann.author,
+                "confidence": ann.confidence,
+                "created": ann.created,
+                "metadata": ann.metadata,
+            })
+
+        # Inject into source_data
+        enriched = {
+            **source_data,
+            "annotations": annotations_by_type,
+            "_annotation_count": len(annotations),
+        }
+
+        # For convenience, flatten common annotation types for easy access by tab generators
+        disputes = annotations_by_type.get("DISPUTE", [])
+        surprises = annotations_by_type.get("SURPRISE_FLAG", [])
+        unanswered = annotations_by_type.get("UNANSWERED_QUESTION", [])
+        replication = annotations_by_type.get("REPLICATION_STATUS", [])
+
+        if disputes:
+            enriched["disputes"] = [d["content"] for d in disputes]
+        if surprises:
+            enriched["surprise_flags"] = [s["content"] for s in surprises]
+        if unanswered:
+            enriched["unanswered_questions"] = [u["content"] for u in unanswered]
+        if replication:
+            enriched["replication_status"] = replication[0]["content"] if replication else None
+
+        logger.debug(
+            f"Enriched source_data for {entity_id}: "
+            f"{len(disputes)} disputes, {len(surprises)} surprises, "
+            f"{len(unanswered)} unanswered, {len(replication)} replication"
+        )
+
+        return enriched
+
+    except Exception as e:
+        logger.warning(
+            f"Error enriching annotations for {entity_id}: {e}. "
+            "Card generation will continue without annotations."
+        )
+        return source_data
+
+
+# ---------------------------------------------------------------------------
 # Card Generation Orchestrator
 # ---------------------------------------------------------------------------
 
@@ -339,6 +440,13 @@ class CardGenerationOrchestrator:
         self._tab_registry = TabGeneratorRegistry()
         self._overseer = overseer
         self._prose_service = prose_service
+
+        # Annotation service for enriching source_data with A9-A18 data
+        try:
+            self._annotation_service = AnnotationService()
+        except Exception as e:
+            logger.warning(f"Could not initialize AnnotationService: {e}")
+            self._annotation_service = None
 
         # Card index: card_id → metadata for fast retrieval
         self._card_index: Dict[str, Dict] = {}
@@ -421,6 +529,17 @@ class CardGenerationOrchestrator:
         })
 
         try:
+            # Enrich source_data with annotations before tab generation
+            # SC-ANN-CARD-1: Cards for entities with annotations include annotation data in source_data
+            enriched_source_data = enrich_source_data_with_annotations(
+                request.source_data,
+                request.entity_id,
+                target_type="belief",  # Default; can be inferred from card_type if needed
+                annotation_service=self._annotation_service,
+            )
+            # Update the request's source_data for use in tabs
+            request.source_data = enriched_source_data
+
             # Step 1: Create draft card
             card = create_card(
                 card_type=request.card_type,
@@ -815,6 +934,10 @@ class CardGenerationOrchestrator:
             prose = data.get("description", data.get("summary", ""))
             if not prose:
                 prose = f"[DRAFT] Overview for {spec.display_name}: {request.entity_id}"
+            # Include surprise flags if present
+            surprise_flags = data.get("surprise_flags", [])
+            if surprise_flags:
+                prose += f"\n\nSurprise findings: {'; '.join(surprise_flags[:2])}"
             structured_data = {
                 "entity_id": request.entity_id,
                 "card_type": request.card_type.value,
@@ -837,6 +960,10 @@ class CardGenerationOrchestrator:
             n_findings = data.get("n_findings", 0)
             n_papers = data.get("n_papers", 0)
             prose = f"Based on {n_findings} findings across {n_papers} papers."
+            # SC-ANN-CARD-3: Evidence tab includes replication status from annotations
+            replication_status = data.get("replication_status")
+            if replication_status:
+                prose += f" Replication status: {replication_status}."
             if spec.has_evidence_forest_plot:
                 structured_data["forest_plot_needed"] = True
             structured_data["n_findings"] = n_findings
@@ -856,8 +983,13 @@ class CardGenerationOrchestrator:
                 prose = f"[DRAFT] Connections for {request.entity_id}"
 
         elif tab_name == "debate":
-            debate = data.get("debate", data.get("competing_accounts", ""))
-            prose = debate if debate else f"[DRAFT] Debate for {request.entity_id}"
+            # SC-ANN-CARD-2: Debate tab includes disputes from annotation service when available
+            disputes = data.get("disputes", [])
+            if disputes:
+                prose = "Active disputes: " + "; ".join(disputes[:3])
+            else:
+                debate = data.get("debate", data.get("competing_accounts", ""))
+                prose = debate if debate else f"[DRAFT] Debate for {request.entity_id}"
 
         elif tab_name == "history":
             history = data.get("history", "")

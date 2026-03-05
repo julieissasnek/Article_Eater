@@ -671,6 +671,30 @@ class OverseerService:
             logger.debug(f"AESHI computation failed: {e}")
             metrics['aeshi_score'] = None
 
+        # SC-INV-20: Warrant coverage
+        try:
+            warrant_health = self.check_warrant_coverage()
+            metrics['warrant_coverage_pct'] = warrant_health.get('coverage_pct', 0.0)
+            metrics['warranted_belief_count'] = warrant_health.get('warranted_count', 0)
+            metrics['unwarranted_high_credence_count'] = warrant_health.get('unwarranted_high_credence_count', 0)
+            metrics['warrant_health_status'] = warrant_health.get('status', 'unknown')
+        except Exception as e:
+            logger.debug(f"Warrant coverage metric failed: {e}")
+            metrics['warrant_coverage_pct'] = None
+
+        # SC-INV-21: Argumentation graph health
+        try:
+            arg_health = self.check_argumentation_health()
+            metrics['argumentation_node_count'] = arg_health.get('total_nodes', 0)
+            metrics['argumentation_edge_count'] = arg_health.get('total_edges', 0)
+            metrics['argumentation_orphan_count'] = arg_health.get('orphan_count', 0)
+            metrics['argumentation_connectivity_ratio'] = arg_health.get('connectivity_ratio', 0.0)
+            metrics['argumentation_health_status'] = arg_health.get('status', 'unknown')
+            metrics['argumentation_is_populated'] = arg_health.get('is_populated', False)
+        except Exception as e:
+            logger.debug(f"Argumentation health metric failed: {e}")
+            metrics['argumentation_node_count'] = None
+
         return metrics
 
     def _compute_coherence_delta(self, current: float) -> float:
@@ -1016,6 +1040,42 @@ class OverseerService:
         except Exception as e:
             logger.debug(f"INV-19 check failed: {e}")
 
+        # SC-INV-20: Warrant coverage (Quinean epistemic warrants)
+        try:
+            warrant_health = self.check_warrant_coverage()
+            if warrant_health.get("status") in ("degraded", "critical"):
+                severity = "MINOR" if warrant_health["status"] == "degraded" else "MAJOR"
+                violations.append(InvariantViolation(
+                    code="SC-INV-20",
+                    severity=severity,
+                    description=(
+                        f"Warrant coverage {warrant_health['status']}: "
+                        f"{warrant_health['coverage_pct']:.1f}% of beliefs warranted "
+                        f"({warrant_health['warranted_count']}/{warrant_health['total_beliefs']}). "
+                        f"{warrant_health['unwarranted_high_credence_count']} high-credence beliefs unwarranted."
+                    )
+                ))
+        except Exception as e:
+            logger.debug(f"SC-INV-20 check failed: {e}")
+
+        # SC-INV-21: Argumentation graph health (scholarly debate structure)
+        try:
+            arg_health = self.check_argumentation_health()
+            if arg_health.get("status") in ("sparse", "unpopulated"):
+                severity = "MINOR" if arg_health["status"] == "sparse" else "MAJOR"
+                violations.append(InvariantViolation(
+                    code="SC-INV-21",
+                    severity=severity,
+                    description=(
+                        f"Argumentation graph {arg_health['status']}: "
+                        f"{arg_health['total_nodes']} nodes, {arg_health['total_edges']} edges "
+                        f"(connectivity {arg_health['connectivity_ratio']:.2f}). "
+                        f"{arg_health['orphan_count']} orphan debates."
+                    )
+                ))
+        except Exception as e:
+            logger.debug(f"SC-INV-21 check failed: {e}")
+
         return violations
 
     def _update_card_staleness(self, paper_id: str) -> List[str]:
@@ -1189,6 +1249,238 @@ class OverseerService:
             result["message"] = f"Health check error: {e}"
             return result
 
+    def check_warrant_coverage(self) -> Dict[str, Any]:
+        """
+        SC-INV-20: Warrant coverage monitoring.
+
+        Tracks epistemic warrant distribution across beliefs:
+        - Total beliefs in the system
+        - Count of beliefs with assigned warrants (bridge warrants)
+        - Percentage of warranted beliefs
+        - Flag unwarranted high-credence beliefs (credence > 0.7 without warrant)
+
+        Threshold for health: ≥ 50% of beliefs have warrants.
+        Critical flag: High-credence beliefs without warrants should be rare.
+
+        Returns:
+            {
+                "total_beliefs": int,
+                "warranted_count": int,
+                "coverage_pct": float,
+                "unwarranted_high_credence": list[str],  # belief IDs with credence > 0.7, no warrant
+                "unwarranted_high_credence_count": int,
+                "status": str,  # "healthy" | "degraded" | "critical"
+                "message": str
+            }
+        """
+        result = {
+            "total_beliefs": 0,
+            "warranted_count": 0,
+            "coverage_pct": 0.0,
+            "unwarranted_high_credence": [],
+            "unwarranted_high_credence_count": 0,
+            "status": "unknown",
+            "message": "Warrant coverage check failed"
+        }
+
+        try:
+            with sqlite3.connect(str(self.web_db_path)) as conn:
+                cursor = conn.cursor()
+
+                # Get total belief count
+                cursor.execute("SELECT COUNT(DISTINCT belief_id) FROM beliefs")
+                total_beliefs = cursor.fetchone()[0] or 0
+                result["total_beliefs"] = total_beliefs
+
+                if total_beliefs == 0:
+                    result["coverage_pct"] = 100.0
+                    result["status"] = "healthy"
+                    result["message"] = "No beliefs in system; warrant check skipped."
+                    logger.info("SC-INV-20 warrant coverage: no beliefs yet")
+                    return result
+
+                # Count beliefs that are targets of at least one bridge warrant
+                # A belief is warranted if it appears in target_beliefs of any bridge
+                cursor.execute("""
+                    SELECT COUNT(DISTINCT belief_id)
+                    FROM (
+                        SELECT DISTINCT b.belief_id
+                        FROM belief_versions b
+                        WHERE b.belief_id IN (
+                            SELECT DISTINCT
+                                json_each.value
+                            FROM bridges, json_each(bridges.target_beliefs)
+                            WHERE bridges.status != 'failed'
+                        )
+                    )
+                """)
+                warranted_count = cursor.fetchone()[0] or 0
+                result["warranted_count"] = warranted_count
+
+                if total_beliefs > 0:
+                    result["coverage_pct"] = (warranted_count / total_beliefs) * 100.0
+                else:
+                    result["coverage_pct"] = 100.0
+
+                # Find high-credence beliefs (> 0.7) without warrants
+                cursor.execute("""
+                    SELECT DISTINCT belief_id
+                    FROM belief_versions
+                    WHERE credence > 0.7
+                    AND belief_id NOT IN (
+                        SELECT DISTINCT
+                            json_each.value
+                        FROM bridges, json_each(bridges.target_beliefs)
+                        WHERE bridges.status != 'failed'
+                    )
+                    LIMIT 20
+                """)
+                unwarranted_high = [row[0] for row in cursor.fetchall()]
+                result["unwarranted_high_credence"] = unwarranted_high
+                result["unwarranted_high_credence_count"] = len(unwarranted_high)
+
+                # Determine health status
+                # Critical: > 5 high-credence beliefs unwarranted
+                # Degraded: 50% < coverage < 80%
+                # Healthy: coverage >= 50% AND <= 5 high-credence unwarranted
+                if len(unwarranted_high) > 5:
+                    result["status"] = "critical"
+                    result["message"] = (
+                        f"CRITICAL: {len(unwarranted_high)} high-credence beliefs (>0.7) lack warrants. "
+                        f"Warrant coverage: {result['coverage_pct']:.1f}%"
+                    )
+                elif result["coverage_pct"] < 50.0:
+                    result["status"] = "degraded"
+                    result["message"] = (
+                        f"DEGRADED: Warrant coverage {result['coverage_pct']:.1f}% "
+                        f"(threshold: 50%). {warranted_count}/{total_beliefs} beliefs warranted."
+                    )
+                else:
+                    result["status"] = "healthy"
+                    result["message"] = (
+                        f"Warrant coverage: {result['coverage_pct']:.1f}% "
+                        f"({warranted_count}/{total_beliefs} beliefs warranted). "
+                        f"{len(unwarranted_high)} high-credence unwarranted."
+                    )
+
+                logger.info(f"SC-INV-20 warrant coverage: {result['status']} | {result['message']}")
+                return result
+
+        except Exception as e:
+            logger.warning(f"Warrant coverage check failed: {e}")
+            result["message"] = f"Warrant coverage check error: {e}"
+            return result
+
+    def check_argumentation_health(self) -> Dict[str, Any]:
+        """
+        SC-INV-21: Argumentation graph health monitoring.
+
+        Tracks the scholarly argumentation graph structure:
+        - Total nodes (papers/sources in the graph)
+        - Total edges (citation/temporal/theory-based connections)
+        - Orphan debates (debate clusters with no supporting evidence connections)
+        - Population status (whether graph is sufficiently populated)
+
+        Threshold for health: Graph should have nodes > 0 and edges > 0.
+        Healthy threshold: nodes >= 10 and edges >= nodes (connected graph).
+
+        Returns:
+            {
+                "total_nodes": int,
+                "total_edges": int,
+                "orphan_count": int,
+                "is_populated": bool,
+                "connectivity_ratio": float,  # edges / nodes
+                "status": str,  # "healthy" | "sparse" | "unpopulated"
+                "message": str
+            }
+        """
+        result = {
+            "total_nodes": 0,
+            "total_edges": 0,
+            "orphan_count": 0,
+            "is_populated": False,
+            "connectivity_ratio": 0.0,
+            "status": "unknown",
+            "message": "Argumentation health check failed"
+        }
+
+        try:
+            # Try to load ArgumentationGraph; if unavailable, gracefully degrade
+            try:
+                from src.services.argumentation_graph import ArgumentationGraph
+                extractions_dir = Path(self.extractions_dir)
+                if not extractions_dir.exists():
+                    logger.debug(f"Extractions dir not found: {extractions_dir}")
+                    result["message"] = "Extractions directory unavailable; argumentation check skipped."
+                    result["status"] = "unknown"
+                    return result
+
+                graph = ArgumentationGraph()
+                graph.build_from_extractions(extractions_dir)
+
+                result["total_nodes"] = len(graph.nodes)
+                result["total_edges"] = len(graph.edges)
+
+                # Calculate connectivity ratio
+                if result["total_nodes"] > 0:
+                    result["connectivity_ratio"] = result["total_edges"] / result["total_nodes"]
+                else:
+                    result["connectivity_ratio"] = 0.0
+
+                # Detect orphan debates (nodes with in-degree = 0 AND out-degree = 0)
+                orphans = 0
+                for node_id in graph.nodes.keys():
+                    in_degree = len(graph._reverse_adjacency.get(node_id, set()))
+                    out_degree = len(graph._adjacency.get(node_id, set()))
+                    if in_degree == 0 and out_degree == 0:
+                        orphans += 1
+                result["orphan_count"] = orphans
+
+                # Determine population status
+                result["is_populated"] = (result["total_nodes"] >= 10 and
+                                         result["total_edges"] >= result["total_nodes"])
+
+                # Determine health status
+                if result["total_nodes"] == 0:
+                    result["status"] = "unpopulated"
+                    result["message"] = "Argumentation graph is empty (no extractions loaded)."
+                elif result["total_nodes"] < 10:
+                    result["status"] = "sparse"
+                    result["message"] = (
+                        f"SPARSE: {result['total_nodes']} nodes, {result['total_edges']} edges. "
+                        f"Graph needs ≥10 nodes for robust argumentation. "
+                        f"{orphans} isolated nodes."
+                    )
+                elif result["connectivity_ratio"] < 1.0:
+                    result["status"] = "sparse"
+                    result["message"] = (
+                        f"SPARSE: Connectivity ratio {result['connectivity_ratio']:.2f} "
+                        f"({result['total_edges']} edges for {result['total_nodes']} nodes). "
+                        f"Graph is under-connected. {orphans} orphan nodes."
+                    )
+                else:
+                    result["status"] = "healthy"
+                    result["message"] = (
+                        f"Argumentation healthy: {result['total_nodes']} nodes, "
+                        f"{result['total_edges']} edges (ratio {result['connectivity_ratio']:.2f}). "
+                        f"{orphans} orphan nodes."
+                    )
+
+                logger.info(f"SC-INV-21 argumentation health: {result['status']} | {result['message']}")
+                return result
+
+            except ImportError:
+                result["message"] = "ArgumentationGraph not available; check skipped."
+                result["status"] = "unknown"
+                logger.debug("ArgumentationGraph import failed")
+                return result
+
+        except Exception as e:
+            logger.warning(f"Argumentation health check failed: {e}")
+            result["message"] = f"Argumentation check error: {e}"
+            return result
+
     def check_sources_tab_coverage(self) -> Dict[str, Any]:
         """
         INV-17: Sources tab coverage monitoring.
@@ -1348,6 +1640,140 @@ class OverseerService:
 
         except Exception as e:
             logger.warning(f"INV-18 stimulus check failed: {e}")
+            result["status"] = "error"
+            return result
+
+    def check_interpretation_space_coverage(self) -> Dict[str, Any]:
+        """
+        SC-IS-1: Interpretation space question coverage.
+
+        Monitors the interpretation space pipeline's coverage of T2 mechanism
+        templates via the InterpretationSpaceEngine:
+
+        - Total templates in data/templates/
+        - Templates with generated questions
+        - Total questions generated (4 per template: definitional, evidential,
+          applied, dialectical)
+        - Coverage percentage (templates with questions / total templates)
+
+        Threshold for health: ≥ 50% template coverage.
+
+        Returns:
+            {
+                "total_templates": int,
+                "templates_with_questions": int,
+                "total_questions_generated": int,
+                "coverage_pct": float,
+                "questions_by_type": {
+                    "definitional": int,
+                    "evidential": int,
+                    "applied": int,
+                    "dialectical": int
+                },
+                "status": str,  # "healthy" | "degraded" | "critical"
+                "message": str,
+                "last_generation_date": str or null
+            }
+        """
+        result = {
+            "total_templates": 0,
+            "templates_with_questions": 0,
+            "total_questions_generated": 0,
+            "coverage_pct": 0.0,
+            "questions_by_type": {
+                "definitional": 0,
+                "evidential": 0,
+                "applied": 0,
+                "dialectical": 0
+            },
+            "status": "unknown",
+            "message": "Interpretation space check failed",
+            "last_generation_date": None
+        }
+
+        try:
+            # Try to load InterpretationSpaceEngine and get stats
+            try:
+                from src.services.interpretation_space_engine import (
+                    InterpretationSpaceEngine
+                )
+                engine = InterpretationSpaceEngine(repo_root=self.base_dir)
+
+                # Load existing questions and discover templates
+                engine.load_existing_questions()
+                engine.discover_templates()
+
+                # Get coverage stats
+                stats = engine.get_coverage_stats()
+
+                result["total_templates"] = stats.total_templates
+                result["templates_with_questions"] = stats.templates_with_questions
+                result["total_questions_generated"] = stats.total_questions_generated
+                result["coverage_pct"] = stats.coverage_percentage
+                result["questions_by_type"] = stats.questions_by_type
+                result["last_generation_date"] = stats.last_generation_date
+
+            except ImportError:
+                # InterpretationSpaceEngine not available; try direct file check
+                questions_file = self.base_dir / "data" / "interpretation_space" / "questions.json"
+                templates_dir = self.base_dir / "data" / "templates"
+
+                if questions_file.exists() and templates_dir.exists():
+                    # Count templates
+                    template_files = list(templates_dir.glob("*.json"))
+                    result["total_templates"] = len(template_files)
+
+                    # Load questions
+                    with open(questions_file) as f:
+                        questions_data = json.load(f)
+                        questions_list = questions_data.get('questions', [])
+                        result["total_questions_generated"] = len(questions_list)
+
+                        # Count by type
+                        for q in questions_list:
+                            q_type = q.get('type', '')
+                            if q_type in result["questions_by_type"]:
+                                result["questions_by_type"][q_type] += 1
+
+                        # Count unique templates
+                        templates_with_q = set(q.get('source_template') for q in questions_list)
+                        result["templates_with_questions"] = len(templates_with_q)
+
+                        # Coverage %
+                        if result["total_templates"] > 0:
+                            result["coverage_pct"] = (
+                                result["templates_with_questions"] / result["total_templates"] * 100
+                            )
+                else:
+                    result["status"] = "no_data"
+                    result["message"] = "Questions file or templates dir not found"
+                    logger.info(f"SC-IS-1 interpretation space: no data yet")
+                    return result
+
+            # Assess health
+            if result["total_templates"] == 0:
+                result["status"] = "healthy"
+                result["message"] = "No templates; check skipped"
+            elif result["coverage_pct"] >= 50.0:
+                result["status"] = "healthy"
+                result["message"] = f"Coverage: {result['coverage_pct']:.1f}%"
+            elif result["coverage_pct"] >= 25.0:
+                result["status"] = "degraded"
+                result["message"] = f"Coverage: {result['coverage_pct']:.1f}% (< 50%)"
+            else:
+                result["status"] = "critical"
+                result["message"] = f"Coverage: {result['coverage_pct']:.1f}% (< 25%)"
+
+            logger.info(
+                f"SC-IS-1 interpretation space: {result['status']} | "
+                f"{result['coverage_pct']:.1f}% coverage "
+                f"({result['templates_with_questions']}/{result['total_templates']} templates) | "
+                f"{result['total_questions_generated']} questions"
+            )
+            return result
+
+        except Exception as e:
+            logger.warning(f"SC-IS-1 interpretation space check failed: {e}")
             result["status"] = "error"
             return result
 

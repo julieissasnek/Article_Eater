@@ -293,6 +293,9 @@ def run_surgical_extraction(
     # Apply stimulus data back to findings
     applied = 0
     for entry in stimulus_data:
+        # Skip non-dict entries (malformed LLM response)
+        if not isinstance(entry, dict):
+            continue
         idx = entry.get("finding_index")
         if idx is not None and 0 <= idx < len(findings):
             if entry.get("stimulus_description"):

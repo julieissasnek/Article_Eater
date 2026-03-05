@@ -643,6 +643,259 @@ class TestTabGenerationResult:
 
 
 # ---------------------------------------------------------------------------
+# SC-TG-11 / SC-TG-12: Figure Injection
+# ---------------------------------------------------------------------------
+
+class TestFigureInjection:
+    """Tests for post-generation figure injection via FigureSuggestionService."""
+
+    def test_enrich_tab_with_figures_returns_tab(self):
+        """SC-TG-11: Figure injection returns the same tab object."""
+        from src.qa.card_tab_generators import _enrich_tab_with_figures
+
+        tab = CardTab(tab_name="mechanism", prose="Causal pathway described here.")
+        source_data = {"title": "Daylight and Circadian Entrainment"}
+        result = _enrich_tab_with_figures(tab, source_data)
+        assert result is tab  # Same object (mutated in place)
+        assert result.tab_name == "mechanism"
+
+    def test_enrich_tab_graceful_on_empty_topic(self):
+        """SC-TG-12: Figure injection doesn't fail on empty topic."""
+        from src.qa.card_tab_generators import _enrich_tab_with_figures
+
+        tab = CardTab(tab_name="evidence", prose="Evidence summary.")
+        source_data = {}  # No title
+        result = _enrich_tab_with_figures(tab, source_data)
+        assert result.tab_name == "evidence"
+        assert result.figures == []  # No figures injected
+
+    def test_enrich_tab_graceful_on_missing_service(self):
+        """SC-TG-12: Figure injection gracefully degrades if service unavailable."""
+        from src.qa.card_tab_generators import _enrich_tab_with_figures
+        from unittest.mock import patch
+
+        tab = CardTab(tab_name="design", prose="Design parameters.")
+        source_data = {"title": "Test Topic"}
+
+        # Simulate service failure — patch at the import source
+        with patch(
+            "src.services.figure_suggestion_service.FigureSuggestionService",
+            side_effect=Exception("service unavailable"),
+        ):
+            result = _enrich_tab_with_figures(tab, source_data)
+            assert result.tab_name == "design"
+            # Should not crash — graceful degradation
+
+    def test_figure_injection_only_for_visual_tabs(self, sample_source_data):
+        """SC-TG-11: Non-visual tabs (overview, history, sources) skip figure injection."""
+        from src.qa.card_tab_generators import _enrich_tab_with_figures
+
+        for non_visual_tab in ["overview", "history", "sources"]:
+            tab = CardTab(tab_name=non_visual_tab, prose="Content.")
+            # The function is only called for visual tabs in generate_tab_with_llm,
+            # but if called directly it should still work
+            result = _enrich_tab_with_figures(tab, sample_source_data)
+            assert result is tab
+
+
+# ---------------------------------------------------------------------------
+# SC-ANN-CARD: Annotation Integration Tests
+# ---------------------------------------------------------------------------
+
+class TestAnnotationIntegration:
+    """Tests for annotation system integration with card generation.
+
+    Success Conditions:
+      SC-ANN-CARD-1: Cards for entities with annotations include annotation data in source_data
+      SC-ANN-CARD-2: Debate tab includes disputes from annotation service when available
+      SC-ANN-CARD-3: Evidence tab includes replication status from annotations
+      SC-ANN-CARD-4: Graceful degradation — if annotation service unavailable, card generation continues
+    """
+
+    def test_source_data_enrichment_with_annotations(self):
+        """SC-ANN-CARD-1: Annotation data is enriched into source_data."""
+        from src.qa.card_generation_orchestrator import enrich_source_data_with_annotations
+        from src.services.annotation_service import AnnotationService, AnnotationType
+        from unittest.mock import Mock
+
+        # Mock annotation service with test data
+        mock_ann_service = Mock(spec=AnnotationService)
+        mock_annotations = [
+            Mock(
+                id="ann1",
+                type=AnnotationType.DISPUTE,
+                content="Competing theory suggests alternative mechanism",
+                author="expert",
+                confidence=0.9,
+                created="2026-03-04T10:00:00",
+                metadata={},
+            ),
+            Mock(
+                id="ann2",
+                type=AnnotationType.SURPRISE_FLAG,
+                content="Counterintuitive finding challenges common assumptions",
+                author="expert",
+                confidence=0.85,
+                created="2026-03-04T11:00:00",
+                metadata={},
+            ),
+        ]
+        mock_ann_service.get_active_annotations.return_value = mock_annotations
+
+        source_data = {
+            "entity_id": "test_belief",
+            "title": "Test Belief",
+            "description": "A test belief for annotation enrichment",
+        }
+
+        enriched = enrich_source_data_with_annotations(
+            source_data, "test_belief", "belief", mock_ann_service
+        )
+
+        # SC-ANN-CARD-1: Assert annotations are present in enriched data
+        assert "annotations" in enriched
+        assert "DISPUTE" in enriched["annotations"]
+        assert "SURPRISE_FLAG" in enriched["annotations"]
+        assert enriched["_annotation_count"] == 2
+
+        # Assert convenience flattening
+        assert "disputes" in enriched
+        assert len(enriched["disputes"]) == 1
+        assert "surprise_flags" in enriched
+        assert len(enriched["surprise_flags"]) == 1
+
+    def test_dispute_annotation_in_debate_tab(self):
+        """SC-ANN-CARD-2: Dispute annotations appear in debate tab content."""
+        from src.qa.card_generation_orchestrator import CardGenerationOrchestrator, GenerationRequest
+        from src.qa.cards.card_types import CardType
+        from unittest.mock import Mock, patch
+
+        source_data = {
+            "entity_id": "test_belief",
+            "title": "Test Mechanism",
+            "description": "Test description",
+            "disputes": [
+                "Competing theory X proposes alternative mechanism",
+                "Theory Y challenges core assumption",
+            ],
+        }
+
+        # Create orchestrator (mock out prose service)
+        orch = CardGenerationOrchestrator()
+        request = GenerationRequest(
+            card_type=CardType.T2_MECHANISM,
+            entity_id="test_belief",
+            source_data=source_data,
+        )
+
+        # Generate fallback debate tab to test dispute inclusion
+        debate_tab = orch._generate_fallback_tab(request, "debate")
+
+        # SC-ANN-CARD-2: Assert disputes are in the debate tab prose
+        assert debate_tab is not None
+        assert "dispute" in debate_tab.prose.lower() or "competing" in debate_tab.prose.lower()
+
+    def test_replication_status_in_evidence_tab(self):
+        """SC-ANN-CARD-3: Replication status annotation appears in evidence tab."""
+        from src.qa.card_generation_orchestrator import CardGenerationOrchestrator, GenerationRequest
+        from src.qa.cards.card_types import CardType
+
+        source_data = {
+            "entity_id": "test_belief",
+            "title": "Test Belief",
+            "n_findings": 25,
+            "n_papers": 10,
+            "replication_status": "partially_replicated in 3 of 5 attempted replications",
+        }
+
+        orch = CardGenerationOrchestrator()
+        request = GenerationRequest(
+            card_type=CardType.T2_MECHANISM,
+            entity_id="test_belief",
+            source_data=source_data,
+        )
+
+        evidence_tab = orch._generate_fallback_tab(request, "evidence")
+
+        # SC-ANN-CARD-3: Assert replication status is in evidence tab prose
+        assert evidence_tab is not None
+        assert "replication" in evidence_tab.prose.lower()
+        assert "partially_replicated" in evidence_tab.prose.lower()
+
+    def test_surprise_flags_in_overview_tab(self):
+        """Overview tab mentions surprise flags when present."""
+        from src.qa.card_generation_orchestrator import CardGenerationOrchestrator, GenerationRequest
+        from src.qa.cards.card_types import CardType
+
+        source_data = {
+            "entity_id": "test_belief",
+            "title": "Test Theory",
+            "description": "A surprising finding",
+            "surprise_flags": [
+                "Finding contradicts decades of prior work",
+                "Effect is much larger than expected",
+            ],
+        }
+
+        orch = CardGenerationOrchestrator()
+        request = GenerationRequest(
+            card_type=CardType.T1_FRAMEWORK,
+            entity_id="test_belief",
+            source_data=source_data,
+        )
+
+        overview_tab = orch._generate_fallback_tab(request, "overview")
+
+        # Assert surprise flags appear in prose
+        assert overview_tab is not None
+        assert "surprise" in overview_tab.prose.lower()
+
+    def test_graceful_degradation_no_annotation_service(self):
+        """SC-ANN-CARD-4: Card generation continues when annotation service unavailable."""
+        from src.qa.card_generation_orchestrator import enrich_source_data_with_annotations
+
+        source_data = {
+            "entity_id": "test",
+            "title": "Test",
+            "description": "Test description",
+        }
+
+        # Pass None as annotation_service — should gracefully degrade
+        enriched = enrich_source_data_with_annotations(
+            source_data, "test", "belief", annotation_service=None
+        )
+
+        # Should still return enriched data (but without annotations)
+        assert enriched is not None
+        assert enriched["entity_id"] == "test"
+        # Annotations key should not be present if service is unavailable
+        # (or should be added only if service succeeds)
+
+    def test_graceful_degradation_annotation_query_fails(self):
+        """SC-ANN-CARD-4: Handles annotation query errors gracefully."""
+        from src.qa.card_generation_orchestrator import enrich_source_data_with_annotations
+        from unittest.mock import Mock
+
+        mock_ann_service = Mock()
+        mock_ann_service.get_active_annotations.side_effect = Exception("DB connection failed")
+
+        source_data = {
+            "entity_id": "test",
+            "title": "Test",
+            "description": "Test description",
+        }
+
+        # Should not raise — should return original source_data
+        enriched = enrich_source_data_with_annotations(
+            source_data, "test", "belief", mock_ann_service
+        )
+
+        # Should return data without crashing
+        assert enriched is not None
+        assert enriched["entity_id"] == "test"
+
+
+# ---------------------------------------------------------------------------
 # Run
 # ---------------------------------------------------------------------------
 

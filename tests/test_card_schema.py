@@ -372,8 +372,8 @@ class TestFactoryAndValidation:
             title="Test",
         )
         missing = card.validate_tabs()
-        # T2 requires: overview, mechanism, evidence, design, connections, history
-        assert len(missing) == 6
+        # T2 requires: overview, mechanism, evidence, design, connections, sources, history
+        assert len(missing) == 7
         assert "overview" in missing
 
 
@@ -482,8 +482,8 @@ class TestStalenessValidator:
 class TestTabConfig:
     """Tab definition completeness."""
 
-    def test_seven_tab_definitions(self):
-        assert len(TAB_DEFINITIONS) == 7
+    def test_eight_tab_definitions(self):
+        assert len(TAB_DEFINITIONS) == 8
 
     def test_all_required_tabs_have_definitions(self):
         for ct, spec in CARD_TYPE_REGISTRY.items():

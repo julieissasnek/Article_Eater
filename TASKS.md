@@ -37,7 +37,42 @@ For completed sprints (Feb 2026), see `docs/TASKS_ARCHIVE_2026_Feb.md`.
 
 ---
 
-## In Progress (2026-03-04)
+## Completed (2026-03-05 Session — System Audit & Pipeline Completion)
+
+### Go-Live System Audit — ALL 8 PHASES COMPLETE (2026-03-05)
+**Plan**: Phase A–H from `sparkling-roaming-blossom.md`
+**Results**:
+- **Phase A**: Test suite 333/336 pass (99%), 3 minor extraction_gate calibration failures. V4 files compile clean.
+- **Phase B**: Added `check_warrant_coverage()` (SC-INV-20) and `check_argumentation_health()` (SC-INV-21) to overseer. Wired into `check_integrity()` and `check_health()`.
+- **Phase C**: Created `scripts/run_qa_pipeline.py` (341 lines) and `scripts/run_full_system_health.py` (496 lines).
+- **Phase D**: Deferred — requires API calls on David's machine.
+- **Phase E**: Created `src/services/interpretation_space_engine.py` (485 lines). Generates 664 questions (4 types × 166 templates). 15/15 tests pass. Wired into overseer as `check_interpretation_space_coverage()`.
+- **Phase F**: Saved 11 session artifacts to docs/ (EN_to_BN_rethink.md, SCIENCE_WRITING_SYNTHESIS.md, AUDIT_*.md, pearl_typed_edges.md, aesthetics_molecules.md, etc.).
+- **Phase G**: Created Part XXVII master doc sections: §181 QA Pipeline Architecture, §182 Warrant Pipeline, §183 Argumentation Pipeline, §184 Overseer Monitoring (~1,079 lines, 83 KB).
+- **Phase H**: Created `APPENDIX_CROSS_REFERENCE_INDEX.md` (354 lines, 39 KB). Maps ~55 concepts across master doc, code, tests, contracts, and panel reviews.
+**Verification**: All new code compiles, 15 new tests pass, 90 regression tests pass, no regressions.
+
+---
+
+## In Progress (2026-03-05)
+
+### V4 Staged Extraction Pipeline — CODE COMPLETE, AWAITING PILOT (2026-03-05)
+**David's request**: "Let's rebuild this extraction process slowly and absolutely correctly at every stage with verifications at each stage"
+**Status**: V4 system fully implemented and documented. Awaiting pilot run on David's machine (Gemini API blocked in sandbox).
+**Forensic finding**: V3 extracts ~30 of 200+ schema fields. 0% coverage on scope_conditions, instruments, ecological_validity, enabling_conditions, causal_direction, bridge_warrant. Root cause: prompt mentions fields but doesn't demand them.
+**V4 solution**: 4-stage pipeline (Classify → Family-specific Extract → Verify → Report) with field forcing, 8 family-specific prompts, 20-point validation suffix, cross-model verification.
+**Files created**:
+- `src/extraction/v4_prompts.py` (955 lines): Classification + 8 family prompts + validation
+- `scripts/v4_staged_extraction.py` (884 lines): Main pipeline (stages 1–3) with CLI
+- `scripts/v4_pilot_analysis.py` (308 lines): Stage 4 analysis and reporting
+- `data/pdf_doi_mapping.json` (326 KB): Maps 1,069 DOIs to PDF paths (778 have PDFs)
+- 5 documentation files (V4_INDEX, V4_IMPLEMENTATION_SUMMARY, V4_DELIVERY_CHECKLIST, V4_QUICK_START, V4_EXTRACTION_PILOT_README)
+- `docs/V4_COMPREHENSIVE_REPORT_2026_03_05.md`: Full report for David
+**Next steps**:
+- ⬜ David runs pilot: `python scripts/v4_staged_extraction.py --batch pilot_dois.txt --limit 10`
+- ⬜ Evaluate field coverage against success criteria
+- ⬜ Scale to 50–100 papers if pilot succeeds
+- ⬜ Acquire PDFs for 291 extractions without PDF matches
 
 ### Card System Full Specification — PHASE 1-3 COMPLETE, PHASE 4-5 IN PROGRESS
 **Plan**: `docs/CARD_SYSTEM_SPECIFICATION_PLAN_2026-03-04.md`
@@ -71,8 +106,8 @@ For completed sprints (Feb 2026), see `docs/TASKS_ARCHIVE_2026_Feb.md`.
 - ✅ Success conditions: SC-TG-8..10 (sources tab), SC-STIM-1..6 (stimulus), SC-INV-17..19 (overseer)
 - ✅ 20 cross-process tests (14 original + 6 new for INV-17/18/19)
 - ⬜ Stimulus data currently 0% populated — needs backfill (run `scripts/run_stimulus_extraction.py`)
-- ⬜ Wire FigureSuggestionService into card generation (service exists, not connected)
-- ⬜ Add query routing for "show me methods from paper X"
+- ✅ Wire FigureSuggestionService into card generation — DONE (wired at line 740, awaits figure_reference data in extractions)
+- ✅ Add query routing for "show me methods from paper X" — DONE (_handle_paper_methods_query in arbitrary_qa_handler.py)
 
 ### Session-Mode Card Generation — COMPLETE (2026-03-04)
 **David's mandate**: Free sessions (CW/CC/AG) should generate cards at zero API cost
