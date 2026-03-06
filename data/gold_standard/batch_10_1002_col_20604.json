@@ -1,0 +1,494 @@
+{
+  "doi": "10.1002/col.20604",
+  "title": "Color Emotions for Multi-Colored Images",
+  "authors": [
+    "Martin Solli",
+    "Reiner Lenz"
+  ],
+  "publication_year": 2011,
+  "journal": "Color Research and Application",
+  "volume": 36,
+  "issue": 3,
+  "pages": "210-221",
+  "article_type": "empirical_research",
+  "article_family": "color_emotion_perception",
+  "domains": [
+    "color_science",
+    "color_emotion",
+    "color_perception",
+    "image_retrieval",
+    "psychophysics"
+  ],
+  "model": "cowork-opus-gold-standard",
+  "n_findings": 9,
+  "findings": [
+    {
+      "id": "F1",
+      "antecedent": "Color content of multicolored images (RGB histogram decomposition into activity, weight, heat factors)",
+      "consequent": "Observer emotional judgments on activity, weight, heat scales",
+      "direction": "increase",
+      "claim_type": "predictive_model_validation",
+      "statement": "Pearson correlation coefficient between predicted emotion values and observer judgments for heat factor is 0.97 (mean positions) and 0.90 (all positions)",
+      "p_value": null,
+      "effect_size": 0.97,
+      "effect_size_type": "pearson_r_mean_positions",
+      "test_statistic": null,
+      "confidence_interval": null,
+      "sample_size": 30,
+      "sample": {
+        "n": 30,
+        "population": "multicolored images",
+        "age_mean": null,
+        "country": "Sweden; Linköping University"
+      },
+      "measure_type": "correlation",
+      "instruments_used": [
+        {
+          "name": "Psychophysical rating scale",
+          "abbreviation": null,
+          "construct_measured": "perceived heat (cool-warm)"
+        },
+        {
+          "name": "RGB histogram analysis",
+          "abbreviation": null,
+          "construct_measured": "color emotion factors (activity, weight, heat)"
+        }
+      ],
+      "source": "Table 1, page 217",
+      "quote": "Heat and weight resulted in correlation coefficients as high as 0.97 and 0.98",
+      "source_zone": "results_and_discussions",
+      "provenance_depth": "primary_empirical",
+      "causal_tier": "predictive_association",
+      "scope_conditions": "Multicolored images from database (5000+ images); interval scaling method with observers judging emotion placement on ruler",
+      "stimulus_description": "30 multicolored images randomly selected from 5000-image database; displayed on web interface with emotion ruler scales (cool-warm, heavy-light, passive-active)",
+      "mechanism": "Color histogram decomposition into three emotion factors (activity, weight, heat) derived from psychophysical experiments on single colors; factors computed from RGB values transformed to CIELAB color space",
+      "theory_links": [
+        "Ou et al. (2004) color emotion models for single colors and two-color combinations",
+        "Sato et al. color emotion framework",
+        "Quinean coherentist approach: color emotions are coherent across single colors and multicolored images"
+      ],
+      "moderators_reported": null,
+      "source_quality_indicators": {
+        "pre_registered": false,
+        "blinding": false,
+        "replication_status": null
+      }
+    },
+    {
+      "id": "F2",
+      "antecedent": "Color content of multicolored images (RGB histogram decomposition into weight factor)",
+      "consequent": "Observer emotional judgments on weight scale (heavy-light)",
+      "direction": "increase",
+      "claim_type": "predictive_model_validation",
+      "statement": "Pearson correlation coefficient between predicted weight values and observer judgments is 0.98 (mean positions) and 0.93 (all positions)",
+      "p_value": null,
+      "effect_size": 0.98,
+      "effect_size_type": "pearson_r_mean_positions",
+      "test_statistic": null,
+      "confidence_interval": null,
+      "sample_size": 30,
+      "sample": {
+        "n": 30,
+        "population": "multicolored images",
+        "age_mean": null,
+        "country": "Sweden; Linköping University"
+      },
+      "measure_type": "correlation",
+      "instruments_used": [
+        {
+          "name": "Psychophysical rating scale",
+          "abbreviation": null,
+          "construct_measured": "perceived weight (heavy-light)"
+        },
+        {
+          "name": "RGB histogram analysis",
+          "abbreviation": null,
+          "construct_measured": "weight factor derived from CIELAB lightness"
+        }
+      ],
+      "source": "Table 1, page 217",
+      "quote": "For weight the correlation is 0.98",
+      "source_zone": "results_and_discussions",
+      "provenance_depth": "primary_empirical",
+      "causal_tier": "predictive_association",
+      "scope_conditions": "Main study with 30 multicolored images; interval scaling method with 33 observers",
+      "stimulus_description": "30 multicolored images selected from 5000-image database using stratified sampling (10 samples per emotion category across activity, weight, heat scales)",
+      "mechanism": "Weight factor computed from histogram of CIELAB lightness values (L*) across image pixels; formula: weight = -1.8 + 0.04(100 - L*) + 0.45 cos(h - 100°)",
+      "theory_links": [
+        "Lightness (L*) and chroma (C*) are most important factors in color emotions (supported by cross-cultural research)"
+      ],
+      "moderators_reported": null,
+      "source_quality_indicators": {
+        "pre_registered": false,
+        "blinding": false,
+        "replication_status": null
+      }
+    },
+    {
+      "id": "F3",
+      "antecedent": "Color content of multicolored images (RGB histogram decomposition into activity factor)",
+      "consequent": "Observer emotional judgments on activity scale (passive-active)",
+      "direction": "increase",
+      "claim_type": "predictive_model_validation",
+      "statement": "Pearson correlation coefficient between predicted activity values and observer judgments is 0.86 (mean positions) and 0.68 (all positions)",
+      "p_value": null,
+      "effect_size": 0.86,
+      "effect_size_type": "pearson_r_mean_positions",
+      "test_statistic": null,
+      "confidence_interval": null,
+      "sample_size": 30,
+      "sample": {
+        "n": 30,
+        "population": "multicolored images",
+        "age_mean": null,
+        "country": "Sweden; Linköping University"
+      },
+      "measure_type": "correlation",
+      "instruments_used": [
+        {
+          "name": "Psychophysical rating scale",
+          "abbreviation": null,
+          "construct_measured": "perceived activity (passive-active)"
+        },
+        {
+          "name": "RGB histogram analysis",
+          "abbreviation": null,
+          "construct_measured": "activity factor derived from CIELAB chroma"
+        }
+      ],
+      "source": "Table 1, page 217",
+      "quote": "For activity the correlation is 0.86",
+      "source_zone": "results_and_discussions",
+      "provenance_depth": "primary_empirical",
+      "causal_tier": "predictive_association",
+      "scope_conditions": "Main study with 30 multicolored images; activity factor is harder for observers to comprehend and apply",
+      "stimulus_description": "30 multicolored images with emotion vectors plotted in 3D emotion space",
+      "mechanism": "Activity factor computed from saturation and hue of CIELAB values; formula involves chroma (C*) and hue angle (h); activity is more abstract and less visually obvious than weight",
+      "theory_links": [
+        "Activity factor is harder for observers to understand than heat and weight factors (weaker correlation reflects this)"
+      ],
+      "moderators_reported": null,
+      "source_quality_indicators": {
+        "pre_registered": false,
+        "blinding": false,
+        "replication_status": null
+      }
+    },
+    {
+      "id": "F4",
+      "antecedent": "Observer ratings for different emotion factors (heat, weight, activity)",
+      "consequent": "Interobserver agreement measured by normalized root mean square error (NRMS)",
+      "direction": "no_effect",
+      "claim_type": "reliability_measurement",
+      "statement": "Interobserver agreement obtained for NRMS: 0.099 for heat, 0.079 for weight, 0.160 for activity",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": "nrms",
+      "test_statistic": null,
+      "confidence_interval": null,
+      "sample_size": 33,
+      "sample": {
+        "n": 33,
+        "population": "observers judging multicolored images",
+        "age_mean": null,
+        "country": "Sweden"
+      },
+      "measure_type": "interrater_reliability",
+      "instruments_used": [
+        {
+          "name": "Normalized Root Mean Square Error",
+          "abbreviation": "NRMS",
+          "construct_measured": "interobserver agreement consistency"
+        }
+      ],
+      "source": "Page 217, Results and Discussions section",
+      "quote": "Interobserver agreement obtained are 0.099 for the heat factor, 0.079 for weight, and 0.160 for activity",
+      "source_zone": "results_and_discussions",
+      "provenance_depth": "primary_empirical",
+      "causal_tier": "measurement_validity",
+      "scope_conditions": "Main study; 33 observers; interval scaling method; lower NRMS indicates better agreement",
+      "stimulus_description": "30 multicolored images displayed on web interface with emotion rulers",
+      "mechanism": "NRMS calculated as RMS / (x_max - x_min) where RMS is root mean square error between each observer and mean; normalizes agreement by scale range",
+      "theory_links": [
+        "Better interobserver agreement for heat and weight compared to activity suggests these factors are more intuitive to observers"
+      ],
+      "moderators_reported": null,
+      "source_quality_indicators": {
+        "pre_registered": false,
+        "blinding": false,
+        "replication_status": null
+      }
+    },
+    {
+      "id": "F5",
+      "antecedent": "Interobserver agreement and interobserver correlation",
+      "consequent": "Relationship between NRMS and correlation coefficient",
+      "direction": "mixed",
+      "claim_type": "methodological_observation",
+      "statement": "Lower interobserver correlation (r) correlates with higher interobserver agreement (NRMS), indicating that poorer interobserver agreement has negative influence on correlation. NRMS values inversely related to correlation coefficients across heat, weight, activity factors",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "test_statistic": null,
+      "confidence_interval": null,
+      "sample_size": 30,
+      "sample": {
+        "n": 30,
+        "population": "multicolored images evaluated",
+        "age_mean": null,
+        "country": null
+      },
+      "measure_type": "methodological_analysis",
+      "instruments_used": [
+        {
+          "name": "Correlation analysis",
+          "abbreviation": null,
+          "construct_measured": "relationship between agreement measures"
+        }
+      ],
+      "source": "Page 217-218, Discussion of intrasample agreement",
+      "quote": "A poorer interobserver agreement for activity factor has a negative influence on the correlation",
+      "source_zone": "results_and_discussions",
+      "provenance_depth": "primary_analysis",
+      "causal_tier": "methodological_constraint",
+      "scope_conditions": "Comparison across three emotion factors; reveals that activity factor shows both lower agreement and lower correlation",
+      "stimulus_description": "30 multicolored images; 33 observers",
+      "mechanism": "When observers disagree more on specific samples (high NRMS for that sample), the correlation between predicted and actual values is reduced because the actual mean becomes less reliable",
+      "theory_links": [
+        "Measurement reliability constrains validity of predictive models"
+      ],
+      "moderators_reported": null,
+      "source_quality_indicators": {
+        "pre_registered": false,
+        "blinding": false,
+        "replication_status": null
+      }
+    },
+    {
+      "id": "F6",
+      "antecedent": "Intra-sample agreement across multiple samples (1-10) for each emotion factor",
+      "consequent": "Consistency of observer judgments within samples",
+      "direction": "increase",
+      "claim_type": "measurement_validity",
+      "statement": "Mean intra-sample agreement NRMS values: 0.10 for heat, 0.08 for weight, and 0.17 for activity; agreement is stronger within samples than between samples, confirming that representativeness of image selection is critical",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": "nrms",
+      "test_statistic": null,
+      "confidence_interval": null,
+      "sample_size": 10,
+      "sample": {
+        "n": 10,
+        "population": "samples for each emotion scale (1-10)",
+        "age_mean": null,
+        "country": null
+      },
+      "measure_type": "within_sample_reliability",
+      "instruments_used": [
+        {
+          "name": "Normalized Root Mean Square Error (intra-sample)",
+          "abbreviation": "NRMS",
+          "construct_measured": "consistency within image samples"
+        }
+      ],
+      "source": "Page 219, Application in Image Retrieval section; Figure 8",
+      "quote": "The mean intra-sample agreements are 0.10 for heat, 0.08 for weight, and 0.17 for activity",
+      "source_zone": "results_and_discussions",
+      "provenance_depth": "primary_empirical",
+      "causal_tier": "measurement_validity",
+      "scope_conditions": "10 samples for each emotion factor selected during main study",
+      "stimulus_description": "10 samples from the main study emotion factor sets",
+      "mechanism": "Samples selected from emotion space to represent different regions; intra-sample agreement measured to assess whether images with same sample number have similar emotional properties",
+      "theory_links": [
+        "Sample selection strategy affects both the coverage of emotion space and the reliability of observer judgments"
+      ],
+      "moderators_reported": null,
+      "source_quality_indicators": {
+        "pre_registered": false,
+        "blinding": false,
+        "replication_status": null
+      }
+    },
+    {
+      "id": "F7",
+      "antecedent": "Pilot study observer ratings (52 observers) for multicolored images",
+      "consequent": "Main study sample selection and observer count",
+      "direction": "increase",
+      "claim_type": "procedural_result",
+      "statement": "52 observers participated in pilot study judging 5000+ randomly selected images. The results from pilot study informed the main study design, including selection of 30 representative images and reduction of observer count to 33 to improve reliability while maintaining validity",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "test_statistic": null,
+      "confidence_interval": null,
+      "sample_size": 52,
+      "sample": {
+        "n": 52,
+        "population": "observers from web-based study",
+        "age_mean": null,
+        "country": "Sweden; web-based recruitment"
+      },
+      "measure_type": "study_design_parameter",
+      "instruments_used": [
+        {
+          "name": "Web-based graphical user interface",
+          "abbreviation": "GUI",
+          "construct_measured": "emotion category judgments (5-point scales)"
+        }
+      ],
+      "source": "Page 214-215, The Pilot Study section",
+      "quote": "Totally 52 observers participated in the study, judging in total 367 samples",
+      "source_zone": "methods",
+      "provenance_depth": "primary_empirical",
+      "causal_tier": "design_parameter",
+      "scope_conditions": "Pilot study; observers recruited from public web page",
+      "stimulus_description": "Random samples from 5000-image database; 5-point category scales for each emotion factor",
+      "mechanism": "Pilot study tested simplicity of interface and visual discriminability of emotion samples; results led to main study refinements",
+      "theory_links": [
+        "Iterative design approach (Engeldrüm) used to refine measurement instrument"
+      ],
+      "moderators_reported": null,
+      "source_quality_indicators": {
+        "pre_registered": false,
+        "blinding": false,
+        "replication_status": null
+      }
+    },
+    {
+      "id": "F8",
+      "antecedent": "Emotion-based image retrieval using L2 norm distance in emotion space",
+      "consequent": "Successful image retrieval from database based on query emotion words",
+      "direction": "increase",
+      "claim_type": "application_validation",
+      "statement": "Emotion-based retrieval method successfully retrieves images from 249,587-image database using color emotion descriptors; five best matches shown for sample queries with emotion words (cool, warm, heavy, light, passive, active)",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "test_statistic": null,
+      "confidence_interval": null,
+      "sample_size": 249587,
+      "sample": {
+        "n": 249587,
+        "population": "multicolored images from internet search engine",
+        "age_mean": null,
+        "country": "Downloaded from Flickr web service"
+      },
+      "measure_type": "application_effectiveness",
+      "instruments_used": [
+        {
+          "name": "Color emotion histogram",
+          "abbreviation": null,
+          "construct_measured": "emotion vector for image retrieval"
+        },
+        {
+          "name": "L2 norm distance metric",
+          "abbreviation": null,
+          "construct_measured": "similarity between query and database images in emotion space"
+        }
+      ],
+      "source": "Page 219-220, Application in Image Retrieval section; Figure 10",
+      "quote": "The five best matches for each query are shown",
+      "source_zone": "application",
+      "provenance_depth": "primary_application",
+      "causal_tier": "application_demonstration",
+      "scope_conditions": "Large-scale internet image database (249,587 images); emotion space divided into 64 leaves using balanced tree with 8 entries per leaf",
+      "stimulus_description": "Sample query emotion descriptors: active-passive, heavy-light, warm-cool; each query retrieves images with nearest emotion vectors in L2 norm",
+      "mechanism": "Images described by emotion histograms derived from RGB color content; user specifies query emotion word via slider; system retrieves images with emotion vectors nearest to query in L2 norm using balanced tree index structure",
+      "theory_links": [
+        "Content-based image retrieval using semantic emotion properties enables search engines unavailable with traditional keyword approaches"
+      ],
+      "moderators_reported": null,
+      "source_quality_indicators": {
+        "pre_registered": false,
+        "blinding": false,
+        "replication_status": null
+      }
+    },
+    {
+      "id": "F9",
+      "antecedent": "Observer familiarity and viewing environment conditions (illumination, background, monitor settings)",
+      "consequent": "Emotional response variability and model applicability in uncontrolled environments",
+      "direction": "mixed",
+      "claim_type": "limitation_discussion",
+      "statement": "Results from controlled laboratory conditions may not generalize to uncontrolled internet environments where viewing conditions vary significantly. Unknown viewing environment, illumination, background, and monitor settings may affect emotional responses and influence results. Activity factor is particularly difficult for observers unfamiliar with large emotion scale range",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "test_statistic": null,
+      "confidence_interval": null,
+      "sample_size": null,
+      "sample": {
+        "n": null,
+        "population": "Hypothetical users of emotion-based image retrieval system",
+        "age_mean": null,
+        "country": null
+      },
+      "measure_type": "theoretical_constraint",
+      "instruments_used": [],
+      "source": "Page 212, Limitations section",
+      "quote": "Unknown viewing environment, like illumination settings, background colors, etc. may vary significantly, and affect the user's emotional response",
+      "source_zone": "limitations",
+      "provenance_depth": "primary_discussion",
+      "causal_tier": "scope_limitation",
+      "scope_conditions": "Web-based deployment; uncontrolled environments",
+      "stimulus_description": "Multicolored images viewed in variable environmental conditions",
+      "mechanism": "Perceptual and cognitive factors (context, familiarity, cultural background) moderate emotional responses to colors; uncontrolled conditions introduce noise and confounds",
+      "theory_links": [
+        "Color emotion research typically conducted in controlled laboratory conditions; generalization to real-world viewing environments uncertain"
+      ],
+      "moderators_reported": "Viewing environment (illumination, background, monitor settings), observer familiarity with emotion scale",
+      "source_quality_indicators": {
+        "pre_registered": false,
+        "blinding": false,
+        "replication_status": null
+      }
+    }
+  ],
+  "limitations": [
+    "Study conducted on public web page with unknown observer environment conditions (illumination, background, monitor settings) affecting emotional responses",
+    "Activity factor harder for observers to comprehend and apply than heat and weight factors, resulting in weaker correlation (0.86 vs. 0.97-0.98) and higher intra-sample agreement NRMS (0.17 vs. 0.08-0.10)",
+    "No visual distinction possible between images with poor intra-sample agreement, limiting ability to improve measurement through statistical analysis alone",
+    "Interval scaling method involves arbitrary constants (multiplier, additive constant) that may not fully capture observer judgment scaling, though Engeldrum normalization procedure applied",
+    "Generalization to uncontrolled environments uncertain; color emotions may be influenced by different regional and cultural backgrounds",
+    "Method uses content-based color analysis only; actual image content (objects, faces) also affects emotional response but not modeled in this approach",
+    "RGB space unevenly spaced in emotion space; method assumes RGB histogram adequately represents emotional color content"
+  ],
+  "overall_theory_links": [
+    "Ou et al. (2004) color emotion models for single colors and two-color combinations extended to multicolored images",
+    "Predictive model successfully extends single-color and two-color emotion frameworks (Ou et al., Sato et al.) to multicolored image retrieval",
+    "Support for coherentist epistemology: color emotions consistent across different color complexities (single colors, two-color combinations, multicolored images)",
+    "Three emotion factors (activity, weight, heat) derived from psychophysical experiments; heat and weight are lightness and chroma related, more salient than hue",
+    "Cross-cultural and temporal stability of color emotions (Gao et al., Xin et al., Beke et al.) supports use in image retrieval systems",
+    "RGB histogram decomposition into CIELAB coordinates enables efficient computational extraction of emotional color content for large-scale image databases"
+  ],
+  "notes_on_extraction": {
+    "total_pages": 12,
+    "article_structure": "Introduction → Related Work → Limitations → Predictive Model → Psychophysical Experiments (Pilot and Main Study) → Results and Discussions → Application in Image Retrieval → Conclusions → References",
+    "empirical_components": [
+      "Pilot study: 52 observers rating 5000+ images on 5-point emotion category scales",
+      "Main study: 33 observers rating 30 representative images on interval emotion scales (rulers)",
+      "Large-scale application: 249,587 images from Flickr with computed emotion histograms"
+    ],
+    "quantitative_results_found": 9,
+    "null_results_reported": false,
+    "statistical_tests_used": [
+      "Pearson correlation coefficient (r) for validating predictive model against observer judgments",
+      "Root Mean Square Error (RMSE) and Normalized RMSE (NRMS) for measuring interobserver agreement",
+      "Engeldrum normalization procedure for adjusting observer judgments to common scale"
+    ],
+    "extraction_difficulties": [
+      "No p-values reported for correlations; confidence intervals not provided",
+      "Activity factor correlation (0.86) weaker than heat (0.97) and weight (0.98) but no statistical test of significance difference",
+      "Intra-sample agreement calculations mentioned but detailed formulas not fully specified",
+      "Sample selection procedure complex (stratified sampling, representative coverage); exact sampling strategy not fully formalized",
+      "Figure 6 shows all observer judgments but individual statistical tests not reported; aggregate statistics only"
+    ],
+    "methodological_notes": [
+      "Predictive model based on equations (1)-(5) relating RGB values to three emotion factors via CIELAB transformation",
+      "Interval scaling method used in main study (observer positions samples on ruler) differs from pilot study category scaling (5 equal intervals)",
+      "Web-based studies limit control over viewing conditions; authors acknowledge as limitation",
+      "Interobserver agreement better for heat and weight than activity, suggesting these factors more intuitive"
+    ],
+    "copyrighted_material": "None reproduced; all summaries paraphrased from original text"
+  }
+}
