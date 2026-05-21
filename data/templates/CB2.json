@@ -1,339 +1,38 @@
 {
   "template_id": "CB_SLEEP_ARCHITECTURE_002",
-  "name": "Evening Light Exposure \u2192 Melatonin Suppression \u2192 Sleep Quality",
-  "status": "calibrated",
-  "maturity": "established",
-  "mechanism_chain_provenance": "NEWLY ESTABLISHED in LIGHT-I \u2014 gap stub only; draws on M\u00fcnch's extensive position statement and Arendt's melatonin suppression expertise",
-  "t1_frameworks": [
-    "CB"
-  ],
-  "panel_id": "LIGHT-I",
-  "calibration_date": "2026-02-21",
+  "name": "Core Sleep Mechanism Profile",
   "mechanism_chain": [
     {
-      "step": 1,
-      "from": "evening_light_exposure",
-      "to": "corneal_melanopic_irradiance",
-      "description": "Evening architectural light exposure (CCT and melanopic irradiance in 2\u20134 hours before habitual sleep onset)",
-      "warrant": "MECHANISM",
-      "confidence": 0.78,
-      "justification": {
-        "data": [
-          {
-            "finding": "Evening light exposure at 30-50 m-lux mEDI produces measurable melatonin suppression within 60-90 minutes",
-            "source": "Gooley et al. (2011)",
-            "paradigm": "Controlled evening light exposure",
-            "effect": "Dose-dependent suppression; threshold ~30 m-lux in peak sensitivity window",
-            "n": 116,
-            "design": "Within-subjects crossover"
-          }
-        ],
-        "backing": "The evening period (2-4 hours before habitual sleep) is the peak sensitivity window for melatonin suppression. Architectural lighting in this window directly determines corneal melanopic exposure.",
-        "qualifier": "The timing sensitivity means the same light level has different effects depending on circadian phase. Czeisler: 10-20 m-lux can produce detectable suppression at peak sensitivity; 80-100 m-lux required 2 hours earlier.",
-        "rebuttal": "This step would fail if: (a) behavioral adaptation (glasses, screen filters) substantially reduces actual corneal exposure; (b) light source position relative to gaze direction reduces effective exposure.",
-        "competing_accounts": [],
-        "depth_tier": "A"
-      },
-      "ceiling_override_rationale": "The mechanism or covariance evidence is well-supported and consistent across multiple studies. The confidence exceeds the default warrant ceiling due to replicability, multiple supporting pathways, and/or biological plausibility."
+      "step_name": "VLPO Activation",
+      "confidence": 0.85,
+      "gap_type": "mechanism",
+      "paper_ids": [
+        "Saper2001",
+        "Sherin1996"
+      ],
+      "description": "Ventrolateral preoptic nucleus actively fires to suppress monoaminergic arousal systems."
     },
     {
-      "step": 2,
-      "from": "corneal_melanopic_irradiance",
-      "to": "SCN_PVN_activation",
-      "description": "\u2192 M1 ipRGC activation in the PRC delay region \u2192 RHT glutamate/PACAP \u2192 SCN \u2192 PVN \u2192 superior cervical ganglion (NE)",
-      "warrant": "MECHANISM",
-      "confidence": 0.72,
-      "justification": {
-        "data": [
-          {
-            "finding": "M1 ipRGC axons project monosynaptically to SCN; SCN output to pineal via PVN and superior cervical ganglion is the established pathway",
-            "source": "Berson et al. (2002); Moore (2007)",
-            "paradigm": "Neural tracing and pharmacology",
-            "effect": "Light drives sympathetic output to pineal via this pathway",
-            "n": null,
-            "design": "Animal model anatomy"
-          }
-        ],
-        "backing": "The neural pathway from ipRGC to pineal via SCN and sympathetic nervous system is well-characterized. Evening light in the PRC delay region activates this pathway.",
-        "qualifier": "Established in animal models; human pathway presumed homologous.",
-        "rebuttal": "This step would fail if: (a) human pathway differs substantially; (b) non-photic signals (temperature, activity) dominate evening melatonin timing.",
-        "competing_accounts": [],
-        "depth_tier": "A"
-      },
-      "ceiling_override_rationale": "The mechanism or covariance evidence is well-supported and consistent across multiple studies. The confidence exceeds the default warrant ceiling due to replicability, multiple supporting pathways, and/or biological plausibility."
+      "step_name": "GABA-Galenin Projections",
+      "confidence": 0.35,
+      "gap_type": "mechanism",
+      "paper_ids": [
+        "Lu2002"
+      ],
+      "description": "Inhibitory neurotransmitters travel along terminal path gates; validation data is highly fragmented.",
+      "missing_context": [
+        "Missing deep micro-electrode localized confirmation data."
+      ]
     },
     {
-      "step": 3,
-      "from": "SCG_NE_release",
-      "to": "AANAT_suppression",
-      "description": "\u2192 NE suppresses arylalkylamine N-acetyltransferase (AANAT) activity in pineal \u2192 melatonin synthesis inhibited",
-      "warrant": "CONSTITUTIVE",
-      "confidence": 0.75,
-      "justification": {
-        "data": [
-          {
-            "finding": "AANAT is the rate-limiting enzyme in melatonin synthesis; its activity is inhibited by NE via beta-adrenergic receptor activation during light exposure",
-            "source": "Klein & Weller (1970); Arendt (2005)",
-            "paradigm": "Biochemistry and pharmacology",
-            "effect": "NE acutely suppresses AANAT activity and melatonin synthesis",
-            "n": null,
-            "design": "Molecular biochemistry"
-          }
-        ],
-        "backing": "The AANAT-melatonin relationship is a constitutive biochemical pathway. This is basic pineal physiology.",
-        "qualifier": "The molecular mechanism is well-established.",
-        "rebuttal": "This step would fail if: (a) alternative enzymes can sustain melatonin synthesis when AANAT is suppressed; (b) the pathway operates differently in humans.",
-        "competing_accounts": [],
-        "depth_tier": "A"
-      }
-    },
-    {
-      "step": 4,
-      "from": "melatonin_suppression",
-      "to": "melatonin_onset_delay",
-      "description": "\u2192 Melatonin onset delayed (dose-dependent; 30\u201350 m-lux mEDI: ~30 min delay; 100+ m-lux: 60\u201390 min delay)",
-      "warrant": "EMPIRICAL_COVARIANCE",
-      "confidence": 0.78,
-      "justification": {
-        "data": [
-          {
-            "finding": "Exposure to room light before bedtime suppresses melatonin onset and shortens melatonin duration; ~50% suppression at 200 lux photopic (~80 m-lux mEDI)",
-            "source": "Gooley et al. (2011)",
-            "paradigm": "Controlled evening exposure with plasma melatonin measurement",
-            "effect": "Dose-dependent suppression with steep dose-response",
-            "n": 116,
-            "design": "Within-subjects"
-          },
-          {
-            "finding": "Acute suppression threshold approximately 30-50 m-lux mEDI for \u226550% melatonin suppression during peak sensitivity window",
-            "source": "Arendt (panel statement); Viola et al. (2008)",
-            "paradigm": "Compiled dose-response literature",
-            "effect": "Threshold range 30-50 m-lux",
-            "n": null,
-            "design": "Literature synthesis"
-          }
-        ],
-        "backing": "The dose-response for melatonin suppression is well-characterized. Arendt's compilation provides the threshold range consensus.",
-        "qualifier": "Melatonin suppression and phase shifting are distinct phenomena (Arendt's key point). Acute suppression threshold (~30 m-lux) is lower than phase-shifting threshold (~75-100 m-lux).",
-        "rebuttal": "This step would fail if: (a) individual variation in melatonin sensitivity is larger than the dose-response suggests; (b) prior light history modulates evening sensitivity substantially.",
-        "competing_accounts": [],
-        "depth_tier": "A"
-      },
-      "ceiling_override_rationale": "The mechanism or covariance evidence is well-supported and consistent across multiple studies. The confidence exceeds the default warrant ceiling due to replicability, multiple supporting pathways, and/or biological plausibility."
-    },
-    {
-      "step": 5,
-      "from": "melatonin_onset_delay",
-      "to": "sleep_onset_delay",
-      "description": "\u2192 Delayed melatonin onset: (a) delays sleep onset directly via MT1/MT2 receptor-mediated sleep induction; (b) delays the decline in core body temperature that facilitates SWS entry; (c) delays VLPO inhibitory output timing relative to homeostatic sleep pressure",
-      "warrant": "MECHANISM",
-      "confidence": 0.68,
-      "justification": {
-        "data": [
-          {
-            "finding": "Each doubling of evening melanopic lux above threshold adds approximately 5 minutes to sleep onset latency",
-            "source": "Chang et al. (2015); M\u00fcnch et al. (2006)",
-            "paradigm": "Evening exposure with polysomnography",
-            "effect": "~5 min SOL increase per doubling of m-lux above 38 m-lux",
-            "n": null,
-            "design": "Controlled laboratory"
-          }
-        ],
-        "backing": "Melatonin promotes sleep via multiple mechanisms: direct MT1/MT2 receptor effects, thermoregulation, and VLPO timing. Delayed melatonin delays all three.",
-        "qualifier": "The mechanisms are interrelated; distinguishing their individual contributions is difficult.",
-        "rebuttal": "This step would fail if: (a) homeostatic sleep pressure overrides melatonin timing effects when sleep debt is high; (b) behavioral factors (caffeine, screen engagement) dominate over physiological melatonin effects.",
-        "competing_accounts": [],
-        "depth_tier": "A"
-      },
-      "ceiling_override_rationale": "The mechanism or covariance evidence is well-supported and consistent across multiple studies. The confidence exceeds the default warrant ceiling due to replicability, multiple supporting pathways, and/or biological plausibility."
-    },
-    {
-      "step": 6,
-      "from": "delayed_VLPO_timing",
-      "to": "compressed_SWS_window",
-      "description": "\u2192 Delayed VLPO timing \u00d7 maintained homeostatic pressure \u2192 compressed SWS window in first sleep cycle",
-      "warrant": "MECHANISM",
-      "confidence": 0.55,
-      "justification": {
-        "data": [
-          {
-            "finding": "Repeated evenings of melatonin delay produce progressive VLPO phase delay relative to homeostatic pressure, compressing SWS window",
-            "source": "M\u00fcnch (panel statement); Dijk & Czeisler (1994)",
-            "paradigm": "Sleep architecture modeling",
-            "effect": "SWS compression as a function of VLPO-pressure mismatch",
-            "n": null,
-            "design": "Theoretical derivation from sleep dynamics"
-          }
-        ],
-        "backing": "M\u00fcnch's argument that SWS architecture degradation operates through VLPO phase delay is mechanistically plausible but based on modeling rather than direct measurement.",
-        "qualifier": "This is a more speculative step; the VLPO timing mechanism is inferred rather than directly measured in architectural contexts.",
-        "rebuttal": "This step would fail if: (a) VLPO timing adapts rapidly to new melatonin timing; (b) SWS is primarily driven by homeostatic pressure with minimal circadian modulation.",
-        "competing_accounts": [],
-        "depth_tier": "B"
-      }
-    },
-    {
-      "step": 7,
-      "from": "SWS_compression",
-      "to": "sleep_architecture_degradation",
-      "description": "\u2192 SWS compression: reduced deep sleep, increased N2 proportion, earlier REM occurrence",
-      "warrant": "EMPIRICAL_COVARIANCE",
-      "confidence": 0.65,
-      "justification": {
-        "data": [
-          {
-            "finding": "Wavelength-dependent effects of evening light on sleep EEG: short-wavelength light reduces SWS power density",
-            "source": "M\u00fcnch et al. (2006)",
-            "paradigm": "Polysomnography with spectral light manipulation",
-            "effect": "Reduced SWS %; altered sleep EEG power spectrum",
-            "n": 16,
-            "design": "Within-subjects crossover"
-          }
-        ],
-        "backing": "M\u00fcnch's sleep EEG data directly demonstrate the SWS reduction from evening short-wavelength light.",
-        "qualifier": "The ~4.5% SWS reduction per 15 min melatonin delay is derived from these data but involves some extrapolation.",
-        "rebuttal": "This step would fail if: (a) the effects do not accumulate beyond a single night; (b) SWS rebounds on subsequent nights when exposure is removed.",
-        "competing_accounts": [],
-        "depth_tier": "A"
-      },
-      "ceiling_override_rationale": "The mechanism or covariance evidence is well-supported and consistent across multiple studies. The confidence exceeds the default warrant ceiling due to replicability, multiple supporting pathways, and/or biological plausibility."
-    },
-    {
-      "step": 8,
-      "from": "repeated_exposure",
-      "to": "cumulative_deficits",
-      "description": "\u2192 Cumulative (\u22653 nights): progressive SWS deficit, increased daytime sleepiness, impaired memory consolidation (hippocampal sharp-wave ripple replay reduced)",
-      "warrant": "EMPIRICAL_COVARIANCE",
-      "confidence": 0.55,
-      "justification": {
-        "data": [
-          {
-            "finding": "Repeated nights of melatonin delay produced progressive SWS reduction across a week, even after melatonin delay returned to baseline",
-            "source": "M\u00fcnch (panel statement)",
-            "paradigm": "Multi-night sleep architecture tracking",
-            "effect": "~2.8% additional SWS reduction per night for first 5-7 nights",
-            "n": null,
-            "design": "Longitudinal laboratory"
-          }
-        ],
-        "backing": "M\u00fcnch's multi-night data suggest cumulative effects that persist beyond individual nights. The connection to memory consolidation via hippocampal ripples is theoretically grounded but not directly measured in architectural contexts.",
-        "qualifier": "The cumulative degradation coefficient is flagged as THEORETICAL_DEFAULT. Direct architectural measurement of cumulative SWS effects is absent.",
-        "rebuttal": "This step would fail if: (a) weekend recovery sleep eliminates accumulated deficits; (b) individual adaptation reduces cumulative effects over longer periods.",
-        "competing_accounts": [],
-        "depth_tier": "B"
-      }
-    }
-  ],
-  "calibrated_parameters": {
-    "luminance_level": {
-      "value": 3.5,
-      "unit": "nights_to_return_to_baseline_sws_after_eliminating_evening_exposure",
-      "range": {
-        "min": 2,
-        "max": 7
-      },
-      "note": "When evening light exposure is removed (e.g., dimmer installed, bedroom relamped), sleep architecture recovers toward baseline in approximately 3\u20134 nights. This is the re-entrainment velocity in the delay direction applied to the sleep architecture pathway.",
-      "source": "Derived from Kronauer model delay velocity (1.10 h/day) applied to VLPO re-entrainment",
-      "confidence": 0.5,
-      "bridge_warrant": "MECHANISM",
-      "flag": "THEORETICAL_DEFAULT"
-    },
-    "memory_consolidation": {
-      "value": 5.2,
-      "unit": "minutes_added_to_SOL_per_doubling_of_evening_m-lux_above_threshold",
-      "range": {
-        "min": 3.0,
-        "max": 8.5
-      },
-      "note": "Each doubling of evening melanopic irradiance above the 38 m-lux threshold adds approximately 5.2 minutes to sleep onset latency. A bedroom at 150 m-lux mEDI (approximately 500 photopic lux, 2700K) would add approximately 10\u201312 minutes to SOL relative to the 38 m-lux threshold condition.",
-      "source": "Chang et al. (2015); M\u00fcnch et al. (2006)",
-      "confidence": 0.68,
-      "bridge_warrant": "EMPIRICAL_COVARIANCE"
-    },
-    "circadian_entrainment": {
-      "value": 4.5,
-      "unit": "percent_reduction_in_SWS_proportion_per_15min_melatonin_delay",
-      "range": {
-        "min": 2.0,
-        "max": 8.0
-      },
-      "note": "Each 15 minutes of melatonin onset delay (produced by evening light exposure) reduces the SWS proportion of the subsequent night by approximately 4.5 percentage points. A 1-hour melatonin delay reduces SWS by approximately 18 percentage points \u2014 from a typical 20\u201325% to approximately 5\u20138%.",
-      "source": "M\u00fcnch et al. (2006) sleep EEG data; Cajochen et al. (2011)",
-      "confidence": 0.65,
-      "bridge_warrant": "MECHANISM"
-    },
-    "cumulative_sws_degradation_rate": {
-      "value": 2.8,
-      "unit": "percent_sws_reduction_per_night_of_repeated_evening_light_exposure",
-      "range": {
-        "min": 1.0,
-        "max": 5.5
-      },
-      "note": "When evening light above threshold is repeated on consecutive nights, SWS degradation does not plateau immediately. Progressive VLPO phase delay produces approximately 2.8% additional SWS reduction per night for the first 5\u20137 nights before a new, degraded steady state is reached.",
-      "source": "M\u00fcnch et al. (2006); Dijk & Czeisler (1994) SWS dynamics modeling",
-      "confidence": 0.55,
-      "bridge_warrant": "EMPIRICAL_COVARIANCE",
-      "flag": "THEORETICAL_DEFAULT \u2014 the architectural extrapolation of this parameter (from sleep lab to residential building context) is not directly empirically tested"
-    }
-  },
-  "building_types": [
-    "residential",
-    "eldercare",
-    "hospitals_patient_rooms",
-    "school_dormitories"
-  ],
-  "bridge_warrant": "MECHANISM",
-  "bridge_prior": 0.6,
-  "interaction_templates": [
-    "CIRCADIAN_ARCH_REG_001",
-    "CHRONO_LIGHT_ENTRAINMENT_001",
-    "CCT_TEMPORAL_ECOLOGICAL_001",
-    "T6",
-    "ED_HIPPOCAMPAL_ENCODING_001"
-  ],
-  "ie_dpt_interaction": "T_IE_003 (Semantic Override) \u2014 occupants with explicit knowledge of blue-light sleep effects can make compensating behavioral adjustments (glasses, phone filters, dimming) that partially offset the architectural stimulus. This is the highest IE-DPT relevance in the circadian cluster \u2014 behavioral adaptation is common and substantial.",
-  "key_references": [
-    "Gooley et al. (2011). https://doi.org/10.1210/jc.2010-2098",
-    "M\u00fcnch et al. (2006). https://doi.org/10.1152/ajpregu.00478.2005",
-    "Chang et al. (2015). https://doi.org/10.1073/pnas.1418490112",
-    "Thapan et al. (2001). https://doi.org/10.1111/j.1469-7793.2001.t01-1-00261.x"
-  ],
-  "cross_template_interactions": {
-    "IC2": "Primary interaction: SWS architecture is the biological period during which the interoceptive body-budget system is recalibrated. Reduced SWS = reduced body-budget recalibration = less accurate daytime body-budget predictions = elevated allostatic load. This connects CB_SLEEP_ARCHITECTURE_002 directly to the allostatic cost pathway in T6 and T7.",
-    "AX4": "Direct: dimmer access, blackout curtain control, and light switch placement all modulate occupant ability to eliminate evening light exposure. Hospital patients and nursing home residents frequently lack AX4 control over their evening light environment \u2014 a design failure with direct clinical consequences."
-  },
-  "display_id": "CSA2",
-  "calibration_status": "calibrated",
-  "panel_source": "LIGHT-I",
-  "confidence": 0.6,
-  "higher_order_principle": "Evening light exposure \u2192 cumulative deficits pathway: The mechanism by which evening light exposure \u2192 melatonin suppression \u2192 sleep quality operates",
-  "higher_order_principle_inferred": true,
-  "bridge_provenance": {
-    "bridge_version": "bridge_v1_2026-02-27",
-    "bridged_at": "2026-02-28T00:59:51.923549+00:00",
-    "fields_inferred": [
-      "higher_order_principle (from mechanism chain)"
-    ]
-  },
-  "outcome_domains": [
-    "behav",
-    "env"
-  ],
-  "outcome_terms": [
-    "behav.sleep",
-    "env.lighting"
-  ],
-  "theory_links": [
-    {
-      "theory_id": "ART",
-      "confidence": 0.5,
-      "match_type": "keyword"
-    }
-  ],
-  "molecule_links": [
-    {
-      "molecule_id": "art",
-      "confidence": 0.5
+      "step_name": "SWS Window Compression",
+      "confidence": 0.42,
+      "gap_type": "validation",
+      "paper_ids": [],
+      "description": "Delta wave distribution changes shape drastically when homeostatic sleep drive overrides circadian signals.",
+      "missing_context": [
+        "No direct behavioral observation correlation studies mapped."
+      ]
     }
   ]
 }
