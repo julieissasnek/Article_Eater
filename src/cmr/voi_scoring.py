@@ -1,108 +1,156 @@
-"""Value-of-information scoring utilities (Sprint 11 Task 11.20)."""
+"""
+voi_scoring.py -- Paper-level Value-of-Information scorer.
 
+Provides score_voi(), the single callable imported by abstract_triage_4d.py
+for Phase 4D classification.
+
+Relationship to VOICalculator
+------------------------------
+VOICalculator in services/voi_search.py computes gap-level VOI using a
+GapType enum and a structured Belief object (uncertainty + paper_ids).
+That interface is designed for the belief-update loop, not for screening
+individual incoming papers.
+
+score_voi() is a *paper-level* function: given a candidate paper dict
+(as produced by the Phase 4B abstract collection stage), it estimates
+the marginal epistemic value of reading that paper in full.  It shares
+the same conceptual goal -- quantifying how much new information the
+paper would add -- but derives the score from observable paper metadata
+rather than from an explicit prior belief.
+
+Score formula
+-------------
+The final score is the sum of four independent components, clamped to
+[0.0, 1.0]:
+
+  1. Domain signal density (primary driver, 0.0 -- 0.60)
+     Count of strong domain signals in the abstract.  Each occurrence
+     contributes 0.10, capped at 6 signals (0.60 total).
+     Strong signals are the same list used by triage_funnel.py.
+
+  2. Study design quality (0.0 -- 0.10)
+     Empirical indicators in the abstract: RCT/experiment -> +0.10;
+     systematic review / meta-analysis -> +0.06; survey -> +0.03.
+
+  3. Recency (0.0 -- 0.08)
+     year >= 2020 -> +0.08; >= 2015 -> +0.04; >= 2010 -> +0.02.
+
+  4. Publication formality (0.0 -- 0.10)
+     DOI present -> +0.05; abstract length >= 300 chars -> +0.05.
+
+Thresholds (enforced by abstract_triage_4d.py, not here):
+  >= 0.70  ->  ACCEPT
+  0.50 - 0.69  ->  EDGE_CASE
+  < 0.50   ->  REJECT
+
+This module is intentionally free of lifecycle_db or network dependencies
+so it can be imported and tested in isolation.
+"""
 from __future__ import annotations
 
-from typing import Any
+import re
+from typing import Optional
+
+# ── Domain signals (mirrors triage_funnel._STRONG_SIGNALS) ───────────────────
+# Kept here as a local constant so cmr/ has no cross-package dependency on
+# track2/triage_funnel.py.  Update both lists in sync.
+
+_STRONG_SIGNALS: frozenset[str] = frozenset({
+    "daylight", "daylighting", "natural light", "artificial light",
+    "circadian", "melanopsin", "correlated colour", "colour temperature",
+    "spatial daylight autonomy", "glare", "luminance", "illuminance",
+    "window-to-floor", "visual comfort",
+    "cognitive", "cognition", "attention", "working memory",
+    "executive function", "alertness", "cognitive fatigue", "mental workload",
+    "academic performance", "learning performance", "task performance",
+    "n-back", "attentional", "cognitive load",
+    "wellbeing", "well-being", "biophilic",
+    "thermal comfort", "indoor environment quality", "reverberation",
+    "soundscape", "acoustic comfort",
+})
+
+# ── Study-design keyword sets ─────────────────────────────────────────────────
+
+_EMPIRICAL_MARKERS: tuple[str, ...] = (
+    "randomized", "randomised", "controlled trial", "rct",
+    "experiment", "experimental study", "quasi-experiment",
+    "field study", "laboratory study", "within-subject", "between-subject",
+)
+
+_REVIEW_MARKERS: tuple[str, ...] = (
+    "systematic review", "meta-analysis", "meta analysis",
+    "scoping review", "literature review",
+)
+
+_SURVEY_MARKERS: tuple[str, ...] = (
+    "survey", "cross-sectional", "questionnaire", "self-report",
+    "observational study",
+)
 
 
-_WELL_CALIBRATED = {
-    "supported",
-    "established",
-    "substantial",
-    "mature",
-    "high",
-}
+# ── Public API ─────────────────────────────────────────────────────────────────
 
+def score_voi(paper: dict, *, gap_context: str = "") -> float:
+    """
+    Compute a Value-of-Information score for a candidate paper.
 
-def _is_well_calibrated(maturity: Any) -> bool:
-    if isinstance(maturity, list):
-        return any(_is_well_calibrated(item) for item in maturity)
-    return str(maturity or "").strip().lower() in _WELL_CALIBRATED
+    Parameters
+    ----------
+    paper : dict
+        Must contain at least one of: 'abstract', 'title_raw' / 'title'.
+        Optional fields that improve accuracy: 'publication_year', 'doi',
+        'cited_by', 'venue'.
+    gap_context : str
+        Unused in the current implementation; reserved for future gap-
+        specific weighting (e.g. boost MECHANISM papers for a mechanism gap).
 
+    Returns
+    -------
+    float in [0.0, 1.0]
+        Higher scores indicate greater expected value from full-text review.
+    """
+    abstract = (paper.get("abstract") or "").strip()
+    title    = (paper.get("title_raw") or paper.get("title") or "").strip()
+    year     = paper.get("publication_year") or paper.get("year")
+    doi      = (paper.get("doi") or "").strip()
 
-def _effect_size_abs(finding: dict[str, Any]) -> float:
-    raw = finding.get("effect_size")
-    if raw is None and isinstance(finding.get("claim"), dict):
-        raw = finding["claim"].get("effect_size")
+    combined_text = (title + " " + abstract).lower()
+
+    # ── Component 1: domain signal density ───────────────────────────────────
+    signal_hits = sum(1 for s in _STRONG_SIGNALS if s in combined_text)
+    density_score = min(signal_hits * 0.10, 0.60)
+
+    # ── Component 2: study design quality ────────────────────────────────────
+    design_score = 0.0
+    abstract_lower = abstract.lower()
+    if any(m in abstract_lower for m in _EMPIRICAL_MARKERS):
+        design_score = 0.10
+    elif any(m in abstract_lower for m in _REVIEW_MARKERS):
+        design_score = 0.06
+    elif any(m in abstract_lower for m in _SURVEY_MARKERS):
+        design_score = 0.03
+
+    # ── Component 3: recency ──────────────────────────────────────────────────
+    recency_score = 0.0
     try:
-        return abs(float(raw or 0.0))
+        y = int(year) if year else 0
+        if y >= 2020:
+            recency_score = 0.08
+        elif y >= 2015:
+            recency_score = 0.04
+        elif y >= 2010:
+            recency_score = 0.02
     except (TypeError, ValueError):
-        return 0.0
+        pass
 
+    # ── Component 4: publication formality ───────────────────────────────────
+    formality_score = 0.0
+    if doi:
+        formality_score += 0.05
+    if len(abstract) >= 300:
+        formality_score += 0.05
+    elif len(abstract) >= 150:
+        formality_score += 0.02
 
-def _score_single_finding(finding: dict[str, Any]) -> float:
-    assessment = str(
-        finding.get("assessment")
-        or finding.get("category")
-        or finding.get("type")
-        or "gap"
-    ).lower()
-    calibrated = _is_well_calibrated(
-        finding.get("template_maturity")
-        or finding.get("maturity")
-        or finding.get("template_maturities")
-    )
-    effect_size = _effect_size_abs(finding)
-
-    if assessment == "contradiction":
-        return 1.0 if calibrated else 0.7
-    if assessment == "gap":
-        return 0.8 if effect_size > 0.5 else 0.4
-    if assessment == "extension":
-        return 0.6
-    if assessment == "confirmation":
-        return 0.2 if calibrated else 0.5
-    return 0.4
-
-
-def score_voi(findings: list[dict]) -> list[dict]:
-    """
-    Score and sort findings by VOI (highest first).
-
-    Returns a new list where each finding has:
-      - voi_score: float in [0, 1]
-      - voi_bucket: "high" | "medium" | "low"
-    """
-    scored: list[dict[str, Any]] = []
-    for finding in findings:
-        score = max(0.0, min(1.0, _score_single_finding(finding)))
-        if score >= 0.8:
-            bucket = "high"
-        elif score >= 0.5:
-            bucket = "medium"
-        else:
-            bucket = "low"
-        scored.append({**finding, "voi_score": score, "voi_bucket": bucket})
-
-    scored.sort(key=lambda item: float(item.get("voi_score", 0.0)), reverse=True)
-    return scored
-
-
-def aggregate_paper_voi(findings: list[dict]) -> dict[str, Any]:
-    """Compute aggregate paper-level VOI summary."""
-    scored = score_voi(findings)
-    if not scored:
-        return {
-            "aggregate_voi": 0.0,
-            "expected_information_gain": "low",
-            "high_value_findings": 0,
-            "n_findings": 0,
-        }
-
-    mean_score = sum(float(item["voi_score"]) for item in scored) / len(scored)
-    high_value = sum(1 for item in scored if float(item["voi_score"]) >= 0.8)
-
-    if mean_score >= 0.8:
-        eig = "high"
-    elif mean_score >= 0.5:
-        eig = "medium"
-    else:
-        eig = "low"
-
-    return {
-        "aggregate_voi": round(mean_score, 3),
-        "expected_information_gain": eig,
-        "high_value_findings": high_value,
-        "n_findings": len(scored),
-    }
-
+    raw = density_score + design_score + recency_score + formality_score
+    return min(round(raw, 4), 1.0)

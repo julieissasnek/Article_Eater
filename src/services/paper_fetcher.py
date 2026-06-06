@@ -1,1319 +1,662 @@
 """
-Paper Fetcher Service
-=====================
+paper_fetcher.py -- Phase 4C HTTP clients for abstract collection.
 
-Unified ingestion client for fetching paper metadata from multiple sources.
+Provides three validated API clients and one helper, each with:
+  - Strict rate-limiting (token-bucket, thread-safe)
+  - Automatic retry on HTTP 429 / 5xx with exponential backoff
+  - Per-result title-similarity guard (SequenceMatcher >= 0.90) on
+    all title-based lookups to prevent false-positive matches
+  - Abstract validation enforced by the caller (abstract_collector_4c.py)
 
-Tier 1 implementation per expert panel feedback:
-- Support DOI, PMID, Semantic Scholar ID, arXiv ID
-- Auto-detect identifier type from format
-- Metadata + structured data (not requiring full text)
-- Citation graph integration
+Clients
+-------
+  SemanticScholarClient  -- primary; rate-limited to 20 req/min (unauthenticated)
+  CrossRefClient         -- DOI registry; 50 req/s polite pool
+  PubMedClient           -- NCBI biomedical; 3 req/s without API key
+  OpenAlexHelper         -- broad scholarly graph; 10 req/s
 
-Per expert panel (Kaplan): Add PsycINFO support for environmental psychology.
-Per expert panel (Cartwright): Mark abstract-only extractions with lower confidence.
+Thread-safety
+-------------
+  _RateLimiter uses threading.Lock.  All clients are safe to share
+  across threads (one instance per process is sufficient).
 
-Date: January 20, 2026
-Updated: February 26, 2026 — replaced Mock clients with real HTTP implementations
+Usage
+-----
+  from paper_fetcher import SemanticScholarClient, CrossRefClient
+  from paper_fetcher import PubMedClient, OpenAlexHelper
+
+  ss = SemanticScholarClient()
+  result = ss.by_doi("10.1016/j.buildenv.2020.106960")
+  # result: {"doi": ..., "title": ..., "abstract": ...,
+  #          "year": ..., "source": "semantic_scholar"} or None
 """
+from __future__ import annotations
 
-from dataclasses import dataclass, field
-from typing import List, Dict, Any, Optional
-from enum import Enum
-from abc import ABC, abstractmethod
-import json
-import os
 import re
-import logging
+import threading
 import time
-import urllib.request
-import urllib.error
-import urllib.parse
-import xml.etree.ElementTree as ET
-from datetime import datetime, timezone
+from difflib import SequenceMatcher
+from typing import Optional
 
-logger = logging.getLogger(__name__)
+import requests
 
-# Polite contact email for API rate-limit pools
-_CONTACT_EMAIL = os.environ.get("AE_CONTACT_EMAIL", "dkirsh@gmail.com")
+# ---------------------------------------------------------------------------
+# Constants
+# ---------------------------------------------------------------------------
 
+UA_STRING = "KA-AbstractCollector/4c (mailto:student@ucsd.edu)"
 
-# =============================================================================
-# Data Structures
-# =============================================================================
+SS_PAPER_URL    = "https://api.semanticscholar.org/graph/v1/paper/{paper_id}"
+SS_SEARCH_URL   = "https://api.semanticscholar.org/graph/v1/paper/search"
+CROSSREF_WORKS  = "https://api.crossref.org/works"
+PUBMED_SEARCH   = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi"
+PUBMED_FETCH    = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi"
+OPENALEX_WORKS  = "https://api.openalex.org/works"
 
-class IdentifierType(Enum):
-    """Types of paper identifiers."""
-    DOI = "doi"
-    PMID = "pmid"
-    SEMANTIC_SCHOLAR = "semantic_scholar"
-    ARXIV = "arxiv"
-    UNKNOWN = "unknown"
+TITLE_SIM_THRESHOLD = 0.90   # SequenceMatcher ratio required for title lookups
+DEFAULT_TIMEOUT     = 15     # seconds per HTTP call
+MAX_RETRIES         = 3      # attempts on 429 / 5xx before giving up
+BACKOFF_BASE        = 2.0    # exponential backoff: BACKOFF_BASE ** attempt seconds
 
 
-class FetchStatus(Enum):
-    """Status of a fetch operation."""
-    SUCCESS = "success"
-    NOT_FOUND = "not_found"
-    RATE_LIMITED = "rate_limited"
-    ERROR = "error"
-    DUPLICATE = "duplicate"
-
-
-@dataclass
-class Author:
-    """Author information."""
-    name: str
-    affiliation: Optional[str] = None
-    orcid: Optional[str] = None
-
-    def to_dict(self) -> Dict[str, Any]:
-        return {
-            'name': self.name,
-            'affiliation': self.affiliation,
-            'orcid': self.orcid
-        }
-
-
-@dataclass
-class Citation:
-    """Citation relationship between papers."""
-    citing_paper_id: str
-    cited_paper_id: str
-    context: Optional[str] = None  # Citation context if available
-
-    def to_dict(self) -> Dict[str, Any]:
-        return {
-            'citing_paper_id': self.citing_paper_id,
-            'cited_paper_id': self.cited_paper_id,
-            'context': self.context
-        }
-
-
-@dataclass
-class PaperMetadata:
-    """
-    Metadata for a scientific paper.
-
-    Per expert panel (Cartwright): Track source_depth to indicate
-    whether we have full text or just abstract.
-    """
-    # Identifiers
-    paper_id: str  # Internal ID
-    doi: Optional[str] = None
-    pmid: Optional[str] = None
-    semantic_scholar_id: Optional[str] = None
-    arxiv_id: Optional[str] = None
-
-    # Bibliographic info
-    title: str = ""
-    abstract: Optional[str] = None
-    authors: List[Author] = field(default_factory=list)
-    year: Optional[int] = None
-    venue: Optional[str] = None  # Journal/conference
-    volume: Optional[str] = None
-    pages: Optional[str] = None
-
-    # Structured data
-    keywords: List[str] = field(default_factory=list)
-    mesh_terms: List[str] = field(default_factory=list)  # MeSH for PubMed
-    study_type: Optional[str] = None  # RCT, observational, review, etc.
-    open_access: bool = False
-
-    # Citation info
-    citation_count: int = 0
-    references: List[str] = field(default_factory=list)  # Paper IDs this cites
-    cited_by: List[str] = field(default_factory=list)    # Paper IDs citing this
-
-    # Source tracking
-    source: str = "unknown"  # Which API provided this
-    fetched_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
-
-    def to_dict(self) -> Dict[str, Any]:
-        return {
-            'paper_id': self.paper_id,
-            'doi': self.doi,
-            'pmid': self.pmid,
-            'semantic_scholar_id': self.semantic_scholar_id,
-            'arxiv_id': self.arxiv_id,
-            'title': self.title,
-            'abstract': self.abstract,
-            'authors': [a.to_dict() for a in self.authors],
-            'year': self.year,
-            'venue': self.venue,
-            'volume': self.volume,
-            'pages': self.pages,
-            'keywords': self.keywords,
-            'mesh_terms': self.mesh_terms,
-            'study_type': self.study_type,
-            'open_access': self.open_access,
-            'citation_count': self.citation_count,
-            'references': self.references,
-            'cited_by': self.cited_by,
-            'source': self.source,
-            'fetched_at': self.fetched_at.isoformat()
-        }
-
-    @classmethod
-    def from_dict(cls, d: Dict[str, Any]) -> 'PaperMetadata':
-        authors = [
-            Author(
-                name=a.get('name', ''),
-                affiliation=a.get('affiliation'),
-                orcid=a.get('orcid')
-            )
-            for a in d.get('authors', [])
-        ]
-
-        fetched_at = d.get('fetched_at')
-        if isinstance(fetched_at, str):
-            fetched_at = datetime.fromisoformat(fetched_at)
-        elif fetched_at is None:
-            fetched_at = datetime.now(timezone.utc)
-
-        return cls(
-            paper_id=d.get('paper_id', ''),
-            doi=d.get('doi'),
-            pmid=d.get('pmid'),
-            semantic_scholar_id=d.get('semantic_scholar_id'),
-            arxiv_id=d.get('arxiv_id'),
-            title=d.get('title', ''),
-            abstract=d.get('abstract'),
-            authors=authors,
-            year=d.get('year'),
-            venue=d.get('venue'),
-            volume=d.get('volume'),
-            pages=d.get('pages'),
-            keywords=d.get('keywords', []),
-            mesh_terms=d.get('mesh_terms', []),
-            study_type=d.get('study_type'),
-            open_access=d.get('open_access', False),
-            citation_count=d.get('citation_count', 0),
-            references=d.get('references', []),
-            cited_by=d.get('cited_by', []),
-            source=d.get('source', 'unknown'),
-            fetched_at=fetched_at
-        )
-
-
-@dataclass
-class FetchResult:
-    """Result of a fetch operation."""
-    status: FetchStatus
-    metadata: Optional[PaperMetadata] = None
-    error_message: Optional[str] = None
-    duplicate_of: Optional[str] = None  # If duplicate, ID of existing paper
-
-    def to_dict(self) -> Dict[str, Any]:
-        return {
-            'status': self.status.value,
-            'metadata': self.metadata.to_dict() if self.metadata else None,
-            'error_message': self.error_message,
-            'duplicate_of': self.duplicate_of
-        }
-
-
-# =============================================================================
-# API Client Base Class
-# =============================================================================
-
-class APIClient(ABC):
-    """Abstract base class for paper metadata API clients."""
-
-    @abstractmethod
-    def fetch(self, identifier: str) -> FetchResult:
-        """Fetch paper metadata by identifier."""
-        pass
-
-    @abstractmethod
-    def search(self, query: str, max_results: int = 10) -> List[PaperMetadata]:
-        """Search for papers by query."""
-        pass
-
-
-# =============================================================================
-# Mock API Clients (for testing without real API access)
-# =============================================================================
-
-class MockCrossRefClient(APIClient):
-    """
-    Mock CrossRef API client for DOI resolution.
-
-    In production, this would call the CrossRef API.
-    """
-
-    def __init__(self):
-        self.cache: Dict[str, PaperMetadata] = {}
-
-    def fetch(self, doi: str) -> FetchResult:
-        """Fetch metadata by DOI."""
-        # Normalize DOI
-        doi = self._normalize_doi(doi)
-
-        if doi in self.cache:
-            return FetchResult(
-                status=FetchStatus.SUCCESS,
-                metadata=self.cache[doi]
-            )
-
-        # In real implementation, would call CrossRef API
-        # For now, return mock data for testing
-        logger.info(f"MockCrossRefClient: Would fetch DOI {doi}")
-
-        # Return not found for unknown DOIs
-        return FetchResult(
-            status=FetchStatus.NOT_FOUND,
-            error_message=f"DOI not found: {doi}"
-        )
-
-    def search(self, query: str, max_results: int = 10) -> List[PaperMetadata]:
-        """Search CrossRef by query."""
-        # Would call CrossRef API in production
-        return []
-
-    def _normalize_doi(self, doi: str) -> str:
-        """Normalize DOI format."""
-        # Remove URL prefix if present
-        doi = re.sub(r'^https?://(dx\.)?doi\.org/', '', doi)
-        return doi.lower()
-
-
-class MockPubMedClient(APIClient):
-    """
-    Mock PubMed E-utilities client for PMID resolution.
-
-    In production, this would call the NCBI E-utilities API.
-    """
-
-    def __init__(self, api_key: Optional[str] = None):
-        self.api_key = api_key
-        self.cache: Dict[str, PaperMetadata] = {}
-
-    def fetch(self, pmid: str) -> FetchResult:
-        """Fetch metadata by PMID."""
-        # Normalize PMID
-        pmid = self._normalize_pmid(pmid)
-
-        if pmid in self.cache:
-            return FetchResult(
-                status=FetchStatus.SUCCESS,
-                metadata=self.cache[pmid]
-            )
-
-        logger.info(f"MockPubMedClient: Would fetch PMID {pmid}")
-        return FetchResult(
-            status=FetchStatus.NOT_FOUND,
-            error_message=f"PMID not found: {pmid}"
-        )
-
-    def search(self, query: str, max_results: int = 10) -> List[PaperMetadata]:
-        """Search PubMed by query."""
-        return []
-
-    def _normalize_pmid(self, pmid: str) -> str:
-        """Normalize PMID format."""
-        # Remove PMID prefix if present
-        pmid = re.sub(r'^pmid:?\s*', '', pmid, flags=re.IGNORECASE)
-        return pmid
-
-
-class MockSemanticScholarClient(APIClient):
-    """
-    Mock Semantic Scholar API client.
-
-    Provides citation graph data in addition to metadata.
-    """
-
-    def __init__(self, api_key: Optional[str] = None):
-        self.api_key = api_key
-        self.cache: Dict[str, PaperMetadata] = {}
-
-    def fetch(self, s2_id: str) -> FetchResult:
-        """Fetch metadata by Semantic Scholar ID."""
-        if s2_id in self.cache:
-            return FetchResult(
-                status=FetchStatus.SUCCESS,
-                metadata=self.cache[s2_id]
-            )
-
-        logger.info(f"MockSemanticScholarClient: Would fetch S2ID {s2_id}")
-        return FetchResult(
-            status=FetchStatus.NOT_FOUND,
-            error_message=f"S2ID not found: {s2_id}"
-        )
-
-    def fetch_by_doi(self, doi: str) -> FetchResult:
-        """Fetch by DOI (Semantic Scholar also supports DOI lookup)."""
-        logger.info(f"MockSemanticScholarClient: Would fetch DOI {doi}")
-        return FetchResult(
-            status=FetchStatus.NOT_FOUND,
-            error_message=f"DOI not found in Semantic Scholar: {doi}"
-        )
-
-    def search(self, query: str, max_results: int = 10) -> List[PaperMetadata]:
-        """Search Semantic Scholar by query."""
-        return []
-
-    def get_citations(self, paper_id: str) -> List[Citation]:
-        """Get citations for a paper."""
-        return []
-
-    def get_references(self, paper_id: str) -> List[Citation]:
-        """Get references from a paper."""
-        return []
-
-
-class MockArxivClient(APIClient):
-    """
-    Mock arXiv API client.
-
-    For preprint access.
-    """
-
-    def __init__(self):
-        self.cache: Dict[str, PaperMetadata] = {}
-
-    def fetch(self, arxiv_id: str) -> FetchResult:
-        """Fetch metadata by arXiv ID."""
-        arxiv_id = self._normalize_arxiv_id(arxiv_id)
-
-        if arxiv_id in self.cache:
-            return FetchResult(
-                status=FetchStatus.SUCCESS,
-                metadata=self.cache[arxiv_id]
-            )
-
-        logger.info(f"MockArxivClient: Would fetch arXiv {arxiv_id}")
-        return FetchResult(
-            status=FetchStatus.NOT_FOUND,
-            error_message=f"arXiv ID not found: {arxiv_id}"
-        )
-
-    def search(self, query: str, max_results: int = 10) -> List[PaperMetadata]:
-        """Search arXiv by query."""
-        return []
-
-    def _normalize_arxiv_id(self, arxiv_id: str) -> str:
-        """Normalize arXiv ID format."""
-        # Remove arxiv: prefix if present
-        arxiv_id = re.sub(r'^arxiv:?\s*', '', arxiv_id, flags=re.IGNORECASE)
-        # Remove version suffix for caching
-        return arxiv_id
-
-
-# =============================================================================
-# Real API Clients (live HTTP implementations)
-# =============================================================================
+# ---------------------------------------------------------------------------
+# Rate-limiter — token bucket, thread-safe
+# ---------------------------------------------------------------------------
 
 class _RateLimiter:
-    """Simple per-class rate limiter."""
-    def __init__(self, min_delay: float = 1.0):
-        self._min_delay = min_delay
-        self._last_request: float = 0.0
+    """
+    Token-bucket rate limiter.
 
-    def wait(self) -> None:
-        elapsed = time.monotonic() - self._last_request
-        if elapsed < self._min_delay:
-            time.sleep(self._min_delay - elapsed)
-        self._last_request = time.monotonic()
+    Initialise with max_calls and period (seconds).  Each call to
+    .acquire() blocks until a token is available, then consumes one.
+
+    Example: _RateLimiter(max_calls=20, period=60) permits at most
+    20 calls per 60-second window.
+    """
+
+    def __init__(self, max_calls: int, period: float) -> None:
+        self._max_calls = max_calls
+        self._period    = period
+        self._lock      = threading.Lock()
+        self._calls: list[float] = []   # timestamps of recent calls
+
+    def acquire(self) -> None:
+        """Block until a token is available, then consume one."""
+        while True:
+            with self._lock:
+                now = time.monotonic()
+                # Drop calls outside the rolling window
+                cutoff = now - self._period
+                self._calls = [t for t in self._calls if t > cutoff]
+                if len(self._calls) < self._max_calls:
+                    self._calls.append(now)
+                    return
+                # Calculate how long until the oldest call falls out
+                wait = self._calls[0] - cutoff
+            time.sleep(max(wait, 0.01))
 
 
-def _http_get_json(url: str, headers: Optional[Dict[str, str]] = None,
-                   retries: int = 3, backoff: float = 2.0) -> Optional[Dict]:
-    """GET a URL, parse JSON response, with retries."""
-    hdrs = {"User-Agent": f"ArticleEater/1.0 (mailto:{_CONTACT_EMAIL})"}
+# ---------------------------------------------------------------------------
+# Shared HTTP helper
+# ---------------------------------------------------------------------------
+
+def _get(
+    url: str,
+    *,
+    params: Optional[dict] = None,
+    headers: Optional[dict] = None,
+    timeout: int = DEFAULT_TIMEOUT,
+    rate_limiter: Optional[_RateLimiter] = None,
+) -> Optional[requests.Response]:
+    """
+    GET with retry on 429 / 5xx.  Returns Response or None on terminal failure.
+    Respects Retry-After header on 429.
+    """
+    _headers = {"User-Agent": UA_STRING}
     if headers:
-        hdrs.update(headers)
-    req = urllib.request.Request(url, headers=hdrs)
-    for attempt in range(retries):
+        _headers.update(headers)
+
+    for attempt in range(MAX_RETRIES):
+        if rate_limiter:
+            rate_limiter.acquire()
         try:
-            with urllib.request.urlopen(req, timeout=30) as resp:
-                return json.loads(resp.read().decode("utf-8"))
-        except urllib.error.HTTPError as e:
-            if e.code == 429:
-                wait = backoff * (2 ** attempt)
-                logger.warning("Rate limited on %s, waiting %.1fs", url, wait)
-                time.sleep(wait)
+            resp = requests.get(url, params=params, headers=_headers, timeout=timeout)
+            if resp.status_code == 200:
+                return resp
+            if resp.status_code == 429:
+                retry_after = float(resp.headers.get("Retry-After", BACKOFF_BASE ** (attempt + 1)))
+                time.sleep(retry_after)
                 continue
-            if e.code in (404, 410):
-                return None
-            logger.warning("HTTP %d for %s (attempt %d/%d)", e.code, url, attempt + 1, retries)
-            if attempt < retries - 1:
-                time.sleep(backoff * (attempt + 1))
-        except Exception as exc:
-            logger.warning("Request error for %s: %s (attempt %d/%d)", url, exc, attempt + 1, retries)
-            if attempt < retries - 1:
-                time.sleep(backoff * (attempt + 1))
+            if resp.status_code >= 500:
+                time.sleep(BACKOFF_BASE ** (attempt + 1))
+                continue
+            # 4xx other than 429 — not retryable
+            return None
+        except requests.Timeout:
+            time.sleep(BACKOFF_BASE ** (attempt + 1))
+        except requests.RequestException:
+            return None
+
     return None
 
 
-class CrossRefClient(APIClient):
-    """
-    Real CrossRef API client for DOI resolution and text search.
+# ---------------------------------------------------------------------------
+# Title-similarity guard
+# ---------------------------------------------------------------------------
 
-    Uses https://api.crossref.org with polite pool (mailto header).
+def _title_sim(a: str, b: str) -> float:
+    """
+    Return SequenceMatcher ratio after lowercasing and stripping punctuation.
+    Used to reject false-positive title-based lookups.
+    """
+    def _clean(s: str) -> str:
+        return re.sub(r"[^\w\s]", " ", s.lower()).strip()
+    return SequenceMatcher(None, _clean(a), _clean(b)).ratio()
+
+
+def _title_ok(query: str, found: str) -> bool:
+    """Return True iff title similarity >= TITLE_SIM_THRESHOLD."""
+    if not query or not found:
+        return False
+    return _title_sim(query, found) >= TITLE_SIM_THRESHOLD
+
+
+# ---------------------------------------------------------------------------
+# JATS / XML helpers
+# ---------------------------------------------------------------------------
+
+def _strip_jats(text: str) -> str:
+    """Strip JATS XML tags from CrossRef abstracts."""
+    return re.sub(r"<[^>]+>", "", text).strip()
+
+
+def _decode_inverted_index(inverted: Optional[dict]) -> str:
+    """Reconstruct abstract text from OpenAlex inverted-index format."""
+    if not inverted:
+        return ""
+    positions: list[tuple[int, str]] = []
+    for word, pos_list in inverted.items():
+        for pos in pos_list:
+            positions.append((pos, word))
+    positions.sort()
+    return " ".join(w for _, w in positions)
+
+
+# ---------------------------------------------------------------------------
+# Client 1: SemanticScholarClient
+# ---------------------------------------------------------------------------
+
+class SemanticScholarClient:
+    """
+    Semantic Scholar Graph API client.
+
+    Rate limit: 20 requests/minute unauthenticated (enforced by token bucket).
+    If an API key is provided, this limit is relaxed to 100 req/s, but the
+    client is conservative by default.
+
+    Methods
+    -------
+    by_doi(doi)          -- fetch by DOI, no title check needed
+    by_title(title)      -- fetch top-1 search result; title similarity enforced
     """
 
-    BASE = "https://api.crossref.org"
+    def __init__(self, api_key: Optional[str] = None) -> None:
+        # Unauthenticated: 20 req/min.  Authenticated: much higher, but keep
+        # conservative regardless to avoid accidental bans.
+        self._limiter = _RateLimiter(max_calls=20, period=60)
+        self._headers: dict[str, str] = {}
+        if api_key:
+            self._headers["x-api-key"] = api_key
+
+    def by_doi(self, doi: str) -> Optional[dict]:
+        """
+        Fetch paper by DOI.  Returns normalised result dict or None.
+        No title-similarity check (DOI is authoritative).
+        """
+        if not doi:
+            return None
+        url = SS_PAPER_URL.format(paper_id=f"DOI:{doi}")
+        resp = _get(
+            url,
+            params={"fields": "title,abstract,externalIds,year,authors"},
+            headers=self._headers,
+            rate_limiter=self._limiter,
+        )
+        if resp is None:
+            return None
+        data = resp.json()
+        abstract = (data.get("abstract") or "").strip()
+        return {
+            "doi":      doi,
+            "title":    (data.get("title") or "").strip(),
+            "abstract": abstract,
+            "year":     data.get("year"),
+            "source":   "semantic_scholar",
+        }
+
+    def by_title(self, title: str) -> Optional[dict]:
+        """
+        Search by title; apply TITLE_SIM_THRESHOLD guard.
+        Returns None if the top result does not match the query title.
+        """
+        if not title:
+            return None
+        resp = _get(
+            SS_SEARCH_URL,
+            params={
+                "query":  title,
+                "fields": "title,abstract,externalIds,year",
+                "limit":  1,
+            },
+            headers=self._headers,
+            rate_limiter=self._limiter,
+        )
+        if resp is None:
+            return None
+        items = resp.json().get("data", [])
+        if not items:
+            return None
+        item = items[0]
+        found_title = (item.get("title") or "").strip()
+        if not _title_ok(title, found_title):
+            return None
+        doi = (item.get("externalIds") or {}).get("DOI", "")
+        return {
+            "doi":      doi,
+            "title":    found_title,
+            "abstract": (item.get("abstract") or "").strip(),
+            "year":     item.get("year"),
+            "source":   "semantic_scholar",
+        }
+
+
+# ---------------------------------------------------------------------------
+# Client 2: CrossRefClient
+# ---------------------------------------------------------------------------
+
+class CrossRefClient:
+    """
+    CrossRef Works API client.
+
+    Polite pool: include mailto in User-Agent (done via UA_STRING).
+    No hard rate limit enforced client-side; CrossRef allows ~50 req/s
+    in the polite pool.  Uses a conservative 5 req/s limiter to avoid
+    competing with other pipeline processes.
+
+    Methods
+    -------
+    by_doi(doi)          -- fetch by DOI; authoritative, no title check
+    by_title(title)      -- fuzzy title query, top-1; similarity enforced
+    """
 
     def __init__(self) -> None:
-        self._limiter = _RateLimiter(min_delay=0.5)
+        self._limiter = _RateLimiter(max_calls=5, period=1)
 
-    def fetch(self, doi: str) -> FetchResult:
-        doi = self._normalize_doi(doi)
-        self._limiter.wait()
-        url = f"{self.BASE}/works/{urllib.parse.quote(doi, safe='')}"
-        data = _http_get_json(url)
-        if data is None or "message" not in data:
-            return FetchResult(status=FetchStatus.NOT_FOUND,
-                               error_message=f"DOI not found in CrossRef: {doi}")
-        msg = data["message"]
-        return FetchResult(status=FetchStatus.SUCCESS,
-                           metadata=self._parse_work(msg, doi))
-
-    def search(self, query: str, max_results: int = 10) -> List[PaperMetadata]:
-        self._limiter.wait()
-        params = urllib.parse.urlencode({
-            "query": query,
-            "rows": max_results,
-            "select": "DOI,title,author,published-print,published-online,"
-                      "container-title,volume,page,abstract,is-referenced-by-count,"
-                      "subject,type",
-        })
-        url = f"{self.BASE}/works?{params}"
-        data = _http_get_json(url)
-        if not data or "message" not in data:
-            return []
-        items = data["message"].get("items", [])
-        results: List[PaperMetadata] = []
-        for item in items[:max_results]:
-            doi = item.get("DOI", "")
-            results.append(self._parse_work(item, doi))
-        return results
-
-    # -- helpers --
-
-    @staticmethod
-    def _normalize_doi(doi: str) -> str:
-        doi = re.sub(r'^https?://(dx\.)?doi\.org/', '', doi)
-        return doi.strip()
-
-    def _parse_work(self, msg: Dict[str, Any], doi: str) -> PaperMetadata:
-        title_parts = msg.get("title", [])
-        title = title_parts[0] if title_parts else ""
-
-        authors: List[Author] = []
-        for a in msg.get("author", []):
-            name_parts = []
-            if a.get("given"):
-                name_parts.append(a["given"])
-            if a.get("family"):
-                name_parts.append(a["family"])
-            if name_parts:
-                affils = a.get("affiliation", [])
-                affil = affils[0].get("name") if affils else None
-                authors.append(Author(name=" ".join(name_parts),
-                                      affiliation=affil,
-                                      orcid=a.get("ORCID")))
-
-        year: Optional[int] = None
-        for date_field in ("published-print", "published-online", "issued", "created"):
-            dp = msg.get(date_field, {}).get("date-parts", [[]])
-            if dp and dp[0] and dp[0][0]:
-                year = int(dp[0][0])
-                break
-
-        venue_parts = msg.get("container-title", [])
-        venue = venue_parts[0] if venue_parts else None
-        abstract_raw = msg.get("abstract", "")
-        # CrossRef abstracts often have JATS XML tags
-        abstract = re.sub(r"<[^>]+>", "", abstract_raw).strip() if abstract_raw else None
-
-        return PaperMetadata(
-            paper_id=f"doi:{doi}",
-            doi=doi,
-            title=title,
-            abstract=abstract,
-            authors=authors,
-            year=year,
-            venue=venue,
-            volume=msg.get("volume"),
-            pages=msg.get("page"),
-            keywords=msg.get("subject", []),
-            study_type=estimate_study_type(abstract, title),
-            open_access=bool(msg.get("license")),
-            citation_count=int(msg.get("is-referenced-by-count", 0)),
-            references=[ref.get("DOI", "") for ref in msg.get("reference", [])
-                        if ref.get("DOI")],
-            source="crossref",
+    def by_doi(self, doi: str) -> Optional[dict]:
+        """Fetch CrossRef work record by DOI."""
+        if not doi:
+            return None
+        resp = _get(
+            f"{CROSSREF_WORKS}/{doi}",
+            rate_limiter=self._limiter,
         )
+        if resp is None:
+            return None
+        item = resp.json().get("message", {})
+        abstract = _strip_jats(item.get("abstract", ""))
+        return {
+            "doi":      doi,
+            "title":    " ".join(item.get("title", [])).strip(),
+            "abstract": abstract,
+            "year":     (item.get("issued") or {}).get("date-parts", [[None]])[0][0],
+            "source":   "crossref",
+        }
+
+    def by_title(self, title: str) -> Optional[dict]:
+        """Query CrossRef by title; enforce title-similarity threshold."""
+        if not title:
+            return None
+        resp = _get(
+            CROSSREF_WORKS,
+            params={
+                "query.title": title,
+                "rows":        1,
+                "select":      "DOI,title,abstract,issued",
+            },
+            rate_limiter=self._limiter,
+        )
+        if resp is None:
+            return None
+        items = resp.json().get("message", {}).get("items", [])
+        if not items:
+            return None
+        item = items[0]
+        found_title = " ".join(item.get("title", [])).strip()
+        if not _title_ok(title, found_title):
+            return None
+        abstract = _strip_jats(item.get("abstract", ""))
+        return {
+            "doi":      item.get("DOI", ""),
+            "title":    found_title,
+            "abstract": abstract,
+            "year":     (item.get("issued") or {}).get("date-parts", [[None]])[0][0],
+            "source":   "crossref",
+        }
 
 
-class PubMedClient(APIClient):
+# ---------------------------------------------------------------------------
+# Client 3: PubMedClient
+# ---------------------------------------------------------------------------
+
+class PubMedClient:
     """
-    Real PubMed E-utilities client for PMID resolution and search.
+    NCBI PubMed E-utilities client.
 
-    Uses https://eutils.ncbi.nlm.nih.gov/entrez/eutils.
+    Without an API key: 3 req/s.  Uses a conservative 2 req/s limiter.
+    PubMed does not support DOI direct-lookup via eutils; both lookups
+    use title-search then fetch by PMID.
+
+    Methods
+    -------
+    by_doi(doi)          -- searches PubMed for the DOI string in [aid] field
+    by_title(title)      -- free-text title search; similarity enforced
     """
-
-    BASE = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils"
 
     def __init__(self, api_key: Optional[str] = None) -> None:
-        self.api_key = api_key or os.environ.get("NCBI_API_KEY")
-        # With API key: 10 req/sec; without: 3 req/sec
-        delay = 0.12 if self.api_key else 0.35
-        self._limiter = _RateLimiter(min_delay=delay)
+        self._limiter = _RateLimiter(max_calls=2, period=1)
+        self._api_key = api_key
 
-    def fetch(self, pmid: str) -> FetchResult:
-        pmid = self._normalize_pmid(pmid)
-        self._limiter.wait()
-        params: Dict[str, str] = {
-            "db": "pubmed", "id": pmid, "rettype": "xml", "retmode": "xml",
+    def _search(self, term: str) -> Optional[str]:
+        """Run esearch and return first PMID, or None."""
+        params: dict = {
+            "db":      "pubmed",
+            "term":    term,
+            "retmax":  1,
+            "retmode": "json",
         }
-        if self.api_key:
-            params["api_key"] = self.api_key
-        url = f"{self.BASE}/efetch.fcgi?{urllib.parse.urlencode(params)}"
-        try:
-            hdrs = {"User-Agent": f"ArticleEater/1.0 (mailto:{_CONTACT_EMAIL})"}
-            req = urllib.request.Request(url, headers=hdrs)
-            with urllib.request.urlopen(req, timeout=30) as resp:
-                xml_bytes = resp.read()
-        except Exception as exc:
-            return FetchResult(status=FetchStatus.ERROR,
-                               error_message=f"PubMed fetch error: {exc}")
+        if self._api_key:
+            params["api_key"] = self._api_key
+        resp = _get(PUBMED_SEARCH, params=params, rate_limiter=self._limiter)
+        if resp is None:
+            return None
+        ids = resp.json().get("esearchresult", {}).get("idlist", [])
+        return ids[0] if ids else None
 
-        try:
-            root = ET.fromstring(xml_bytes)
-        except ET.ParseError as exc:
-            return FetchResult(status=FetchStatus.ERROR,
-                               error_message=f"PubMed XML parse error: {exc}")
-
-        article = root.find(".//PubmedArticle")
-        if article is None:
-            return FetchResult(status=FetchStatus.NOT_FOUND,
-                               error_message=f"PMID not found: {pmid}")
-        return FetchResult(status=FetchStatus.SUCCESS,
-                           metadata=self._parse_article(article, pmid))
-
-    def search(self, query: str, max_results: int = 10) -> List[PaperMetadata]:
-        self._limiter.wait()
-        params: Dict[str, str] = {
-            "db": "pubmed", "term": query, "retmax": str(max_results),
-            "retmode": "json", "sort": "relevance",
+    def _fetch(self, pmid: str) -> Optional[dict]:
+        """Run efetch for PMID and parse abstract XML."""
+        params: dict = {
+            "db":      "pubmed",
+            "id":      pmid,
+            "retmode": "xml",
+            "rettype": "abstract",
         }
-        if self.api_key:
-            params["api_key"] = self.api_key
-        url = f"{self.BASE}/esearch.fcgi?{urllib.parse.urlencode(params)}"
-        data = _http_get_json(url)
-        if not data:
-            return []
-        ids = data.get("esearchresult", {}).get("idlist", [])
-        if not ids:
-            return []
-        # Fetch each found PMID
-        results: List[PaperMetadata] = []
-        for pmid in ids:
-            r = self.fetch(pmid)
-            if r.status == FetchStatus.SUCCESS and r.metadata:
-                results.append(r.metadata)
-        return results
-
-    @staticmethod
-    def _normalize_pmid(pmid: str) -> str:
-        return re.sub(r'^pmid:?\s*', '', pmid, flags=re.IGNORECASE).strip()
-
-    def _parse_article(self, article: ET.Element, pmid: str) -> PaperMetadata:
-        mc = article.find(".//MedlineCitation")
-        ac = mc.find("Article") if mc is not None else None
-
-        title = ""
-        if ac is not None:
-            t_el = ac.find("ArticleTitle")
-            if t_el is not None and t_el.text:
-                title = t_el.text
-
-        abstract_parts: List[str] = []
-        if ac is not None:
-            for at in ac.findall(".//AbstractText"):
-                label = at.get("Label", "")
-                text = (at.text or "").strip()
-                if label and text:
-                    abstract_parts.append(f"{label}: {text}")
-                elif text:
-                    abstract_parts.append(text)
-        abstract = " ".join(abstract_parts) if abstract_parts else None
-
-        authors: List[Author] = []
-        if ac is not None:
-            for au in ac.findall(".//Author"):
-                ln = (au.findtext("LastName") or "").strip()
-                fn = (au.findtext("ForeName") or au.findtext("FirstName") or "").strip()
-                if ln:
-                    name = f"{fn} {ln}".strip()
-                    affils = au.findall(".//Affiliation")
-                    affil = affils[0].text if affils and affils[0].text else None
-                    authors.append(Author(name=name, affiliation=affil))
-
-        year: Optional[int] = None
-        if ac is not None:
-            for dp in ac.findall(".//PubDate/Year"):
-                if dp.text and dp.text.isdigit():
-                    year = int(dp.text)
-                    break
-
-        venue: Optional[str] = None
-        if ac is not None:
-            j = ac.find("Journal")
-            if j is not None:
-                venue = j.findtext("Title") or j.findtext("ISOAbbreviation")
-
-        mesh: List[str] = []
-        if mc is not None:
-            for mh in mc.findall(".//MeshHeading/DescriptorName"):
-                if mh.text:
-                    mesh.append(mh.text)
-
-        keywords: List[str] = []
-        if mc is not None:
-            for kw in mc.findall(".//Keyword"):
-                if kw.text:
-                    keywords.append(kw.text)
-
-        # Try to find DOI in article IDs
-        doi: Optional[str] = None
-        for aid in article.findall(".//ArticleId"):
-            if aid.get("IdType") == "doi" and aid.text:
-                doi = aid.text
-
-        return PaperMetadata(
-            paper_id=f"pmid:{pmid}",
-            doi=doi,
-            pmid=pmid,
-            title=title,
-            abstract=abstract,
-            authors=authors,
-            year=year,
-            venue=venue,
-            keywords=keywords,
-            mesh_terms=mesh,
-            study_type=estimate_study_type(abstract, title),
-            source="pubmed",
-        )
-
-
-class SemanticScholarClient(APIClient):
-    """
-    Real Semantic Scholar Graph API client.
-
-    Supports DOI lookup, S2 ID lookup, search, and citation graph.
-    https://api.semanticscholar.org/api-docs/graph
-    """
-
-    BASE = "https://api.semanticscholar.org/graph/v1"
-    PAPER_FIELDS = ",".join([
-        "title", "authors", "year", "venue", "publicationVenue",
-        "externalIds", "abstract", "citationCount", "influentialCitationCount",
-        "isOpenAccess", "fieldsOfStudy", "s2FieldsOfStudy",
-        "references.externalIds", "citations.externalIds",
-    ])
-
-    def __init__(self, api_key: Optional[str] = None) -> None:
-        self.api_key = api_key or os.environ.get("SEMANTIC_SCHOLAR_API_KEY")
-        # Unauthenticated: 100 req / 5 min ≈ 3s; authenticated: 1 req/s
-        delay = 1.1 if self.api_key else 3.1
-        self._limiter = _RateLimiter(min_delay=delay)
-
-    def _headers(self) -> Dict[str, str]:
-        h: Dict[str, str] = {}
-        if self.api_key:
-            h["x-api-key"] = self.api_key
-        return h
-
-    def fetch(self, s2_id: str) -> FetchResult:
-        self._limiter.wait()
-        url = f"{self.BASE}/paper/{urllib.parse.quote(s2_id, safe='')}?fields={self.PAPER_FIELDS}"
-        data = _http_get_json(url, headers=self._headers())
-        if data is None:
-            return FetchResult(status=FetchStatus.NOT_FOUND,
-                               error_message=f"S2 paper not found: {s2_id}")
-        return FetchResult(status=FetchStatus.SUCCESS,
-                           metadata=self._parse_paper(data))
-
-    def fetch_by_doi(self, doi: str) -> FetchResult:
-        doi = re.sub(r'^https?://(dx\.)?doi\.org/', '', doi).strip()
-        return self.fetch(f"DOI:{doi}")
-
-    def search(self, query: str, max_results: int = 10) -> List[PaperMetadata]:
-        self._limiter.wait()
-        params = urllib.parse.urlencode({
-            "query": query, "limit": min(max_results, 100),
-            "fields": "title,authors,year,venue,externalIds,abstract,"
-                      "citationCount,isOpenAccess,fieldsOfStudy",
-        })
-        url = f"{self.BASE}/paper/search?{params}"
-        data = _http_get_json(url, headers=self._headers())
-        if not data:
-            return []
-        papers = data.get("data", [])
-        return [self._parse_paper(p) for p in papers[:max_results]]
-
-    def get_citations(self, paper_id: str) -> List[Citation]:
-        self._limiter.wait()
-        url = (f"{self.BASE}/paper/{urllib.parse.quote(paper_id, safe='')}"
-               f"/citations?fields=externalIds,contexts&limit=100")
-        data = _http_get_json(url, headers=self._headers())
-        if not data:
-            return []
-        results: List[Citation] = []
-        for item in data.get("data", []):
-            citing = item.get("citingPaper", {})
-            eids = citing.get("externalIds", {}) or {}
-            citing_id = eids.get("DOI") or citing.get("paperId", "")
-            contexts = item.get("contexts", [])
-            ctx = contexts[0] if contexts else None
-            if citing_id:
-                results.append(Citation(citing_paper_id=citing_id,
-                                        cited_paper_id=paper_id,
-                                        context=ctx))
-        return results
-
-    def get_references(self, paper_id: str) -> List[Citation]:
-        self._limiter.wait()
-        url = (f"{self.BASE}/paper/{urllib.parse.quote(paper_id, safe='')}"
-               f"/references?fields=externalIds,contexts&limit=100")
-        data = _http_get_json(url, headers=self._headers())
-        if not data:
-            return []
-        results: List[Citation] = []
-        for item in data.get("data", []):
-            cited = item.get("citedPaper", {})
-            eids = cited.get("externalIds", {}) or {}
-            cited_id = eids.get("DOI") or cited.get("paperId", "")
-            contexts = item.get("contexts", [])
-            ctx = contexts[0] if contexts else None
-            if cited_id:
-                results.append(Citation(citing_paper_id=paper_id,
-                                        cited_paper_id=cited_id,
-                                        context=ctx))
-        return results
-
-    def _parse_paper(self, data: Dict[str, Any]) -> PaperMetadata:
-        eids = data.get("externalIds", {}) or {}
-        doi = eids.get("DOI")
-        pmid = eids.get("PubMed")
-        arxiv = eids.get("ArXiv")
-        s2id = data.get("paperId", "")
-
-        authors: List[Author] = []
-        for a in data.get("authors", []):
-            name = a.get("name", "").strip()
-            if name:
-                authors.append(Author(name=name))
-
-        title = (data.get("title") or "").strip()
-        abstract = (data.get("abstract") or "").strip() or None
-
-        ref_dois: List[str] = []
-        for ref in data.get("references", []) or []:
-            r_eids = (ref.get("externalIds") or {})
-            if r_eids.get("DOI"):
-                ref_dois.append(r_eids["DOI"])
-
-        cited_dois: List[str] = []
-        for cit in data.get("citations", []) or []:
-            c_eids = (cit.get("externalIds") or {})
-            if c_eids.get("DOI"):
-                cited_dois.append(c_eids["DOI"])
-
-        paper_id = f"doi:{doi}" if doi else f"s2:{s2id}"
-        fos = data.get("fieldsOfStudy") or data.get("s2FieldsOfStudy") or []
-        keywords = [f.get("category", f) if isinstance(f, dict) else f for f in fos]
-
-        return PaperMetadata(
-            paper_id=paper_id,
-            doi=doi,
-            pmid=pmid,
-            semantic_scholar_id=s2id,
-            arxiv_id=arxiv,
-            title=title,
-            abstract=abstract,
-            authors=authors,
-            year=data.get("year"),
-            venue=data.get("venue") or "",
-            keywords=keywords,
-            study_type=estimate_study_type(abstract, title),
-            open_access=bool(data.get("isOpenAccess")),
-            citation_count=int(data.get("citationCount", 0) or 0),
-            references=ref_dois,
-            cited_by=cited_dois,
-            source="semantic_scholar",
-        )
-
-
-# =============================================================================
-# Unified Paper Fetcher
-# =============================================================================
-
-class PaperFetcher:
-    """
-    Unified paper fetcher that auto-detects identifier type.
-
-    Per expert panel (Systems Architect): Users should just paste
-    any identifier and the system handles the rest.
-
-    Defaults to real API clients. Pass Mock* clients for testing.
-    """
-
-    def __init__(
-        self,
-        crossref_client: Optional[APIClient] = None,
-        pubmed_client: Optional[APIClient] = None,
-        semantic_scholar_client: Optional[APIClient] = None,
-        arxiv_client: Optional[APIClient] = None,
-        existing_papers: Optional[Dict[str, PaperMetadata]] = None
-    ):
-        """
-        Initialize the fetcher with API clients.
-
-        Args:
-            crossref_client: Client for DOI resolution (default: real CrossRefClient)
-            pubmed_client: Client for PMID resolution (default: real PubMedClient)
-            semantic_scholar_client: Client for S2 ID and citations (default: real SemanticScholarClient)
-            arxiv_client: Client for arXiv preprints (default: MockArxivClient — no real arXiv client yet)
-            existing_papers: Dict of existing papers for duplicate detection
-        """
-        self.crossref = crossref_client or CrossRefClient()
-        self.pubmed = pubmed_client or PubMedClient()
-        self.semantic_scholar = semantic_scholar_client or SemanticScholarClient()
-        self.arxiv = arxiv_client or MockArxivClient()
-        self.existing_papers = existing_papers or {}
-
-    def detect_identifier_type(self, identifier: str) -> IdentifierType:
-        """
-        Detect the type of identifier from its format.
-
-        Args:
-            identifier: The identifier string to analyze
-
-        Returns:
-            IdentifierType enum value
-        """
-        identifier = identifier.strip()
-
-        # DOI patterns
-        doi_patterns = [
-            r'^10\.\d{4,}/',  # Standard DOI
-            r'^https?://(dx\.)?doi\.org/10\.\d{4,}/',  # DOI URL
-        ]
-        for pattern in doi_patterns:
-            if re.match(pattern, identifier, re.IGNORECASE):
-                return IdentifierType.DOI
-
-        # PMID pattern (numeric, optionally with PMID prefix)
-        if re.match(r'^(pmid:?\s*)?\d{6,9}$', identifier, re.IGNORECASE):
-            return IdentifierType.PMID
-
-        # arXiv patterns
-        arxiv_patterns = [
-            r'^arxiv:?\s*\d{4}\.\d{4,5}(v\d+)?$',  # New format: 2301.12345
-            r'^arxiv:?\s*[a-z-]+(\.[A-Za-z]+)?/\d{7}(v\d+)?$',   # Old format: cs.AI/0123456
-            r'^\d{4}\.\d{4,5}(v\d+)?$',             # Just the number
-        ]
-        for pattern in arxiv_patterns:
-            if re.match(pattern, identifier, re.IGNORECASE):
-                return IdentifierType.ARXIV
-
-        # Semantic Scholar ID (40-char hex)
-        if re.match(r'^[0-9a-f]{40}$', identifier, re.IGNORECASE):
-            return IdentifierType.SEMANTIC_SCHOLAR
-
-        return IdentifierType.UNKNOWN
-
-    def fetch(self, identifier: str) -> FetchResult:
-        """
-        Fetch paper metadata by any supported identifier.
-
-        Auto-detects identifier type and routes to appropriate client.
-
-        Args:
-            identifier: DOI, PMID, S2 ID, or arXiv ID
-
-        Returns:
-            FetchResult with metadata or error
-        """
-        id_type = self.detect_identifier_type(identifier)
-
-        if id_type == IdentifierType.UNKNOWN:
-            return FetchResult(
-                status=FetchStatus.ERROR,
-                error_message=f"Could not detect identifier type for: {identifier}"
-            )
-
-        # Check for duplicates first
-        duplicate = self._check_duplicate(identifier, id_type)
-        if duplicate:
-            return FetchResult(
-                status=FetchStatus.DUPLICATE,
-                duplicate_of=duplicate
-            )
-
-        # Route to appropriate client
-        if id_type == IdentifierType.DOI:
-            return self._fetch_by_doi(identifier)
-        elif id_type == IdentifierType.PMID:
-            return self.pubmed.fetch(identifier)
-        elif id_type == IdentifierType.ARXIV:
-            return self.arxiv.fetch(identifier)
-        elif id_type == IdentifierType.SEMANTIC_SCHOLAR:
-            return self.semantic_scholar.fetch(identifier)
-        else:
-            return FetchResult(
-                status=FetchStatus.ERROR,
-                error_message=f"Unsupported identifier type: {id_type}"
-            )
-
-    def _fetch_by_doi(self, doi: str) -> FetchResult:
-        """
-        Fetch by DOI, trying multiple sources.
-
-        Per expert panel (Bates): Use Semantic Scholar as backup
-        since it aggregates from multiple sources.
-        """
-        # Try CrossRef first
-        result = self.crossref.fetch(doi)
-        if result.status == FetchStatus.SUCCESS:
-            return result
-
-        # Fall back to Semantic Scholar
-        if hasattr(self.semantic_scholar, 'fetch_by_doi'):
-            result = self.semantic_scholar.fetch_by_doi(doi)
-            if result.status == FetchStatus.SUCCESS:
-                return result
-
-        return FetchResult(
-            status=FetchStatus.NOT_FOUND,
-            error_message=f"DOI not found in any source: {doi}"
-        )
-
-    def _check_duplicate(self, identifier: str, id_type: IdentifierType) -> Optional[str]:
-        """
-        Check if paper already exists in the collection.
-
-        Returns existing paper ID if duplicate, None otherwise.
-        """
-        identifier_lower = identifier.lower()
-
-        for paper_id, paper in self.existing_papers.items():
-            if id_type == IdentifierType.DOI and paper.doi:
-                if paper.doi.lower() == identifier_lower:
-                    return paper_id
-            elif id_type == IdentifierType.PMID and paper.pmid:
-                if paper.pmid == identifier_lower.replace('pmid:', '').strip():
-                    return paper_id
-            elif id_type == IdentifierType.ARXIV and paper.arxiv_id:
-                norm_id = re.sub(r'^arxiv:?\s*', '', identifier_lower, flags=re.IGNORECASE)
-                if paper.arxiv_id.lower() == norm_id:
-                    return paper_id
-            elif id_type == IdentifierType.SEMANTIC_SCHOLAR and paper.semantic_scholar_id:
-                if paper.semantic_scholar_id.lower() == identifier_lower:
-                    return paper_id
-
-        return None
-
-    def search(self, query: str, sources: Optional[List[str]] = None, max_results: int = 10) -> Dict[str, List[PaperMetadata]]:
-        """
-        Search for papers across multiple sources.
-
-        Args:
-            query: Search query
-            sources: List of sources to search ('pubmed', 'semantic_scholar', 'arxiv')
-            max_results: Maximum results per source
-
-        Returns:
-            Dict mapping source name to list of results
-        """
-        if sources is None:
-            sources = ['pubmed', 'semantic_scholar']
-
-        results = {}
-
-        if 'pubmed' in sources:
-            results['pubmed'] = self.pubmed.search(query, max_results)
-
-        if 'semantic_scholar' in sources:
-            results['semantic_scholar'] = self.semantic_scholar.search(query, max_results)
-
-        if 'arxiv' in sources:
-            results['arxiv'] = self.arxiv.search(query, max_results)
-
-        return results
-
-    def get_citation_suggestions(
-        self,
-        paper_id: str,
-        existing_paper_ids: List[str]
-    ) -> Dict[str, List[str]]:
-        """
-        Get citation-based paper suggestions.
-
-        Per expert panel (Bates): Suggest papers based on citations,
-        both citing and cited by.
-
-        Args:
-            paper_id: The paper to get suggestions for
-            existing_paper_ids: Papers already in the web
-
-        Returns:
-            Dict with 'citing' and 'cited_by' lists of paper IDs
-        """
-        paper = self.existing_papers.get(paper_id)
-        if not paper:
-            return {'citing': [], 'cited_by': []}
-
-        # Find papers that cite this one and are in our web
-        citing_in_web = [
-            pid for pid in paper.cited_by
-            if pid in existing_paper_ids
-        ]
-
-        # Find papers this cites that are in our web
-        cites_in_web = [
-            pid for pid in paper.references
-            if pid in existing_paper_ids
-        ]
-
-        # Find papers that cite this one but are NOT in our web (suggestions)
-        citing_suggestions = [
-            pid for pid in paper.cited_by
-            if pid not in existing_paper_ids
-        ][:5]  # Limit suggestions
-
-        # Find papers this cites that are NOT in our web (suggestions)
-        cites_suggestions = [
-            pid for pid in paper.references
-            if pid not in existing_paper_ids
-        ][:5]
+        if self._api_key:
+            params["api_key"] = self._api_key
+        resp = _get(PUBMED_FETCH, params=params, rate_limiter=self._limiter)
+        if resp is None:
+            return None
+        xml = resp.text
+
+        # Abstract: may have multiple <AbstractText> sections
+        abs_parts = re.findall(r"<AbstractText[^>]*>(.*?)</AbstractText>", xml, re.DOTALL)
+        abstract = " ".join(
+            re.sub(r"<[^>]+>", "", p).strip() for p in abs_parts
+        ).strip()
+
+        doi_m = re.search(r'ArticleId IdType="doi">(.*?)</ArticleId>', xml)
+        doi = doi_m.group(1).strip() if doi_m else ""
+
+        title_m = re.search(r"<ArticleTitle>(.*?)</ArticleTitle>", xml, re.DOTALL)
+        found_title = re.sub(r"<[^>]+>", "", title_m.group(1)).strip() if title_m else ""
+
+        year_m = re.search(r"<PubDate>.*?<Year>(\d{4})</Year>", xml, re.DOTALL)
+        year = int(year_m.group(1)) if year_m else None
 
         return {
-            'citing_in_web': citing_in_web,
-            'cites_in_web': cites_in_web,
-            'citing_suggestions': citing_suggestions,
-            'cites_suggestions': cites_suggestions
+            "doi":      doi,
+            "title":    found_title,
+            "abstract": abstract,
+            "year":     year,
+            "source":   "pubmed",
         }
 
+    def by_doi(self, doi: str) -> Optional[dict]:
+        """Search PubMed using DOI as query term ([aid] field)."""
+        if not doi:
+            return None
+        pmid = self._search(f"{doi}[aid]")
+        if pmid is None:
+            return None
+        return self._fetch(pmid)
 
-# =============================================================================
-# Helper Functions
-# =============================================================================
-
-def estimate_study_type(abstract: Optional[str], title: str) -> Optional[str]:
-    """
-    Estimate study type from abstract and title.
-
-    Returns study type string or None if unable to determine.
-    """
-    if not abstract and not title:
-        return None
-
-    text = f"{title} {abstract or ''}".lower()
-
-    # Check for specific study types
-    if 'meta-analysis' in text or 'meta analysis' in text:
-        return 'meta_analysis'
-    if 'systematic review' in text:
-        return 'systematic_review'
-    if 'randomized' in text or 'randomised' in text:
-        return 'rct'
-    if 'randomized controlled trial' in text or 'randomised controlled trial' in text:
-        return 'rct'
-    if 'longitudinal' in text:
-        return 'longitudinal'
-    if 'cross-sectional' in text or 'cross sectional' in text:
-        return 'cross_sectional'
-    if 'case study' in text or 'case report' in text:
-        return 'case_study'
-    if 'review' in text:
-        return 'review'
-    if 'experiment' in text or 'experimental' in text:
-        return 'experimental'
-    if 'survey' in text or 'questionnaire' in text:
-        return 'survey'
-    if 'qualitative' in text:
-        return 'qualitative'
-
-    return None
-
-
-def generate_paper_id(metadata: PaperMetadata) -> str:
-    """
-    Generate a stable paper ID from metadata.
-
-    Uses DOI if available, otherwise constructs from author/year/title.
-    """
-    if metadata.doi:
-        return f"doi:{metadata.doi}"
-    if metadata.pmid:
-        return f"pmid:{metadata.pmid}"
-    if metadata.arxiv_id:
-        return f"arxiv:{metadata.arxiv_id}"
-    if metadata.semantic_scholar_id:
-        return f"s2:{metadata.semantic_scholar_id}"
-
-    # Construct from metadata
-    author_part = ""
-    if metadata.authors:
-        # Use first author's last name
-        first_author = metadata.authors[0].name
-        last_name = first_author.split(',')[0].split()[-1]
-        author_part = last_name.lower()[:10]
-
-    year_part = str(metadata.year) if metadata.year else "unknown"
-
-    title_part = ""
-    if metadata.title:
-        # First significant word of title
-        words = [w for w in metadata.title.lower().split() if len(w) > 3]
-        if words:
-            title_part = words[0][:10]
-
-    return f"{author_part}_{year_part}_{title_part}".strip('_')
-
-
-# =============================================================================
-# Unpaywall Client (added 2026-02-27, Sprint COMPLETENESS-1)
-# =============================================================================
-
-class UnpaywallClient:
-    """
-    Client for the Unpaywall API — checks open access availability for DOIs.
-
-    Unpaywall is a free, legal service that indexes OA copies of papers.
-    API docs: https://unpaywall.org/products/api
-
-    Rate limit: 100K requests/day with polite email header.
-    """
-
-    BASE_URL = "https://api.unpaywall.org/v2"
-
-    def __init__(self, email: str = None):
-        self.email = email or _CONTACT_EMAIL
-
-    def check_oa_status(self, doi: str) -> Dict[str, Any]:
-        """
-        Check if a paper is available open access.
-
-        Returns:
-            {
-                "is_oa": bool,
-                "best_oa_url": str or None,
-                "license": str or None,
-                "host_type": str or None,  # "publisher", "repository"
-                "doi": str,
-                "title": str or None,
-                "error": str or None,
-            }
-        """
-        result = {
-            "is_oa": False,
-            "best_oa_url": None,
-            "license": None,
-            "host_type": None,
-            "doi": doi,
-            "title": None,
-            "error": None,
-        }
-
-        try:
-            # Clean DOI
-            doi = doi.strip()
-            if doi.startswith("http"):
-                doi = doi.split("doi.org/")[-1]
-
-            url = f"{self.BASE_URL}/{urllib.parse.quote(doi, safe='')}?email={self.email}"
-            time.sleep(0.5)  # Polite delay
-
-            req = urllib.request.Request(url)
-            req.add_header("User-Agent", f"ATLAS/1.0 (mailto:{self.email})")
-
-            with urllib.request.urlopen(req, timeout=15) as resp:
-                data = json.loads(resp.read().decode("utf-8"))
-
-            result["is_oa"] = data.get("is_oa", False)
-            result["title"] = data.get("title")
-
-            # Find best OA location
-            best_loc = data.get("best_oa_location")
-            if best_loc:
-                result["best_oa_url"] = (
-                    best_loc.get("url_for_pdf")
-                    or best_loc.get("url")
-                )
-                result["license"] = best_loc.get("license")
-                result["host_type"] = best_loc.get("host_type")
-
-        except urllib.error.HTTPError as e:
-            if e.code == 404:
-                result["error"] = f"DOI not found in Unpaywall: {doi}"
-            else:
-                result["error"] = f"HTTP {e.code}: {e.reason}"
-        except Exception as e:
-            result["error"] = str(e)
-
+    def by_title(self, title: str) -> Optional[dict]:
+        """Search PubMed by title; enforce title-similarity threshold."""
+        if not title:
+            return None
+        pmid = self._search(title)
+        if pmid is None:
+            return None
+        result = self._fetch(pmid)
+        if result is None:
+            return None
+        if not _title_ok(title, result.get("title", "")):
+            return None
         return result
 
 
-def crossref_title_search(
-    title: str,
-    limit: int = 3,
-    email: str = None,
-) -> List[Dict[str, Any]]:
-    """
-    Search CrossRef by title to find DOI candidates.
+# ---------------------------------------------------------------------------
+# Client 4: OpenAlexHelper
+# ---------------------------------------------------------------------------
 
-    Returns list of {doi, title, score, authors, year}.
+class OpenAlexHelper:
     """
-    email = email or _CONTACT_EMAIL
-    results = []
+    OpenAlex Works API helper.
 
-    try:
-        query = urllib.parse.quote(title)
-        url = (
-            f"https://api.crossref.org/works?"
-            f"query.title={query}&rows={limit}"
-            f"&mailto={email}"
+    No authentication required.  Polite pool: include mailto in User-Agent.
+    Rate limit: 10 req/s polite; enforced conservatively at 8 req/s.
+
+    Methods
+    -------
+    by_doi(doi)          -- direct DOI URL lookup; authoritative
+    by_title(title)      -- free-text search; similarity enforced
+    """
+
+    def __init__(self) -> None:
+        self._limiter = _RateLimiter(max_calls=8, period=1)
+
+    def by_doi(self, doi: str) -> Optional[dict]:
+        """Fetch OpenAlex work by DOI URL."""
+        if not doi:
+            return None
+        url = f"{OPENALEX_WORKS}/https://doi.org/{doi}"
+        resp = _get(
+            url,
+            params={"select": "title,abstract_inverted_index,doi,publication_year"},
+            rate_limiter=self._limiter,
         )
-        time.sleep(0.5)  # Polite delay
+        if resp is None:
+            return None
+        data = resp.json()
+        abstract = _decode_inverted_index(data.get("abstract_inverted_index"))
+        doi_raw = data.get("doi", "")
+        norm_doi = doi_raw.replace("https://doi.org/", "").strip() if doi_raw else doi
+        return {
+            "doi":      norm_doi,
+            "title":    (data.get("title") or "").strip(),
+            "abstract": abstract,
+            "year":     data.get("publication_year"),
+            "source":   "openalex",
+        }
 
-        req = urllib.request.Request(url)
-        req.add_header("User-Agent", f"ATLAS/1.0 (mailto:{email})")
+    def by_title(self, title: str) -> Optional[dict]:
+        """Search OpenAlex by title; enforce title-similarity threshold."""
+        if not title:
+            return None
+        resp = _get(
+            OPENALEX_WORKS,
+            params={
+                "search":   title,
+                "per-page": 1,
+                "select":   "title,abstract_inverted_index,doi,publication_year",
+            },
+            rate_limiter=self._limiter,
+        )
+        if resp is None:
+            return None
+        results = resp.json().get("results", [])
+        if not results:
+            return None
+        data = results[0]
+        found_title = (data.get("title") or "").strip()
+        if not _title_ok(title, found_title):
+            return None
+        abstract = _decode_inverted_index(data.get("abstract_inverted_index"))
+        doi_raw = data.get("doi", "")
+        doi = doi_raw.replace("https://doi.org/", "").strip() if doi_raw else ""
+        return {
+            "doi":      doi,
+            "title":    found_title,
+            "abstract": abstract,
+            "year":     data.get("publication_year"),
+            "source":   "openalex",
+        }
 
-        with urllib.request.urlopen(req, timeout=15) as resp:
-            data = json.loads(resp.read().decode("utf-8"))
 
-        items = data.get("message", {}).get("items", [])
-        for item in items:
-            authors = []
-            for a in item.get("author", []):
-                name = f"{a.get('family', '')}, {a.get('given', '')}".strip(", ")
-                if name:
-                    authors.append(name)
+# ---------------------------------------------------------------------------
+# UnpaywallClient alias
+# ---------------------------------------------------------------------------
+# The ingest layer names this UnpaywallDownloader; expose UnpaywallClient
+# here so discovery_funnel.py and other consumers have a single import point.
+try:
+    import sys as _sys, pathlib as _pathlib
+    _ingest = _pathlib.Path(__file__).resolve().parent.parent / "ingest"
+    if str(_ingest.parent) not in _sys.path:
+        _sys.path.insert(0, str(_ingest.parent))
+    from ingest.pdf_downloader import UnpaywallDownloader as UnpaywallClient  # type: ignore
+except ImportError:
+    UnpaywallClient = None  # type: ignore
 
-            year = None
-            date_parts = item.get("published-print", {}).get("date-parts", [[]])
-            if not date_parts or not date_parts[0]:
-                date_parts = item.get("published-online", {}).get("date-parts", [[]])
-            if date_parts and date_parts[0]:
-                year = date_parts[0][0]
 
-            results.append({
-                "doi": item.get("DOI"),
-                "title": item.get("title", [""])[0] if item.get("title") else "",
-                "score": item.get("score", 0),
-                "authors": authors,
-                "year": year,
-            })
+# ---------------------------------------------------------------------------
+# estimate_study_type()
+# ---------------------------------------------------------------------------
 
-    except Exception as e:
-        logger.warning(f"CrossRef title search failed: {e}")
+_EMPIRICAL_MARKERS = (
+    "randomized", "randomised", "controlled trial", "rct", "experiment",
+    "quasi-experiment", "field study", "laboratory study",
+    "within-subject", "between-subject", "participants were",
+)
+_META_MARKERS = (
+    "meta-analysis", "meta analysis", "systematic review",
+    "scoping review", "pooled estimate", "effect size",
+)
+_REVIEW_MARKERS = (
+    "literature review", "narrative review", "integrative review",
+    "we reviewed", "review of studies",
+)
+_CASE_MARKERS = (
+    "case study", "case report", "single case", "descriptive study",
+)
+_SURVEY_MARKERS = (
+    "survey", "questionnaire", "cross-sectional", "self-report",
+    "respondents", "participants completed",
+)
 
-    return results
+
+def estimate_study_type(abstract: str) -> str:
+    """
+    Classify the methodological study type from an abstract string.
+
+    Returns one of:
+      'meta_analysis'     -- pooled quantitative synthesis
+      'systematic_review' -- structured literature synthesis
+      'empirical_rct'     -- randomized / controlled experiment
+      'empirical_other'   -- other primary empirical study
+      'survey'            -- questionnaire / cross-sectional
+      'case_study'        -- single-case or descriptive
+      'review'            -- narrative or integrative review
+      'unknown'           -- insufficient signal
+
+    Deterministic keyword classifier — zero network calls.
+    Called by abstract_collector_4c.py after a validated abstract is
+    stored, to populate study_type in article_references.
+    """
+    if not abstract:
+        return "unknown"
+    text = abstract.lower()
+    if any(m in text for m in _META_MARKERS):
+        return "meta_analysis" if ("meta-analysis" in text or "meta analysis" in text) else "systematic_review"
+    if any(m in text for m in _EMPIRICAL_MARKERS):
+        return "empirical_rct" if any(m in text for m in ("randomized","randomised","controlled trial","rct")) else "empirical_other"
+    if any(m in text for m in _SURVEY_MARKERS):
+        return "survey"
+    if any(m in text for m in _CASE_MARKERS):
+        return "case_study"
+    if any(m in text for m in _REVIEW_MARKERS):
+        return "review"
+    return "unknown"
+
+
+# ---------------------------------------------------------------------------
+# PaperFetcher  -- unified multi-source search facade
+# ---------------------------------------------------------------------------
+
+class PaperFetcher:
+    """
+    Unified facade over SemanticScholarClient, CrossRefClient,
+    PubMedClient, and OpenAlexHelper.
+
+    Provides a single .search(doi, title) entry-point that walks the
+    four-source chain and returns the first validated result.
+
+    This is the canonical import point for abstract-collection code.
+    Consumers should use PaperFetcher rather than instantiating the
+    individual clients directly.
+
+    Usage:
+        fetcher = PaperFetcher()
+        result  = fetcher.search(doi="10.1016/j.buildenv.2020.106960")
+        stype   = fetcher.estimate_study_type(result["abstract"])
+    """
+
+    def __init__(self) -> None:
+        self._ss = SemanticScholarClient()
+        self._cr = CrossRefClient()
+        self._pm = PubMedClient()
+        self._oa = OpenAlexHelper()
+
+    def search(self, doi: str = "", title: str = "") -> Optional[dict]:
+        """
+        Walk SS -> CrossRef -> PubMed -> OpenAlex.
+        Return first result with a non-empty abstract, or None.
+
+        Result dict keys: doi, title, abstract, year, source.
+        """
+        sources: list = []
+        if doi:
+            sources += [
+                (self._ss.by_doi,  doi),
+                (self._cr.by_doi,  doi),
+                (self._pm.by_doi,  doi),
+                (self._oa.by_doi,  doi),
+            ]
+        if title:
+            sources += [
+                (self._ss.by_title, title),
+                (self._cr.by_title, title),
+                (self._pm.by_title, title),
+                (self._oa.by_title, title),
+            ]
+        for fn, arg in sources:
+            try:
+                result = fn(arg)
+                if result and (result.get("abstract") or "").strip():
+                    return result
+            except Exception:
+                continue
+        return None
+
+    @staticmethod
+    def estimate_study_type(abstract: str) -> str:
+        """Delegate to module-level estimate_study_type()."""
+        return estimate_study_type(abstract)

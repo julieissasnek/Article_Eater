@@ -1,0 +1,39 @@
+# acquisition_config.yaml
+# Knowledge Atlas -- PDF Acquisition Policy Configuration
+#
+# CRITICAL: This file controls access to grey/paid acquisition sources.
+# Default state: ALL grey sources DISABLED.
+#
+# To enable scidownl (Sci-Hub mirror):
+#   1. Set enable_paid_or_grey_sources: true below.
+#   2. Create policy_clearance.json in this directory (see policy_clearance.json.template).
+#   3. Ensure both Unpaywall and OpenAlex OA have already been attempted for
+#      each record before the scidownl gate is reached.
+#   4. The record's phase4d_decision must be strictly 'ACCEPT'.
+#
+# Changing this flag without policy_clearance.json present has no effect:
+# the gate checks BOTH independently.
+
+# ── Grey/paid source arm switch ───────────────────────────────────────────────
+# Accepted values: true | false
+# Default: false (safe). Must be set to true explicitly to arm scidownl.
+enable_paid_or_grey_sources: false
+
+# ── scidownl rate controls (enforced when Phase 5B quota logic is added) ──────
+# Maximum scidownl calls per calendar day (UTC).
+scidownl_daily_limit: 50
+
+# Minimum seconds between consecutive scidownl calls.
+scidownl_cooldown_seconds: 5
+
+# ── Publisher DOI prefix blocklist ───────────────────────────────────────────
+# DOI prefixes where scidownl must NEVER be attempted regardless of other flags.
+# Add publisher prefixes that have issued takedown notices here.
+# Example entry: "10.1016"  (Elsevier)
+scidownl_doi_prefix_blocklist: []
+
+# ── Institutional policy mode ─────────────────────────────────────────────────
+# "permissive"  -- scidownl allowed when all 4 gate conditions are met
+# "oa_only"     -- only open-access sources (Unpaywall + OpenAlex); scidownl skipped
+# "strict"      -- same as oa_only; additional logging of all blocked attempts
+institutional_policy_mode: "permissive"
